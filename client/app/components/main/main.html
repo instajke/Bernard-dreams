@@ -1,0 +1,67 @@
+<div layout="column" class="layout-column">
+    <md-toolbar class="md-primary md-hue-4" id="top">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" aria-label="Settings" ng-click="mainVm.toggleSidenav()">
+              <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+              <md-tooltip>Open side panel</md-tooltip>
+          </md-button><a href="#!"><span>KleManProMos</span></a><span flex=""></span>
+          <md-button class="md-icon-button">
+              <md-icon class="md-default-theme" class="material-icons">&#xE5D8;</md-icon>
+          </md-button>
+          <md-button class="md-icon-button">
+              <md-icon class="md-default-theme" class="material-icons">&#xE5D8;</md-icon>
+          </md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" style="background: none; min-height: calc(100vh - 128px)">
+        <div class="background-image"></div>
+            <div md-theme="docs-dark" class="content" layout="column" layout-align="center center">
+                <div>
+                    <md-input-container>
+                        <label>Email</label>
+                        <input ng-model="user.email" type="email"> </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input ng-model="user.password"> </md-input-container>
+                </div>
+                <div layout="row" layout-align="center top">
+                    <md-fab-speed-dial md-direction='{{mainVm.selectedDirection}}' ng-class='mainVm.selectedMode'>
+                        <md-fab-trigger>
+                            <md-button class="md-raised md-hue-2">
+                                <md-tooltip md-direction="left">Sign into the system</md-tooltip> Sign In </md-button>
+                        </md-fab-trigger>
+                        <md-fab-actions>
+                            <md-button class="md-accent md-mini">
+                                <md-tooltip md-direction="left">Sign in using Google account</md-tooltip>
+                                <md-icon md-svg-icon="google_plus"></md-icon>
+                            </md-button>
+                            <md-button class="md-accent md-mini">
+                                <md-tooltip md-direction="left">Sign in using Twitter account</md-tooltip>
+                                <md-icon md-svg-icon="twitter"></md-icon>
+                            </md-button>
+                            <md-button class="md-accent md-mini">
+                                <md-tooltip md-direction="left">Sign in using Facebook</md-tooltip>
+                                <md-icon md-svg-icon="facebook"></md-icon>
+                            </md-button>
+                            <md-button md-no-ink class="md-raised md-warn  md-mini" href="#/account"> Log in
+                                <md-tooltip md-direction="left">Sign in with KleManProMos account</md-tooltip>
+                            </md-button>
+                        </md-fab-actions>
+                    </md-fab-speed-dial>
+                    <div layout="column" layout-align="top">
+                        <md-button class="md-warn md-raised md-hue-2" ng-click="mainVm.showRegistrationDialog($event)">
+                            <md-tooltip md-direction="right">Create new KleManProMos account</md-tooltip>Sign Up</md-button>
+                    </div>
+                </div>
+            </div>
+    </md-content>
+    <md-toolbar class="md-primary md-hue-4">
+        <div class="md-toolbar-tools" layout="row" id="bottom" flex>
+            <md-button class="md-icon-button" aria-label="Go to top">
+                <md-tooltip>Go to the top</md-tooltip>
+                <md-icon class="md-default-theme" class="material-icons">&#xE5D8;</md-icon>
+            </md-button> <span flex="10"></span>
+            <p style="color:white">Made by <span style="color : navy; ">KleManProMos</span></p>
+        </div>
+    </md-toolbar>
+</div>

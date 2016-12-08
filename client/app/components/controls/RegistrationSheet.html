@@ -1,0 +1,22 @@
+<div layout="column" layout-padding ng-cloak style="width: 600px; height: 600px;">
+    <br/>
+    <md-content class="md-no-momentum" style="background: none;">
+        <md-input-container class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">account_circle</md-icon>
+            <input ng-model="user.nickname" type="text" placeholder="Nickname (required)" ng-required="true"> </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">email</md-icon>
+            <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+            <div ng-message="required">You <b>must</b> have a favorite state.</div>
+        </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">face</md-icon>
+            <input ng-model="user.name" type="text" placeholder="Name"> </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+            <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
+            <input ng-model="user.surname" type="text" placeholder="Surname"> </md-input-container>
+        <md-input-container class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">subject</md-icon>
+            <input ng-model="user.bio" type="text" placeholder="Describe urself a lil"> </md-input-container>
+    </md-content>
+</div>

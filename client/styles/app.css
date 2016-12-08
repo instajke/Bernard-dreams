@@ -1,0 +1,316 @@
+/* ngcloak
+ * Docs : https://docs.angularjs.org/api/ng/directive/ngCloak
+ */
+/*
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+.translate-cloak {
+  display: none !important;
+}
+.thing-form {
+  margin-right: 0;
+  margin-left: 0;
+  background-color: #fff;
+  border-color: #ddd;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px 4px 0 0;
+  padding: 10px;
+}
+*/
+/* EXISTING STYLES
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+*/
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size:14px;
+  height:100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Toolbar area */
+
+.menu {
+  background-color: transparent;
+  border: none;
+  height: 38px;
+  margin: 16px;
+  width: 36px;
+}
+
+
+md-toolbar h3 {
+  margin: auto;
+  font-weight: 500;
+}
+
+/* Sidenav area */
+
+
+md-list-item > button {
+  width:100%;
+  text-align:left !important;
+}
+
+  md-list .md-button.selected {
+    color: #03a9f4;
+  }
+
+  md-sidenav  md-list {
+    padding: 0px 0px 8px 0px;
+  }
+
+
+/* Primary content area */
+
+#content {
+  overflow: hidden;
+}
+
+#content  {
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 5px;
+}
+
+#content .md-button.share {
+  background-color: transparent;
+  border: none;
+  width: 48px;
+  height: 48px;
+  margin: 8px auto 16px 0;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+}
+
+#content md-icon.avatar {
+  margin-top: 10px;
+}
+
+#content .md-button.share > md-icon {
+  fill:black;
+  width:36px;
+  height:36px;
+}
+
+md-button.menuBtn > md-icon {
+  fill:white;
+  width:24px;
+  height:24px;
+}
+
+#content .md-button.share:active > md-icon {
+  background-color: #dadada;
+  border-radius: 75%;
+  padding:4px;
+  transition: all 100ms ease-out 30ms;
+}
+
+#content img {
+  display: block;
+  height: auto;
+  max-width: 500px;
+}
+
+/* Utils */
+
+.content-wrapper {
+  position: relative;
+}
+
+/* Typography support coming in 0.8.0 */
+
+md-toolbar h1 {
+  font-size: 1.250em;
+  font-weight: 400;
+}
+
+.avatar {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0px;
+  vertical-align: middle;
+  zoom:0.70;
+  transform: translateZ(0);
+  -webkit-transform: scale(0.70);
+  -moz-transform:scale(0.70);
+}
+
+
+md-bottom-sheet  md-icon {
+  margin-right:20px;
+}
+
+span.name {
+  font-weight: bold;
+  font-size:1.1em;
+  padding-left:5px;
+}
+
+footer {
+    background-color: #F44336;
+}
+
+a {
+    text-decoration: : none;
+}
+
+a:link, a:visited {
+    color: none;
+}
+
+a:hover {
+    color: none;
+}
+
+md-sidenav, md-backdrop {
+position: fixed !important;
+}
+
+/*
+.page {
+    position:relative;
+    height:100px!important;
+    background:white;
+    height:40px;
+    overflow:hidden;
+}
+
+.page-home {background: #00D0BC; color: #00907c; }
+.page-history { background: #ffa6bb; color: #9e0000; }
+
+/* ANIMATIONS
+============================================================================= */
+
+/* leaving animations ----------------------------------------- */
+/* rotate and fall */
+/*
+.ng-enter           { z-index: 9999; }
+.ng-leave           { z-index: 8888; }
+
+.page-home.ng-enter         { animation: fadeInRight 0.5s }
+.page-home.ng-leave         { animation: fadeOutLeft 0.5s }
+
+.page-history.ng-enter      { animation: slideInRight 0.5s }
+.page-history.ng-leave      { animation: slideOutLeft 0.5s }
+*/
+
+.overflow-y-scroll {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+}
+.not-scrollable {
+    overflow-y: hidden;
+}
+
+.bottomSheetdemoBasicUsage .md-inline-list-icon-label {
+  display: inline-block;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: -10px;
+  height: 24px;
+  vertical-align: middle; }
+.bottomSheetdemoBasicUsage .md-grid-item-content {
+  height: 90px;
+  padding-top: 10px; }
+.bottomSheetdemoBasicUsage .md-grid-item-content md-icon {
+  height: 48px;
+  width: 48px; }
+.bottomSheetdemoBasicUsage .md-grid-text {
+  padding-bottom: 5px; }
+.bottomSheetdemoBasicUsage md-list-item, .bottomSheetdemoBasicUsage md-list-item ._md-list-item-inner {
+  min-height: 48px; }
+.bottomSheetdemoBasicUsage h2 {
+  line-height: 36px;
+  padding-top: 10px; }
+.bottomSheetdemoBasicUsage .md-subheader ._md-subheader-inner {
+  padding: 0; }
+.bottomSheetdemoBasicUsage md-toast .md-toast-content {
+  background-color: #B14141; }
+.bottomSheetdemoBasicUsage md-toast > * {
+  font-weight: bolder; }
+
+body {
+    overflow: hidden;
+    background-color: #FFFFFF;
+}
+
+/*------------*/
+
+.page-home      { background:#00D0BC; color:#00907c; }
+.page-about     { background:#E59400; color:#a55400; }
+.page-contact   { background:#ffa6bb; color:#9e0000; }
+/*
+.ng-enter           { animation: slideInLeft 0.5s both ease-in;
+                      animation-delay: 0s, 0.4s;
+                      -moz-animation-delay: 0s, 0.4s;
+                      -webkit-animation-delay: 0s, 0.4s;
+                      -o-animation-delay: 0s, 0.4s;
+                      z-index: 50;
+                    }
+.ng-leave           {
+                      animation: slideOutRight 0.4s both ease-in;
+                      z-index: 40;
+                    }
+*/
+.background-image {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      border: none;
+      background-image: url('http://euw.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/lol_promoart_14_1_0.jpg?itok=-hi3Ugy7');
+      width: 100%;
+      height: calc(100vh - 128px);
+
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+.content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+    border: none;
+}
+
+.virtualRepeatdemoInfiniteScroll #vertical-container {
+  height: 292px;
+  width: 100%;
+  max-width: 400px; }
+
+.virtualRepeatdemoInfiniteScroll .repeated-item {
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  height: 40px;
+  padding-top: 10px; }
+
+.virtualRepeatdemoInfiniteScroll md-content {
+  margin: 16px; }
+
+.virtualRepeatdemoInfiniteScroll md-virtual-repeat-container {
+  border: solid 1px grey; }
+
+.virtualRepeatdemoInfiniteScroll .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+  padding-left: 16px; }
+
+.md-list.make-scrollable{ height : 200px; overflow-y: scroll; }

@@ -1,0 +1,53 @@
+<md-toolbar layout-align="end center" class="md-primary md-hue-4" id="top" style="z-index: 12">
+    <div class="md-toolbar-tools">
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+          <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+          <md-tooltip>Open side panel</md-tooltip>
+      </md-button><span>KleManProMos</span></span>
+        <md-button class="md-icon-button">
+            <md-icon></md-icon>
+        </md-button>
+        <md-button class="md-icon-button">
+            <md-icon></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+<div layout="row" flex>
+    <md-sidenav class="md-sidenav-left"
+          md-component-id="left"
+          md-is-locked-open="$mdMedia('gt-md')"
+          md-whiteframe="4">
+          <md-toolbar class="md-primary md-hue-4">
+              <div class="md-toolbar-tools">
+                  <h2><span>Klemanpromos</span></h2><span flex></span>
+              </div>
+          </md-toolbar>
+          <md-list>
+              <md-subheader class="md-no-sticky">Navigation list 1</md-subheader>
+              <md-list-item>
+                  <md-button class="md-button" href="#/account/home" ng-click="toggleLeft()">
+                      <p>My account</p>
+                  </md-button>
+              </md-list-item>
+              <md-list-item>
+                  <md-button class="md-button" href="#/account/history" ng-click="toggleLeft()">
+                      <p>History</p>
+                  </md-button>
+              </md-list-item>
+              <md-list-item>
+                  <md-button class="md-button" href="#/account/buy" ng-click="toggleLeft()">
+                      <p>Buy</p>
+                  </md-button>
+              </md-list-item>
+              <md-divider></md-divider>
+              <md-subheader class="md-no-sticky">Navigation list 2</md-subheader>
+              <md-list-item>
+                  <md-button class="md-button" href="#/account/upgrade" ng-click="toggleLeft()">
+                      <p>Connect!</p>
+                  </md-button>
+              </md-list-item>
+          </md-list>
+    </md-sidenav>
+    <span hide show-gt-md flex="25"></span>
+    <div flex ui-view></div>
+</div>
