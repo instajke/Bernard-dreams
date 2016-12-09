@@ -18,7 +18,7 @@
   function AccountBuyController(accountService, $http, $rootScope, $mdDialog) {
       var ctrl = this;
 
-
+      
   }
 
 })();

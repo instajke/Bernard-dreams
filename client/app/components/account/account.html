@@ -22,28 +22,11 @@
                   <h2><span>Klemanpromos</span></h2><span flex></span>
               </div>
           </md-toolbar>
-          <md-list>
-              <md-subheader class="md-no-sticky">Navigation list 1</md-subheader>
-              <md-list-item>
-                  <md-button class="md-button" href="#/account/home" ng-click="toggleLeft()">
-                      <p>My account</p>
-                  </md-button>
-              </md-list-item>
-              <md-list-item>
-                  <md-button class="md-button" href="#/account/history" ng-click="toggleLeft()">
-                      <p>History</p>
-                  </md-button>
-              </md-list-item>
-              <md-list-item>
-                  <md-button class="md-button" href="#/account/buy" ng-click="toggleLeft()">
-                      <p>Buy</p>
-                  </md-button>
-              </md-list-item>
-              <md-divider></md-divider>
-              <md-subheader class="md-no-sticky">Navigation list 2</md-subheader>
-              <md-list-item>
-                  <md-button class="md-button" href="#/account/upgrade" ng-click="toggleLeft()">
-                      <p>Connect!</p>
+          <md-list flex>
+              <md-list-item ng-repeat="menuItem in sidenavMenuItems">
+                  <md-button class="md-button" href="#/account/{{menuItem.url}}" ng-click="toggleLeft()">
+                      <p>{{menuItem.name}}</p>
+                      <md-tooltip md-direction="right">{{menuItem.tooltip}}</md-tooltip>
                   </md-button>
               </md-list-item>
           </md-list>

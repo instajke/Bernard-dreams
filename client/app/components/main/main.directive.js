@@ -53,7 +53,7 @@
   UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog']
 
   function UserRegistrationController($http, $scope, $rootScope, $mdDialog) {
-    
+
       $scope.hide = function () {
           $mdDialog.hide();
       };
