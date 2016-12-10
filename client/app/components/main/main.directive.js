@@ -54,6 +54,8 @@
 
   function UserRegistrationController($http, $scope, $rootScope, $mdDialog) {
 
+      $scope.showConfirmPass = false;
+
       $scope.hide = function () {
           $mdDialog.hide();
       };
@@ -63,6 +65,11 @@
       $scope.answer = function (answer) {
           $mdDialog.hide(answer);
       };
+
       $rootScope.user = $scope.user;
+
+      $scope.showConfirmPasswordInput = function() {
+          $scope.showConfirmPass = true;
+      }
   }
 })();

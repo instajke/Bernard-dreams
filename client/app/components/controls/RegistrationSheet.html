@@ -11,9 +11,9 @@
         </md-input-container>
         <md-input-container name="password" class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">&#xE0DA;</md-icon>
-            <input ng-model="user.password" type="password" placeholder="Password (required)" ng-required="true">
+            <input ng-model="user.password" ng-change="showConfirmPasswordInput()" type="password" placeholder="Password (required)" ng-required="true">
         </md-input-container>
-        <md-input-container name="confirm_password" class="md-icon-float md-block">
+        <md-input-container name="confirm_password" ng-show="showConfirmPass" class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">&#xE0DA;</md-icon>
             <input ng-model="confirm_password" type="password" ui-validate=" '$value==user.password' " ui-validate-watch=" 'user.password' " placeholder="Confirm your password (required)">
         </md-input-container>

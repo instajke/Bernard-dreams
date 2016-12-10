@@ -7,6 +7,7 @@ process.env.NODE_CONFIG_DIR = __dirname + '/config/';
 var express = require('express');
 var config = require('config');
 var cors = require('cors');
+var passport = require('passport');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
@@ -53,6 +54,8 @@ var connectWithRetry = function() {
 
 connectWithRetry();
 
+require('./src/passport')(passport); // pass passport for configuration
+
 /**
  * Express app configurations
  */
@@ -63,6 +66,15 @@ app.use(bodyParser.urlencoded({
 }));
 // Enable CORS
 app.use(cors());
+
+// required for passport
+app.use(session({
+  secret: 'lookatmyhorsemyhorseishekarim', // session secret
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 // Bootstrap routes
 app.use(routes);
