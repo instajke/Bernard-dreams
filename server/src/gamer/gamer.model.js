@@ -1,12 +1,28 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
 
 var Schema = mongoose.Schema;
 
 var gamerSchema = new Schema ({
     userID: String,
+    nickname: String,
     name: String,
+    password: String,
+    email: String,
+    google:   {
+        id:     String,
+        token:  String
+    },
+    facebook:   {
+        id:     String,
+        token:  String
+    },
+    twitter:    {
+        id:     String,
+        token:  String
+    },
     date: { type: Date, default: Date.now() },
     picture: String,
     isDev: { type: Boolean, default: null },
@@ -225,4 +241,14 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
         }
     });
+},
+
+// generating a hash
+exports.generateHash = function(password) {
+        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+},
+
+// checking if password is valid
+exports.validPassword = function(password) {
+    return bcrypt.compareSync(password, gamerSchema.password);
 }
