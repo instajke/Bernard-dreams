@@ -64,5 +64,9 @@
           $mdDialog.hide(answer);
       };
       $rootScope.user = $scope.user;
+
+      $scope.signup = function(user) {
+          $http.post('/signup', user);
+      }
   }
 })();
