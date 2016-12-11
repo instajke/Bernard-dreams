@@ -10,8 +10,13 @@ var cors = require('cors');
 var passport = require('passport');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+<<<<<<< Updated upstream
 var session      = require('express-session');
 var flash    = require('connect-flash');
+=======
+var session = require('express-session');
+var passport = require('./src/passport')
+>>>>>>> Stashed changes
 
 
 /**

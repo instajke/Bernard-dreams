@@ -11,6 +11,7 @@ var Thing = require('./thing.model');
  */
 exports.find = function(req, res, next) {
   Thing.find(function(err, things) {
+    console.log("Hallo");
     if (err) {
       return next(err);
     }

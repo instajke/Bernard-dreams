@@ -20,6 +20,7 @@
     "connect-flash": "~0.1.1",
     "cors": "^2.7.1",
     "express": "^4.13.3",
+<<<<<<< Updated upstream
     "express-session": "~1.14.1",
     "mongoose": "^4.4.7",
     "passport": "~0.3.2",
@@ -27,6 +28,15 @@
     "passport-facebook": "~2.1.1",
     "passport-twitter": "~1.0.4",
     "passport-google-oauth" : "~1.0.0"
+=======
+    "express-session": "^1.14.2",
+    "mongoose": "^4.4.7",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4"
+>>>>>>> Stashed changes
   },
   "devDependencies": {
     "browser-sync": "^2.11.1",
