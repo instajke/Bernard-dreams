@@ -17,6 +17,7 @@
 
   function MainCtrl($http, $rootScope, $mdDialog, $state) {
     var vm = this;
+    var alert;
 
     vm.user = {};
     vm.id = "584e70e00ec505230753052e";
@@ -41,11 +42,28 @@
         });
     };
 
+    vm.showAlert = function(res) {
+      alert = $mdDialog.alert({
+        title: 'Attention',
+        textContent: res,
+        ok: 'Close'
+      });
+
+      $mdDialog
+        .show( alert )
+        .finally(function() {
+          alert = undefined;
+        });
+    }
+
     vm.getUser = function() {
-      $http.get('/api/users/' + vm.id)
+      $http.get('/api/users/' + vm.user.email + '/' + vm.user.password)
         .then(function(response){
-            $state.go('account', {obj: response.data.nickname});
-        })
+          if (response.status !== 200)
+            vm.showAlert(response);
+          else
+            $state.go('account', {obj: response.data});
+        });
     };
 
     vm.showRegistrationDialog = function(ev) {

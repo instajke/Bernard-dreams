@@ -13,7 +13,7 @@ module.exports = function(app, passport) {
     var userAccount = require('./user/user.controller');
     // things ressources
     router.get('/api/users', userAccount.find);
-    router.get('/api/users/:id', userAccount.get);
+    router.get('/api/users/:email/:password', userAccount.get);
     router.post('/api/users', userAccount.post);
     router.put('/api/users/:id', userAccount.put);
 

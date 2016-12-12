@@ -26,7 +26,7 @@ exports.find = function(req, res, next) {
  *
  */
 exports.get = function(req, res, next) {
-  user.findById(req.params.id, function(err, user) {
+  user.find({ email : req.params.email, password : req.params.password}, function(err, user) {
     if (err) {
       return next(err);
     }
