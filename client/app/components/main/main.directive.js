@@ -42,7 +42,10 @@
     };
 
     vm.getUser = function() {
-        $state.go('account', {obj: vm.user});
+      $http.get('/api/users/' + vm.id)
+        .then(function(response){
+            $state.go('account', {obj: response.data.nickname});
+        })
     };
 
     vm.showRegistrationDialog = function(ev) {
