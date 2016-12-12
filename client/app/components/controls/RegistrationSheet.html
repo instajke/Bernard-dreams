@@ -3,30 +3,30 @@
     <md-content class="md-no-momentum" style="background: none;">
         <md-input-container class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">account_circle</md-icon>
-            <input ng-model="user.nickname" type="text" placeholder="Nickname (required)" ng-required="true"> </md-input-container>
+            <input ng-model="userRegCtrl.user.nickname" type="text" placeholder="Nickname (required)" ng-required="true"> </md-input-container>
         <md-input-container class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">email</md-icon>
-            <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+            <input ng-model="userRegCtrl.user.email" type="email" placeholder="Email (required)" ng-required="true">
             <div ng-message="required">You <b>must</b> have a favorite state.</div>
         </md-input-container>
         <md-input-container name="password" class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">&#xE0DA;</md-icon>
-            <input ng-model="user.password" ng-change="showConfirmPasswordInput()" type="password" placeholder="Password (required)" ng-required="true">
+            <input ng-model="userRegCtrl.user.password" ng-change="userRegCtrl.showConfirmPasswordInput()" type="password" placeholder="Password (required)" ng-required="true">
         </md-input-container>
         <md-input-container name="confirm_password" ng-show="showConfirmPass" class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">&#xE0DA;</md-icon>
-            <input ng-model="confirm_password" type="password" ui-validate=" '$value==user.password' " ui-validate-watch=" 'user.password' " placeholder="Confirm your password (required)">
+            <input ng-model="userRegCtrl.confirm_password" type="password" ui-validate=" '$value==userRegCtrl.user.password' " ui-validate-watch=" 'user.password' " placeholder="Confirm your password (required)">
         </md-input-container>
         <md-input-container class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">face</md-icon>
-            <input ng-model="user.name" type="text" placeholder="Name"> </md-input-container>
+            <input ng-model="userRegCtrl.user.name" type="text" placeholder="Name"> </md-input-container>
         <md-input-container class="md-icon-float md-block">
             <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
-            <input ng-model="user.surname" type="text" placeholder="Surname"> </md-input-container>
+            <input ng-model="userRegCtrl.user.surname" type="text" placeholder="Surname"> </md-input-container>
         <md-input-container class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">subject</md-icon>
-            <input ng-model="user.bio" type="text" placeholder="Describe urself a lil"> </md-input-container>
-        <md-button class="md-warn md-raised md-hue-2" ng-click="signup(user)">
+            <input ng-model="userRegCtrl.user.bio" type="text" placeholder="Describe urself a lil"> </md-input-container>
+        <md-button class="md-warn md-raised md-hue-2" ng-click="userRegCtrl.postUser()">
             Sign Up</md-button>
     </md-content>
 </div>

@@ -13,14 +13,19 @@
             };
         });
 
-    AccountPageController.$inject = ['$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log'];
+    AccountPageController.$inject = ['$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams'];
 
-    function AccountPageController($http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log) {
-        $state.transitionTo('account.home');
+    function AccountPageController($http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams) {
+        $rootScope.rootParam = $stateParams;
+        $state.transitionTo('account.home', $stateParams);
 
         var ctrl = this;
 
+        ctrl.user = { userId : 'id1', name : 'name', picture : 'picture', payPalAcc : 'payPalAcc' };
+
         $rootScope.pageClass = "page-account";
+
+        ctrl.param = $stateParams;
 
         $rootScope.transactions = [];
         $rootScope.currentTrans = {};
@@ -140,7 +145,6 @@
         }
 
         ctrl.getTransactions();
-
     }
 
     TransDialogController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog'];

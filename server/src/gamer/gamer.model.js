@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
+var passportLocalMongoose = require('passport-local-mongoose');
 
 var Schema = mongoose.Schema;
 
@@ -31,6 +32,8 @@ var gamerSchema = new Schema ({
     wallet: [{ currencyType: String, amount: Number, marketID: Schema.Types.ObjectId }]
 });
 
+gamerSchema.plugin(passportLocalMongoose);
+
 var gamer = mongoose.model('Gamer', gamerSchema);
 
 function historyHelper(wallet)
@@ -41,7 +44,7 @@ function historyHelper(wallet)
     myHistory.amount = wallet.amount;
     myHistory.marketID = wallet.marketID;
     return myHistory;
-}
+};
 
 // Gamer
 
@@ -53,7 +56,7 @@ exports.getGamer = function (userId, response) {
             response.json({"result": "SUCCESS", "gamer": res});
         }
     });
-},
+};
 
 exports.postGamer = function (Gamer, response) {
     gamer.create(Gamer, function (err, res) {
@@ -63,7 +66,7 @@ exports.postGamer = function (Gamer, response) {
             response.json({success: true});
         }
     });
-},
+};
 
 exports.updateGamerPaypalAcc = function (Gamer, response) {
     gamer.findOne({userID: Gamer.userID}).exec(function (err, res) {
@@ -75,7 +78,7 @@ exports.updateGamerPaypalAcc = function (Gamer, response) {
             response.json({success: true});
         }
     });
-},
+};
 
 exports.updateGamerIsDev = function (Gamer, response) {
     gamer.findOne({userID: Gamer.userID}).exec(function (err, res) {
@@ -87,7 +90,7 @@ exports.updateGamerIsDev = function (Gamer, response) {
             response.json({success: true});
         }
     });
-},
+};
 
 exports.clearHistory = function(UserID, response) {
     gamer.findOne({userID: UserID}).exec(function (err, res) {
@@ -99,7 +102,7 @@ exports.clearHistory = function(UserID, response) {
             response.json({success: true});
         }
     });
-},
+};
 
 // deprecated
 exports.addToWallet = function (Gamer, response) {
@@ -112,7 +115,7 @@ exports.addToWallet = function (Gamer, response) {
             response.json({success: true});
         }
     });
-},
+};
 
 // add some currency
 exports.updateWallet = function (Gamer, response) {
@@ -138,7 +141,7 @@ exports.updateWallet = function (Gamer, response) {
             res.save();
         }
     });
-},
+};
 
 // The part of Transaction methods ...
 
@@ -169,7 +172,7 @@ exports.justCheckPayingCapacity = function(userId, cost, currencyType, marketID,
             }
         }
     });
-},
+};
 
 // after check update wallets
 exports.checkPayingCapacity = function (userId, transaction, cost, currencyType, amount, currencyType2, marketID, indexOffer, response, callback) {
@@ -241,14 +244,14 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
         }
     });
-},
+};
 
 // generating a hash
 exports.generateHash = function(password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-},
+};
 
 // checking if password is valid
 exports.validPassword = function(password) {
     return bcrypt.compareSync(password, gamerSchema.password);
-}
+};

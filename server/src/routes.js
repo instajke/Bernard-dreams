@@ -10,6 +10,13 @@ module.exports = function(app, passport) {
     router.post('/api/things', thing.post);
     router.put('/api/things/:id', thing.put);
 
+    var userAccount = require('./user/user.controller');
+    // things ressources
+    router.get('/api/users', userAccount.find);
+    router.get('/api/users/:id', userAccount.get);
+    router.post('/api/users', userAccount.post);
+    router.put('/api/users/:id', userAccount.put);
+
 // locally --------------------------------
 // LOGIN ===============================
 // show the login form
@@ -38,6 +45,9 @@ module.exports = function(app, passport) {
         failureFlash: true // allow flash messages
     }));
 
+    var user = require('./user/user.controller');
+    router.post('/user', user.post);
+
 ///GAMER
     var gamer = require('./gamer/gamer.model');
 // gamer ressourses
@@ -50,8 +60,8 @@ module.exports = function(app, passport) {
         var Gamer = {
             userID: request.body.userID,
             name: request.body.name,
+            password: request.body.password,
             date: Date.now(),
-            picture: request.body.picture,
             isDev: null,
             payPalAcc: request.body.payPalAcc,
             history: [],

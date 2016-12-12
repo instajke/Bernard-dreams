@@ -1,82 +1,82 @@
 'use strict';
 
-var Thing = require('./thing.model');
+var user = require('./user.model');
 
 /**
- * GET /things
+ * GET /users
  *
  * @description
- * list of things
+ * list of users
  *
  */
 exports.find = function(req, res, next) {
-  Thing.find(function(err, things) {
+  user.find(function(err, users) {
     if (err) {
       return next(err);
     }
-    return res.status(200).json(things);
+    return res.status(200).json(users);
   });
 };
 
 /**
- * GET /things/:id
+ * GET /users/:id
  *
  * @description
- * Find thing by id
+ * Find user by id
  *
  */
 exports.get = function(req, res, next) {
-  Thing.findById(req.params.id, function(err, thing) {
+  user.findById(req.params.id, function(err, user) {
     if (err) {
       return next(err);
     }
-    if (!thing) {
+    if (!user) {
       return res.status(404).send('Not Found');
     }
-    return res.status(200).json(thing);
+    return res.status(200).json(user);
   });
 };
 
 /**
- * POST /things
+ * POST /users
  *
  * @description
- * Create a new thing
+ * Create a new user
  *
  */
 exports.post = function(req, res, next) {
-  Thing.create(req.body, function(err, thing) {
+  user.create(req.body, function(err, user) {
     if (err) {
       return next(err);
     }
-    return res.status(201).json(thing);
+    return res.status(201).json(user);
   });
 };
 
 /**
- * PUT /things/:id
+ * PUT /users/:id
  *
  * @description
- * Update a thing
+ * Update a user
  *
  */
 exports.put = function(req, res, next) {
-  Thing.findById(req.params.id, function(err, thing) {
+  user.findById(req.params.id, function(err, user) {
     if (err) {
       return next(err);
     }
-    if (!thing) {
+    if (!user) {
       return res.status(404).send('Not Found');
     }
 
-    thing.name = req.body.name;
-    thing.description = req.body.description;
+    user.name = req.body.name;
+    user.description = req.body.description;
 
-    thing.save(function(err) {
+    user.save(function(err) {
       if (err) {
         return next(err);
       }
-      return res.status(200).json(thing);
+      return res.status(200).json(user);
     });
   });
 };

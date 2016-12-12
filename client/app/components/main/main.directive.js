@@ -13,12 +13,14 @@
       };
     });
 
-  MainCtrl.$inject = ['$http', '$rootScope', '$mdDialog'];
+  MainCtrl.$inject = ['$http', '$rootScope', '$mdDialog', '$state'];
 
-  function MainCtrl($http, $rootScope, $mdDialog) {
+  function MainCtrl($http, $rootScope, $mdDialog, $state) {
     var vm = this;
 
-    vm.thing = {};
+    vm.user = {};
+    vm.id = "584ddccd768e44aa41d6cf8e";
+    vm.thing = { name : "thing", description : "description"};
     vm.isOpen             = false;
     vm.selectedDirection  = "down";
     vm.selectedMode       = "md-fling";
@@ -39,9 +41,14 @@
         });
     };
 
+    vm.getUser = function() {
+        $state.go('account', {obj: vm.user});
+    };
+
     vm.showRegistrationDialog = function(ev) {
         vm.$mdDialog.show({
             controller: UserRegistrationController
+            , controllerAs: 'userRegCtrl'
             , templateUrl: 'app/components/controls/RegistrationSheet.html'
             , parent: angular.element(document.body)
             , targetEvent: ev
@@ -50,30 +57,38 @@
     };
   }
 
-  UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog']
+  UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog', '$state']
 
-  function UserRegistrationController($http, $scope, $rootScope, $mdDialog) {
+  function UserRegistrationController($http, $scope, $rootScope, $mdDialog, $state) {
 
-      $scope.showConfirmPass = false;
+      var ctrl = this;
 
-      $rootScope.user = $scope.user;
+      ctrl.showConfirmPass = false;
 
-      $scope.hide = function () {
+      ctrl.user = $scope.user;
+      ctrl.xui = { nickname : "xui", password : "xui", name : "xui", email : "xui@xui.xui" };
+
+      ctrl.hide = function () {
           $mdDialog.hide();
       };
-      $scope.cancel = function () {
+
+      ctrl.cancel = function () {
           $mdDialog.cancel();
       };
-      $scope.answer = function (answer) {
+
+      ctrl.answer = function (answer) {
           $mdDialog.hide(answer);
       };
 
-      $scope.showConfirmPasswordInput = function() {
+      ctrl.showConfirmPasswordInput = function() {
           $scope.showConfirmPass = true;
       }
 
-      $scope.signup = function(user) {
-          $http.post('/signup', user);
-      }
+      ctrl.postUser = function() {
+        $http.post('/api/users', ctrl.xui)
+          .then(function() {
+            ctrl.status = 'OK';
+          });
+      };
   }
 })();

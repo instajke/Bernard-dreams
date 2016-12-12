@@ -15,15 +15,24 @@
     })
     .state('account', {
       url: '/account',
-      template: '<account></account>'
+      template: '<account></account>',
+      params: {
+        obj: null
+      }
     })
     .state('account.home', {
       url: '/home',
-      template: '<acchome></acchome>'
+      template: '<acchome></acchome>',
+      params: {
+        obj: null
+      }
     })
     .state('account.history', {
       url: '/history',
-      template: '<history></history>'
+      template: '<history></history>',
+      params: {
+        obj: null
+      }
     })
     .state('account.buy', {
       url: '/buy',
