@@ -1,7 +1,7 @@
 'use strict';
-module.exports = function(app, passport) {
     var express = require('express');
     var router = express.Router();
+    var passport = require('passport');
 
     var thing = require('./thing/thing.controller');
 // things ressources
@@ -10,44 +10,74 @@ module.exports = function(app, passport) {
     router.post('/api/things', thing.post);
     router.put('/api/things/:id', thing.put);
 
-    var userAccount = require('./user/user.controller');
-    // things ressources
+    var User = require('./user/user.model');
+    var UserAccount = require('./user/user.controller');
+
+
+    router.post('/api/register', function(req, res) {
+        User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
+        surname: req.body.user.surname, description : req.body.user.bio}),
+            req.body.user.password, function(err, account) {
+                if (err) {
+                    return res.status(500).json({
+                        err: err
+                    });
+                }
+                req.body.username = req.body.user.nickname;
+                req.body.password = req.body.user.password;
+                passport.authenticate('local')(req ,res, function () {
+                    return res.status(200).json({
+                        status: 'Registration successful!'
+                    });
+                });
+            });
+    });
+
+    router.post('/api/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.status(401).json({
+                    err: info
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) {
+                    return res.status(500).json({
+                        err: 'Could not log in user'
+                    });
+                }
+                res.status(200).json({
+                    status: 'Login successful!'
+                });
+            });
+        })(req, res, next);
+    });
+
+    router.get('/api/logout', function(req, res) {
+        req.logout();
+        res.status(200).json({
+            status: 'Bye!'
+        });
+    });
+
+    router.get('/api/status', function(req, res) {
+        if (!req.isAuthenticated()) {
+            return res.status(200).json({
+                status: false
+            });
+        }
+        res.status(200).json({
+            status: true
+        });
+    });
+    /*// things ressources
     router.get('/api/users', userAccount.find);
     router.get('/api/users/:id', userAccount.get);
     router.post('/api/users', userAccount.post);
-    router.put('/api/users/:id', userAccount.put);
-
-
-// locally --------------------------------
-// LOGIN ===============================
-// show the login form
-    router.get('/login', function (req, res) {
-        res.render('main.html', {message: req.flash('loginMessage')});
-    });
-
-// process the login form
-    router.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/account', // redirect to the secure profile section
-        failureRedirect: '/login', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
-
-// SIGNUP =================================
-// show the signup form
-    router.get('/signup', function (req, res) {
-        console.log("im here");
-        res.render('RegistrationSheet.html', {message: req.flash('signupMessage')});
-    });
-
-// process the signup form
-    router.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/account', // redirect to the secure profile section
-        failureRedirect: '/signup', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
-    }));
-
-    var user = require('./user/user.controller');
-    router.post('/user', user.post);
+    router.put('/api/users/:id', userAccount.put);*/
 
 ///GAMER
     var gamer = require('./gamer/gamer.model');
@@ -343,5 +373,4 @@ module.exports = function(app, passport) {
         transaction.MakeOfferSell(userID, cost, currencyType, price, amount, marketID, response);
     });
 
-    app.use(router);
-};
+    module.exports = router;

@@ -13,10 +13,11 @@
       };
     });
 
-  MainCtrl.$inject = ['$http', '$rootScope', '$mdDialog', '$state'];
+  MainCtrl.$inject = ['$http', '$rootScope', '$mdDialog', '$state', '$q'];
 
-  function MainCtrl($http, $rootScope, $mdDialog, $state) {
+  function MainCtrl($http, $rootScope, $mdDialog, $state, $q) {
     var vm = this;
+      var deferred = $q.defer();
 
     vm.user = {};
     vm.id = "584e70e00ec505230753052e";
@@ -41,11 +42,44 @@
         });
     };
 
+      vm.showAlert = function(res) {
+          alert = $mdDialog.alert({
+              title: 'Attention',
+              textContent: res,
+              ok: 'Close'
+          });
+
+          $mdDialog
+              .show( alert )
+              .finally(function() {
+                  alert = undefined;
+              });
+      };
+
     vm.getUser = function() {
-      $http.get('/api/users/' + vm.id)
-        .then(function(response){
-            $state.go('account', {obj: response.data.nickname});
-        })
+        $http.post('/api/login',
+            {username: ctrl.user.email, password: ctrl.user.password})
+            // handle success
+            .success(function (data, status) {
+                if(status === 200 && data.status){
+                    user = true;
+                    vm.showAlert(data);
+                    deferred.resolve();
+                } else {
+                    user = false;
+                    vm.showAlert(data);
+                    deferred.reject();
+                }
+            })
+            // handle error
+            .error(function (data) {
+                user = false;
+                vm.showAlert(data);
+                deferred.reject();
+            });
+
+        // return promise object
+        return deferred.promise;
     };
 
     vm.showRegistrationDialog = function(ev) {
@@ -60,10 +94,12 @@
     };
   }
 
-  UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog', '$state']
+  UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q']
 
-  function UserRegistrationController($http, $scope, $rootScope, $mdDialog, $state) {
+  function UserRegistrationController($http, $scope, $rootScope, $mdDialog, $state, $q) {
 
+      var deferred = $q.defer();
+      var alert;
       var ctrl = this;
 
       ctrl.showConfirmPass = false;
@@ -84,14 +120,39 @@
 
       ctrl.showConfirmPasswordInput = function() {
           $scope.showConfirmPass = true;
-      }
+      };
+
+      ctrl.showAlert = function(res) {
+          alert = $mdDialog.alert({
+              title: 'Attention',
+              textContent: res,
+              ok: 'Close'
+          });
+
+          $mdDialog
+              .show( alert )
+              .finally(function() {
+                  alert = undefined;
+              });
+      };
 
       ctrl.postUser = function() {
-        $http.post('/api/users', ctrl.user)
-          .then(function() {
-            ctrl.status = 'OK';
-            ctrl.hide();
-          });
+
+        $http.post('/api/register', { user : ctrl.user})
+            .success(function (data, status) {
+                if(status === 200 && data.status){
+                    ctrl.showAlert(data);
+                    deferred.resolve();
+                } else {
+                    ctrl.showAlert(data);
+                    deferred.reject();
+                }
+            })
+            // handle error
+            .error(function (data) {
+                ctrl.showAlert(data);
+                deferred.reject();
+            });
       };
   }
 })();

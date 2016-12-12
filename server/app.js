@@ -7,15 +7,15 @@ process.env.NODE_CONFIG_DIR = __dirname + '/config/';
 var express = require('express');
 var config = require('config');
 var cors = require('cors');
+var cookieParser = require('cookie-parser');
 var passport = require('passport');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
-
-var session      = require('express-session');
-var flash    = require('connect-flash');
+var hash   = require('bcrypt-nodejs');
+var localStrategy = require('passport-local').Strategy;
 
 var session = require('express-session');
+var routes = require('./src/routes');
 
 
 
@@ -60,8 +60,6 @@ var connectWithRetry = function() {
 
 connectWithRetry();
 
-require('./src/passport')(passport); // pass passport for configuration
-
 /**
  * Express app configurations
  */
@@ -70,21 +68,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+app.use(cookieParser());
 // Enable CORS
 app.use(cors());
 
 // required for passport
 app.use(session({
   secret: 'lookatmyhorsemyhorseishekarim', // session secret
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+
+// configure passport
+var User = require('./src/user/user.model.js');
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Bootstrap routes
-var routes = require('./src/routes')(app, passport);
+app.use(routes);
 
 // Static files
 app.use('/', express.static(__dirname + '/../public'));

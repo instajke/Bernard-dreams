@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 
 var gamerSchema = new Schema ({
     userID: String,
-    nickname: String,
+    username: String,
     name: String,
     password: String,
     email: String,
