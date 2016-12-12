@@ -32,9 +32,6 @@
         $rootScope.transDialog = $mdDialog;
         $rootScope.historyDialog = $mdDialog;
         $rootScope.shops = [];
-        $rootScope.user = { nickname: "username",
-                            name    : "name",
-                            type    : "gamer"};
 
         ctrl.getTransactions = function() {
             $http.get('/api/things')
@@ -101,7 +98,7 @@
         $rootScope.fillSidenav = fillSidenav($rootScope.user);
 
         function fillSidenav(user) {
-            if (user.type === "gamer") {
+            if (!ctrl.user.isDev) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
                     url: "home",
@@ -123,7 +120,7 @@
                     url: "upgrade",
                     tooltip: "Upgrade your account type"
                 }]
-            } else if (user.type === "developer") {
+            } else {
                 $rootScope.sidenavMenuItems = [{
                     name: "Account home",
                     url: "home",
