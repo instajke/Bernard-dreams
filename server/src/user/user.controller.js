@@ -37,6 +37,24 @@ exports.get = function(req, res, next) {
   });
 };
 
+exports.findByEmail = function(req, res, next) {
+  var accountProjection = {
+    __v : false,
+    _id : false
+  };
+
+  user.find({email : req.params.email, password : req.params.password}, accountProjection, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(404).send('Not Found');
+    }
+    return res.status(200).json(user);
+  });
+};
+
+
 /**
  * POST /users
  *
@@ -69,8 +87,12 @@ exports.put = function(req, res, next) {
       return res.status(404).send('Not Found');
     }
 
+    user.email = req.body.email;
+    user.password = req.body.password;
     user.name = req.body.name;
-    user.description = req.body.description;
+    user.surname = req.body.surname;
+    user.bio = req.body.bio;
+
 
     user.save(function(err) {
       if (err) {

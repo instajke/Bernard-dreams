@@ -68,8 +68,7 @@
 
       ctrl.showConfirmPass = false;
 
-      ctrl.user = $scope.user;
-      ctrl.xui = { nickname : "xui", password : "xui", name : "xui", email : "xui@xui.xui" };
+      ctrl.user = {};
 
       ctrl.hide = function () {
           $mdDialog.hide();
@@ -88,9 +87,10 @@
       }
 
       ctrl.postUser = function() {
-        $http.post('/api/users', ctrl.xui)
+        $http.post('/api/users', ctrl.user)
           .then(function() {
             ctrl.status = 'OK';
+            ctrl.hide();
           });
       };
   }
