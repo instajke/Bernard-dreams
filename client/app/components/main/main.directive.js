@@ -68,14 +68,14 @@
         return deferred.promise;
     };
 
-    vm.login = function () {
+    vm.login = function() {
 
       // call login from service
       accountService.login(vm.user.nickname, vm.user.password)
         // handle success
         .then(function () {
           vm.showAlert("Success!");
-          //$state.go('account', {obj : vm.user});
+          $state.go('account', {obj : vm.user});
         })
         // handle error
         .catch(function () {

@@ -6,6 +6,7 @@
     .service('accountService', ['$q', '$http','$timeout', '$rootScope', accountService]);
 
     function accountService($q, $http, $timeout, $rootScope) {
+      var user = null;
 
       return {
         getTransactions : function() {
