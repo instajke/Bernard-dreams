@@ -13,73 +13,74 @@
       };
     });
 
-  MainCtrl.$inject = ['$http', '$rootScope', '$mdDialog', '$state', '$q'];
+  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q'];
 
-  function MainCtrl($http, $rootScope, $mdDialog, $state, $q) {
+  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q) {
+
     var vm = this;
-      var deferred = $q.defer();
+    var alert;
 
     vm.user = {};
-    vm.id = "584e70e00ec505230753052e";
-    vm.thing = { name : "thing", description : "description"};
     vm.isOpen             = false;
     vm.selectedDirection  = "down";
     vm.selectedMode       = "md-fling";
     vm.status = '';
     vm.$mdDialog          = $mdDialog;
 
-    vm.getThings = function() {
-      $http.get('/api/things')
-        .then(function(response) {
-          vm.thingsList = response.data;
+    vm.showAlert = function(res) {
+        alert = $mdDialog.alert({
+            title: 'Attention',
+            textContent: res,
+            ok: 'Close'
         });
+
+        $mdDialog
+            .show( alert )
+            .finally(function() {
+                alert = undefined;
+            });
     };
-
-    vm.postThing = function() {
-      $http.post('/api/things', vm.thing)
-        .then(function() {
-          vm.status = 'OK';
-        });
-    };
-
-      vm.showAlert = function(res) {
-          alert = $mdDialog.alert({
-              title: 'Attention',
-              textContent: res,
-              ok: 'Close'
-          });
-
-          $mdDialog
-              .show( alert )
-              .finally(function() {
-                  alert = undefined;
-              });
-      };
 
     vm.getUser = function() {
         $http.post('/api/login',
-            {username: ctrl.user.email, password: ctrl.user.password})
+            {username: vm.user.nickname, password: vm.user.password})
             // handle success
             .success(function (data, status) {
+                vm.showAlert(data);
                 if(status === 200 && data.status){
-                    user = true;
+                    vm.user = true;
                     vm.showAlert(data);
                     deferred.resolve();
                 } else {
-                    user = false;
+                    vm.user = false;
                     vm.showAlert(data);
                     deferred.reject();
                 }
             })
             // handle error
             .error(function (data) {
-                user = false;
+                vm.user = false;
                 vm.showAlert(data);
                 deferred.reject();
             });
 
         // return promise object
         return deferred.promise;
+    };
+
+    vm.login = function () {
+
+      // call login from service
+      accountService.login(vm.user.nickname, vm.user.password)
+        // handle success
+        .then(function () {
+          vm.showAlert("Success!");
+          //$state.go('account', {obj : vm.user});
+        })
+        // handle error
+        .catch(function () {
+          vm.showAlert("Invalid username and/or password");
+        });
     };
 
     vm.showRegistrationDialog = function(ev) {
@@ -94,9 +95,9 @@
     };
   }
 
-  UserRegistrationController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q']
+  UserRegistrationController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q']
 
-  function UserRegistrationController($http, $scope, $rootScope, $mdDialog, $state, $q) {
+  function UserRegistrationController(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q) {
 
       var deferred = $q.defer();
       var alert;
@@ -154,5 +155,29 @@
                 deferred.reject();
             });
       };
+
+      ctrl.register = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call register from service
+      accountService.register(ctrl.user)
+        // handle success
+        .then(function () {
+          ctrl.showAlert("Registration successful!")
+          ctrl.hide();
+          $state.go('account', {obj : ctrl.user})
+        })
+        // handle error
+        .catch(function () {
+          $scope.error = true;
+          $scope.errorMessage = "Something went wrong!";
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        });
+
+    };
   }
 })();
