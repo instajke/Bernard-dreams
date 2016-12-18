@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var hash   = require('bcrypt-nodejs');
 var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
 
 var session = require('express-session');
 var routes = require('./src/routes');
@@ -73,6 +72,8 @@ app.use(cookieParser());
 // Enable CORS
 app.use(cors());
 
+require('./src/passport')(passport);
+
 // required for passport
 app.use(session({
   secret: 'lookatmyhorsemyhorseishekarim', // session secret
@@ -81,12 +82,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-
-// configure passport
-var User = require('./src/user/user.model.js');
-passport.use(new localStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 // Bootstrap routes
 app.use(routes);
