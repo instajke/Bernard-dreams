@@ -17,7 +17,8 @@
 
   function AccountHomeController(accountService, $http, $rootScope, $mdDialog) {
       var ctrl = this;
-      ctrl.currentUser = $rootScope.rootParam;
+
+      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
 
       ctrl.showAlert = function(res) {
             alert = $mdDialog.alert({
@@ -43,6 +44,7 @@
       ctrl.confirm = function () {
           accountService.upgradeToDev(ctrl.currentUser)
           ctrl.showAlert("U r dev now");
+          $state.go('account', $stateParams);
       };
 
       $rootScope.pageClass = "page-home";

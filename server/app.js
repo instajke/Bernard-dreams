@@ -6,7 +6,7 @@ process.env.NODE_CONFIG_DIR = __dirname + '/config/';
 
 var express = require('express');
 var config = require('config');
-var cors = require('cors');
+//var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -70,7 +70,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 // Enable CORS
-app.use(cors());
+//app.use(cors());
 
 require('./src/passport')(passport);
 
@@ -92,7 +92,7 @@ app.use('/', express.static(__dirname + '/../public'));
 // Once database open, start server
 mongoose.connection.once('open', function callback() {
   console.log('Connection with database succeeded.');
-  app.listen(config.APP_PORT, function() {
+  app.listen(3000, function() {
     console.log('app listening on port %d in %s mode', this.address().port, app.settings.env);
   });
 });

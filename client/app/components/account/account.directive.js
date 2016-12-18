@@ -152,9 +152,9 @@
                     url: "markets",
                     tooltip: "Open markets admin page"
                 }, {
-                    name: "Connect!",
-                    url: "connect",
-                    tooltip: "Create new game market"
+                    name: "Shops",
+                    url: "shops",
+                    tooltip: "Open controlled shops"
                 }]
             }
         }

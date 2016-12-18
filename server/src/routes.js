@@ -2,6 +2,9 @@
     var express = require('express');
     var router = express.Router();
     var passport = require('passport');
+    var mongoose = require('mongoose');
+    var Schema = mongoose.Schema,
+      ObjectId = Schema.ObjectId;
 
     var thing = require('./thing/thing.controller');
 // things ressources
@@ -103,67 +106,30 @@
       });
     });
 
-///GAMER
-    var gamer = require('./gamer/gamer.model');
-// gamer ressourses
-    router.get('/gamer/:userID', function (request, response) {
-        var userID = request.params.userID;
-        gamer.getGamer(userID, response);
-    });
-
-    router.post('/gamer', function (request, response) {
-        var Gamer = {
-            userID: request.body.userID,
-            name: request.body.name,
-            password: request.body.password,
-            date: Date.now(),
-            isDev: null,
-            payPalAcc: request.body.payPalAcc,
-            history: [],
-            wallet: []
-        };
-        gamer.postGamer(Gamer, response);
-    });
-
-    router.put('/gamer/wallet', function (request, response) {
-        var Gamer = request.body.gamer;
-        gamer.updateWallet(Gamer, response);
-    });
-
-    router.put('/gamer/payPal', function (request, response) {
-        var Gamer = request.body.gamer;
-        gamer.updateGamerPaypalAcc(Gamer, response);
-    });
-
-    router.put('/gamer/isDev', function (request, response) {
-        var Gamer = request.body.gamer;
-        gamer.updateGamerIsDev(Gamer, response);
-    });
-
-    router.delete('/history/:userID', function (request, response) {
-        var userID = request.params.userID;
-        gamer.clearHistory(userID, response);
-    });
-
 ///MARKET
     var market = require('./market/market.model');
 // market ressourses
-    router.get('/market/:marketID', function (request, response) {
+    router.get('/api/market/:marketID', function (request, response) {
         var marketID = request.params.marketID;
         market.getMarket(marketID, response);
     });
 
-    router.get('/market/:name', function (request, response) {
+    router.get('/api/market/:name', function (request, response) {
         market.searchMarket(request, response);
     });
 
-    router.get('/markets', function (request, response) {
+    router.get('/api/market/:devID', function (request, response) {
+        var devID = request.params.devID;
+        market.getMarketsByDevID(devID, response);
+    })
+
+    router.get('/api/markets', function (request, response) {
         market.getMarkets(response);
     });
 
-    router.post('/market', function (request, response) {
+    router.post('/api/market', function (request, response) {
         var Market = {
-            //devID: new ObjectId(request.body.devID),
+            devID: new ObjectId(request.body.devID),
             marketType: request.body.marketType,
             name: request.body.name,
             description: request.body.description,

@@ -36,6 +36,23 @@ exports.searchMarket = function(request, response) {
   });
 };
 
+exports.getMarketsByDevID = function(request, response) {
+  market.find({
+    devID: request.params.devID
+  }).exec(function(err, res) {
+    if (err) {
+      response.send(500, {
+        error: err
+      });
+    } else {
+      response.json({
+        "result": "SUCCESS",
+        "markets": res
+      });
+    }
+  });
+};
+
 exports.getMarkets = function(response) {
   market.find().exec(function(err, res) {
     response.json({

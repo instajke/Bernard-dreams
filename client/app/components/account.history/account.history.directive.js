@@ -18,6 +18,10 @@
   function AccountHistoryController(accountService, $http, $rootScope, $mdDialog) {
       var ctrl = this;
 
+      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
+      
+      ctrl.transactions = ctrl.user.transactions;
+
       $rootScope.pageClass = "page-history";
 
   }

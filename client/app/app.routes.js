@@ -40,6 +40,20 @@
       params: {
         nickname: null
       }
+    })
+    .state('account.markets', {
+        url: '/markets',
+        template: '<markets></markets>',
+        params: {
+            nickname: null
+        }
+    })
+    .state('account.shops', {
+        url: '/shops',
+        template: '<shops></shops>',
+        params: {
+            nickname: null
+        }
     });
 
     $urlRouterProvider.otherwise('/');
