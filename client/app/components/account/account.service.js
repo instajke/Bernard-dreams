@@ -7,6 +7,7 @@
 
     function accountService($q, $http, $timeout, $rootScope) {
       var user = null;
+      var currentUser = null;
 
       return {
         getTransactions : function() {
@@ -62,7 +63,7 @@
           var deferred = $q.defer();
 
           // send a get request to the server
-          $http.get('/user/logout')
+          $http.get('/api/logout')
             // handle success
             .success(function (data) {
               user = false;
@@ -97,6 +98,70 @@
           // return promise object
           return deferred.promise;
 
+        },
+        getUser: function(nickname) {
+            var deferred = $q.defer();
+
+            $http.get('/api/user/' + nickname)
+                /*.then(function(response) {
+                     console.log(response);
+                     currentUser = response.data;
+                });*/
+                .success(function(data, status) {
+                    if (status === 200) {
+                        console.log("STATUS 200");
+                        console.log(data);
+                        deferred.resolve(data);
+                    }
+                    else {
+                        console.log("ELSE");
+                        console.log(data);
+                        deferred.reject();
+                    }
+                })
+                .error (function (data) {
+                    console.log("ERROR");
+                    console.log(data);
+                    deferred.reject();
+                });
+
+                return deferred.promise;
+        },
+        updatePaypal: function(user) {
+          var deferred = $q.defer();
+
+          $http.put('/api/paypal', {user : user})
+            .success(function (data, status) {
+              if (status === 200 && data.status) {
+                deferred.resolve();
+              }
+              else {
+                deferred.reject();
+              }
+            })
+            .error(function (data) {
+              deferred.reject();
+            });
+
+            return deferred.promise;
+        },
+        upgradeToDev: function(user) {
+          var deferred = $q.defer();
+
+          $http.put('/api/isDev', {user : user})
+            .success(function (data, status) {
+              if (status === 200 && data.status) {
+                deferred.resolve();
+              }
+              else {
+                deferred.reject();
+              }
+            })
+            .error(function (data) {
+              deferred.reject();
+            });
+
+            return deferred.promise;
         }
       };
     }

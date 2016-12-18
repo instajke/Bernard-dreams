@@ -11,7 +11,6 @@
     router.put('/api/things/:id', thing.put);
 
     var User = require('./user/user.model');
-    var UserAccount = require('./user/user.controller');
 
 
     router.post('/api/register', function(req, res) {
@@ -31,6 +30,14 @@
                     });
                 });
             });
+    });
+
+    router.get('/api/user/:username', function (req, res) {
+        User.findOne({ username : req.params.username }, function(err, user) {
+            if (err)
+                res.send(err);
+            res.json(user);
+        });
     });
 
     router.post('/api/login', function(req, res, next) {
@@ -73,11 +80,28 @@
             status: true
         });
     });
-    /*// things ressources
-    router.get('/api/users', userAccount.find);
-    router.get('/api/users/:email/:password', userAccount.get);
-    router.post('/api/users', userAccount.post);
-    router.put('/api/users/:id', userAccount.put);*/
+
+    router.put('/api/paypal', function (request, response) {
+      var query = { username : request.body.nickname };
+      User.update(query, { paypal : request.body.paypal }, {new : true}, function (err, res) {
+          if (err) {
+              response.send(500, {error: err});
+          } else {
+              response.json({success: true});
+          }
+      });
+    });
+
+    router.put('/api/isDev', function (request, response) {
+      var query = { username : request.body.user.nickname };
+      User.update(query, { isDev : true }, {new : true}, function (err, res) {
+          if (err) {
+              response.send(500, {error: err});
+          } else {
+              response.json({success: true});
+          }
+      });
+    });
 
 ///GAMER
     var gamer = require('./gamer/gamer.model');
@@ -139,7 +163,7 @@
 
     router.post('/market', function (request, response) {
         var Market = {
-            devID: new ObjectId(request.body.devID),
+            //devID: new ObjectId(request.body.devID),
             marketType: request.body.marketType,
             name: request.body.name,
             description: request.body.description,
@@ -182,7 +206,7 @@
 
     router.post('/developer', function (request, response) {
         var Developer = {
-            gamerID: new ObjectId(request.body.devID),
+            //gamerID: new ObjectId(request.body.devID),
             name: request.body.name,
             date: Date.now(),
             picture: request.body.picture,
@@ -238,7 +262,7 @@
     router.delete('/marketBuy/:userID', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         var userID = request.params.userID;
-        var price = request.params.price;
+        var price = request.body.price;
         marketBuy.findAndRemoveUserOffer(MarketBuy, userID, price, response);
     });
 
@@ -277,7 +301,7 @@
     router.delete('/marketSell/:userID', function (request, response) {
         var MarketSell = request.body.marketSell;
         var userID = request.params.userID;
-        var price = request.params.price;
+        var price = request.body.price;
         marketSell.findAndRemoveUserOffer(MarketSell, userID, price, response);
     });
 
@@ -300,7 +324,7 @@
     router.post('/shop', function (request, response) {
         var Shop = {
             name: request.body.name,
-            devID: request.body.devID,
+            marketID: request.body.marketID,
             offers: [],
             payPalAcc: request.body.payPalAcc,
             publicHistory: request.body.publicHistory,
@@ -371,6 +395,33 @@
         var amount = request.body.amount;
         var marketID = request.body.marketID;
         transaction.MakeOfferSell(userID, cost, currencyType, price, amount, marketID, response);
+    });
+
+    var myPayPal = require('./paypal/paypal.model');
+
+    router.get('/paypal/approve', function (request, response) {
+        var marketID = request.body.marketID;
+        var Offer = request.body.offer;
+        var devPayPalAcc = request.body.payPalAcc;
+        var gamerID = request.body.gamerID;
+        // a bit dangerous here without parsing...
+        var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
+        var total = price * Offer.amount;
+        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, gamerID, response);
+    });
+
+    router.get('/paypal/complete', function (request, response) {
+        console.log(request.query);
+        var PayerID = request.query.PayerID;
+        var PaymentID = request.query.paymentId;
+        myPayPal.executePayment(PaymentID, PayerID, response);
+    });
+
+    // catch 404 and forward to error handler
+    router.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
     });
 
     module.exports = router;

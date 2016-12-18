@@ -4,11 +4,13 @@
           <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
           <md-tooltip>Open side panel</md-tooltip>
       </md-button><span>KleManProMos</span></span>
-        <md-button class="md-icon-button">
-            <md-icon></md-icon>
+        <span flex=""></span>
+        <md-button class="md-icon-button" ng-click="showUpgradeDialog($event)">
+            <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+            <md-tooltip>Upgrade your account!</md-tooltip>
         </md-button>
-        <md-button class="md-icon-button">
-            <md-icon></md-icon>
+        <md-button class="md-icon-button" ng-click="accPageCtrl.logout()">
+            <md-icon class="md-default-theme" class="material-icons">&#xE5C9;</md-icon>
         </md-button>
     </div>
 </md-toolbar>

@@ -8,7 +8,7 @@ var Schema = mongoose.Schema,
 
 var shopSchema = new Schema ({
     name: String,
-    devID: Schema.Types.ObjectId,
+    marketID: Schema.Types.ObjectId, // price per item ($)
     offers: [{ ID: Number, currencyType: String, amount: Number, price: Number, discount: Number }],
     payPalAcc: String,
     publicHistory: Boolean,
@@ -40,7 +40,23 @@ module.exports = {
 
     getShops: function(response) {
         shop.find().exec(function(err,res) {
-            response.json({"result": "SUCCESS", "shops": res});
+          if(err){
+                response.send(500, {error: err});
+            } else {
+                response.json({"result": "SUCCESS", "shops": res});
+            }
+        });
+    },
+
+    updateShopHistoryByMarketID: function (Shop, response) {
+         shop.findOne({marketID: Shop.marketID}).exec(function (err,res) {
+            if(err) {
+                response.send(500, {error: err});
+            } else {
+                res.history.push(Shop.history);
+                res.save();
+                response.json({success: true});
+            }
         });
     },
 
@@ -59,7 +75,7 @@ module.exports = {
             if(err) {
                 response.send(500, {error: err});
             } else {
-                res.history.push(Shop.history[0]);
+                res.history.push(Shop.history);
                 res.save();
                 response.json({success: true});
             }

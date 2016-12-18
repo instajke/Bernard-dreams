@@ -41,33 +41,6 @@
             });
     };
 
-    vm.getUser = function() {
-        $http.post('/api/login',
-            {username: vm.user.nickname, password: vm.user.password})
-            // handle success
-            .success(function (data, status) {
-                vm.showAlert(data);
-                if(status === 200 && data.status){
-                    vm.user = true;
-                    vm.showAlert(data);
-                    deferred.resolve();
-                } else {
-                    vm.user = false;
-                    vm.showAlert(data);
-                    deferred.reject();
-                }
-            })
-            // handle error
-            .error(function (data) {
-                vm.user = false;
-                vm.showAlert(data);
-                deferred.reject();
-            });
-
-        // return promise object
-        return deferred.promise;
-    };
-
     vm.login = function() {
 
       // call login from service
@@ -75,7 +48,7 @@
         // handle success
         .then(function () {
           vm.showAlert("Success!");
-          $state.go('account', {obj : vm.user});
+          $state.go('account', { nickname : vm.user.nickname });
         })
         // handle error
         .catch(function () {
@@ -135,25 +108,6 @@
               .finally(function() {
                   alert = undefined;
               });
-      };
-
-      ctrl.postUser = function() {
-
-        $http.post('/api/register', { user : ctrl.user})
-            .success(function (data, status) {
-                if(status === 200 && data.status){
-                    ctrl.showAlert(data);
-                    deferred.resolve();
-                } else {
-                    ctrl.showAlert(data);
-                    deferred.reject();
-                }
-            })
-            // handle error
-            .error(function (data) {
-                ctrl.showAlert(data);
-                deferred.reject();
-            });
       };
 
       ctrl.register = function () {
