@@ -12,7 +12,6 @@ var passport = require('passport');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var hash   = require('bcrypt-nodejs');
-var localStrategy = require('passport-local').Strategy;
 
 var session = require('express-session');
 var routes = require('./src/routes');
@@ -81,11 +80,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-// configure passport
-var User = require('./src/user/user.model.js');
-passport.use(new localStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+require('./src/passport')(passport);
 
 // Bootstrap routes
 app.use(routes);
