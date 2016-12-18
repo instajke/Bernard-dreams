@@ -22,6 +22,7 @@ var User = new Schema({
     surname: String,
     description: String,
     password: String,
+    facebookToken: String,
     paypal: { type: String, default: null },
     isDev: { type: Boolean, default: null },
     date: { type: Date, default: Date.now() },

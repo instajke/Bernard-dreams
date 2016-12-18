@@ -57,6 +57,30 @@
            // return promise object
            return deferred.promise;
        },
+          facebookLogin: function() {
+
+              var deferred = $q.defer();
+
+              $http.get('/api/facebook')
+                  // handle success
+                  .success(function (data, status) {
+                      if(status === 200 && data.status){
+                          user = true;
+                          deferred.resolve();
+                      } else {
+                          user = false;
+                          deferred.reject();
+                      }
+                  })
+                  // handle error
+                  .error(function (data) {
+                      user = false;
+                      deferred.reject();
+                  });
+
+              // return promise object
+              return deferred.promise;
+          },
         logout: function() {
 
           // create a new instance of deferred

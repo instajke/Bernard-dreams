@@ -56,6 +56,32 @@
         });
     };
 
+    vm.facebookLogin = function() {
+
+        // call login from service
+        var deferred = $q.defer();
+
+        $http.get('/api/facebook')
+            // handle success
+            .success(function (data, status) {
+                if(status === 200 && data.status){
+                    vm.showAlert(data);
+                    deferred.resolve();
+                } else {
+                    vm.showAlert(data);
+                    deferred.reject();
+                }
+            })
+            // handle error
+            .error(function (data) {
+                vm.showAlert(data);
+                deferred.reject();
+            });
+
+        // return promise object
+        return deferred.promise;
+    };
+
     vm.showRegistrationDialog = function(ev) {
         vm.$mdDialog.show({
             controller: UserRegistrationController

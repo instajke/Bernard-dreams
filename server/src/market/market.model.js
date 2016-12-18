@@ -7,7 +7,7 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var marketSchema = new Schema ({
-    devID: Schema.Types.ObjectId,
+    devID: String,
     marketType: String,
     name: String,
     description: String,
@@ -49,11 +49,9 @@ module.exports = {
         });
     },
 
-    postMarket : function(Market, response, next) {
+    postMarket : function(Market, response) {
         market.create(Market, function (err, doc){
-            if(err) {
-                return next(err);
-            } else
+                console.log("2");
                 var MarketSell = {
                     marketID: doc._id,
                     marketType: doc.marketType,

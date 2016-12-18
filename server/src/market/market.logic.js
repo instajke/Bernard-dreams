@@ -1,8 +1,8 @@
 'use strict';
 
 var market = require('./market.controller.js');
-var marketBuy = require('../marketBuy/marketBuy.controller.js');
-var marketSell = require('../marketSell/marketSell.controller.js');
+var marketBuy = require('../marketBuy/marketBuy.model.js');
+var marketSell = require('../marketSell/marketSell.model.js');
 
 module.exports = {
 

@@ -92,7 +92,7 @@ app.use('/', express.static(__dirname + '/../public'));
 // Once database open, start server
 mongoose.connection.once('open', function callback() {
   console.log('Connection with database succeeded.');
-  app.listen(3000, function() {
+  app.listen(config.APP_PORT, function() {
     console.log('app listening on port %d in %s mode', this.address().port, app.settings.env);
   });
 });

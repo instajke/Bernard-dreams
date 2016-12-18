@@ -121,24 +121,26 @@
     router.get('/api/market/:devID', function (request, response) {
         var devID = request.params.devID;
         market.getMarketsByDevID(devID, response);
-    })
+    });
 
     router.get('/api/markets', function (request, response) {
         market.getMarkets(response);
     });
 
     router.post('/api/market', function (request, response) {
+        console.log(request);
         var Market = {
-            devID: new ObjectId(request.body.devID),
-            marketType: request.body.marketType,
-            name: request.body.name,
-            description: request.body.description,
-            showOffers: request.body.showOffers,
-            tax: request.body.tax,
-            newPrice: request.body.newPrice,
-            currencyType1: request.body.currencyType1,
-            currencyType2: request.body.currencyType2
+            devID: request.body.market.devID,
+            marketType: request.body.market.marketType,
+            name: request.body.market.name,
+            description: request.body.market.description,
+            showOffers: request.body.market.showOffers,
+            tax: request.body.market.tax,
+            newPrice: request.body.market.newPrice,
+            currencyType1: request.body.market.currencyType1,
+            currencyType2: request.body.market.currencyType2
         };
+        console.log(Market);
         market.postMarket(Market, response);
     });
 

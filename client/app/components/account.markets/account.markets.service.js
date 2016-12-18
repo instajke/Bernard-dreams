@@ -88,9 +88,9 @@
         },
         postMarket: function(market) {
 
-            console.log('post market')
+            console.log('post market');
             console.log(market);
-            $http.post('/api/market', market);
+            $http.post('/api/market', {market : market});
         }
       };
     }
