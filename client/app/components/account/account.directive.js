@@ -13,24 +13,35 @@
             };
         });
 
-    AccountPageController.$inject = ['$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams'];
+    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams'];
 
-    function AccountPageController($http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams) {
-        $rootScope.rootParam = $stateParams;
-        $state.transitionTo('account.home', $stateParams);
+    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams) {
 
         var ctrl = this;
 
-        ctrl.user = { userId : 'id1', name : 'name', picture : 'picture', payPalAcc : 'payPalAcc' };
+        $rootScope.rootParam = $stateParams;
 
-        $rootScope.pageClass = "page-account";
+        ctrl.user = {};
 
-        ctrl.param = $stateParams;
+        $rootScope.showAlert = function(text) {
+            alert = $mdDialog.alert({
+                title: 'Attention',
+                textContent: text,
+                ok: 'Close'
+            });
+
+            $mdDialog
+                .show( alert )
+                .finally(function() {
+                    alert = undefined;
+                });
+        };
 
         $rootScope.transactions = [];
         $rootScope.currentTrans = {};
         $rootScope.transDialog = $mdDialog;
         $rootScope.historyDialog = $mdDialog;
+        $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
 
         ctrl.getTransactions = function() {
@@ -69,6 +80,16 @@
             });
         };
 
+        $rootScope.showUpgradeDialog = function(ev) {
+            $rootScope.upgradeDialog.show({
+                controller: UpgradeDialogController,
+                templateUrl: 'app/components/controls/ConfirmUpgrade.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            });
+        };
+
         $rootScope.toggleLeft = buildDelayedToggler('left');
 
         function debounce(func, wait, context) {
@@ -98,7 +119,7 @@
         $rootScope.fillSidenav = fillSidenav($rootScope.user);
 
         function fillSidenav(user) {
-            if (!ctrl.user.isDev) {
+            if (ctrl.user.isDev === false) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
                     url: "home",
@@ -115,12 +136,9 @@
                     name: "Connect!",
                     url: "connect",
                     tooltip: "Connect new game account"
-                }, {
-                    name: "Upgrade!",
-                    url: "upgrade",
-                    tooltip: "Upgrade your account type"
                 }]
-            } else {
+              }
+              else {
                 $rootScope.sidenavMenuItems = [{
                     name: "Account home",
                     url: "home",
@@ -141,6 +159,18 @@
             }
         }
 
+        ctrl.logout = function () {
+
+          accountService.logout()
+            .then(function () {
+              $state.go('home');
+            });
+
+        };
+
+        ctrl.user = accountService.getUser($rootScope.rootParam.nickname).$$state.value;
+        console.log(ctrl.user);
+        $state.transitionTo('account.home', $stateParams);
         ctrl.getTransactions();
     }
 
@@ -175,6 +205,27 @@
         $scope.showTransDialog = $rootScope.showTransDialog;
     }
 
-    SidenavController.$inject = ['$scope', '$timeout', '$mdSidenav', '$log'];
+    UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog'];
+
+    function UpgradeDialogController(accountService, $http, $scope, $rootScope, $mdDialog) {
+      var ctrl = this;
+
+      $scope.hide = function() {
+          $mdDialog.hide();
+      }
+      $scope.cancel = function() {
+          $mdDialog.cancel();
+      };
+      $scope.answer = function(answer) {
+          $mdDialog.hide(answer);
+      };
+
+      ctrl.confirm = function () {
+        accountService.upgradeToDev($rootScope.rootParam.nickname)
+          .then( function () {
+            $rootScope.showAlert("U r dev now");
+          })
+      }
+    }
 
 })();

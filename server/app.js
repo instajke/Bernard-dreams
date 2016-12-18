@@ -8,10 +8,11 @@ var express = require('express');
 var config = require('config');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
-var passport = require('passport');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var hash   = require('bcrypt-nodejs');
+var passport = require('passport');
+var localStrategy = require('passport-local').Strategy;
 
 var session = require('express-session');
 var routes = require('./src/routes');
@@ -49,6 +50,7 @@ mongoose.connection.on('reconnected', function() {
 
 // Connect to db
 var connectWithRetry = function() {
+  mongoose.Promise = global.Promise;
   return mongoose.connect(mongodbUrl, dbOptions, function(err) {
     if (err) {
       console.error('Failed to connect to mongo on startup - retrying in 5 sec. -> ' + err);
@@ -80,7 +82,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-require('./src/passport')(passport);
+// configure passport
+var User = require('./src/user/user.model.js');
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // Bootstrap routes
 app.use(routes);
