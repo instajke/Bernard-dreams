@@ -4,15 +4,25 @@
         <md-card-title-text>{{shop.name}}</md-card-title-text>
       </md-toolbar>
         <md-card-content>
-            <p> {{shop.shopType}} </p>
-            <p> {{shop.description}} </p>
+            <md-list>
+                <md-list-item class="md-3-line" ng-repeat="offer in shop.offers">
+                    <div class="md-list-item-text">
+                        <h3>{{offer.price}}</h3>
+                        <h4>{{offer.amount}}</h4>
+                        <p>{{offer.currencyType}}</p>
+                    </div>
+                    <md-button class="md-secondary" ng-click="shopsCtrl.showUpdateOfferDialog($event, shop, offer)">Update</md-button>
+                    <md-button class="md-secondary" ng-click="shopsCtrl.removeOffer(shop, offer)">Remove</md-button>
+                    <md-divider md-inset ng-if="!$last"></md-divider>
+                </md-list-item>
+    </md-list>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
             <md-button class="md-icon-button" aria-label="Favorite">
                 <md-icon class="material-icons">&#xE87D;</md-icon>
                 <md-tooltip>Like</md-tooltip>
             </md-button>
-            <md-button class="md-icon-button" aria-label="Settings">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="shopsCtrl.showAddOfferDialog($event, shop)">
                 <md-icon class="material-icons">&#xE8EE;</md-icon>
                 <md-tooltip>View detailed information</md-tooltip>
             </md-button>

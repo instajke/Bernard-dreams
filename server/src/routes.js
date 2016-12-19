@@ -129,7 +129,6 @@
     });
 
     router.post('/api/market', function (request, response) {
-        console.log(request);
         var Market = {
             devID: request.body.market.devID,
             marketType: request.body.market.marketType,
@@ -141,7 +140,6 @@
             currencyType1: request.body.market.currencyType1,
             currencyType2: request.body.market.currencyType2
         };
-        console.log(Market);
         market.postMarket(Market, response);
     });
 
@@ -331,13 +329,17 @@
 
     router.put('/api/shop/offer', function (request, response) {
         var Shop = request.body.shop;
-        shop.updateShopOffer(Shop, response);
+        var Offer = request.body.offer;
+        shop.updateShopOffer(Shop, Offer, response);
     });
 
 
-    router.delete('/api/shop/offer', function (request, response) {
-        var Shop = request.body.shop;
-        shop.removeShopOffer(Shop, response);
+    router.delete('/api/shop/offer/:shopID/:offerID', function (request, response) {
+        console.log("REMOVE OFFER");
+        console.log(request);
+        var ShopID = request.params.shopID;
+        var OfferID = request.params.offerID;
+        shop.removeShopOffer(ShopID, OfferID, response);
     });
 
 ///TRANSACTION
@@ -387,7 +389,6 @@
     });
 
     router.get('/paypal/complete', function (request, response) {
-        console.log(request.query);
         var PayerID = request.query.PayerID;
         var PaymentID = request.query.paymentId;
         myPayPal.executePayment(PaymentID, PayerID, response);

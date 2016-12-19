@@ -50,14 +50,10 @@ module.exports = {
     },
 
     getShopsByDevId : function(request, response) {
-        console.log("REQUEST");
-        console.log(request);
         shop.find({devID : request.params.devID}).exec(function (err, res){
             if (err) {
-                console.log(err);
                 response.send(500, {error: err});
             } else {
-                console.log(res);
                 response.json({"result" : "SUCCESS", "shops" : res});
             }
         });
@@ -101,7 +97,7 @@ module.exports = {
     clearShopHistory: function (ShopId, response) {
         shop.findOne({_id: ShopId}).exec(function (err,res) {
             if(err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 res.history = [];
                 res.save();
@@ -125,34 +121,58 @@ module.exports = {
     addShopOffer: function(Shop, response) {
         shop.findOne({_id: Shop._id}).exec(function (err,res){
             if(err){
+                console.log("ERROR");
                 response.send(500, {error: err});
             } else {
-                Shop.offers.ID = res.offers.length + 1;
-                res.offers.push(Shop.offers);
+                console.log("OKAY WE GOOD");
+                for (var index = 0; index < Shop.offers.length; ++index) {
+                    Shop.offers[index].ID = res.offers.length + index + 1;
+                    res.offers.push(Shop.offers[index]);
+                }
+                console.log(Shop.offers)
+                console.log(res);
                 res.save();
                 response.json({success: true});
             }
         });
     },
 
-    updateShopOffer: function(Shop, response) {
+    updateShopOffer: function(Shop, Offer, response) {
         shop.findOne({_id: Shop._id}).exec(function (err,res){
             if(err){
                 response.send(500, {error: err});
             } else {
-                res.offers[Shop.offers.ID - 1] = Shop.offers;
+
+                for (var i=0; i < res.offers.length; i++) {
+                    if (res.offers[i].ID === Offer.ID) {
+                        res.offers[i] = Offer;
+                    }
+                }
+                console.log(Offer);
+                console.log("RESPONSE OFFERS");
+                console.log(res.offers);
+                //res.offers[Shop.offers.ID - 1] = Shop.offers;
                 res.save();
                 response.json({success: true});
             }
         });
     },
 
-    removeShopOffer: function(Shop, response) {
-        shop.findOne({_id: Shop._id}).exec(function (err,res){
+    removeShopOffer: function(ShopID, OfferID, response) {
+        shop.findOne({_id: ShopID}).exec(function (err,res){
             if(err){
                 response.send(500, {error: err});
             } else {
-                res = reduceOffersID(res, Shop);
+                console.log("REMOVE RESPONSE OFFERS BEFORE");
+                console.log(res.offers);
+                for (var index = OfferID; index < res.offers.length; ++index) {
+                    res.offers[index].ID--;
+                }
+                res.offers.splice(OfferID - 1, 1);
+                console.log("REMOVE ID")
+                console.log(OfferID)
+                console.log("REMOVE RESPONSE OFFERS AFTER");
+                console.log(res.offers);
                 res.save();
                 response.json({"result": "SUCCESS", "offers": res});
             }

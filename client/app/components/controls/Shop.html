@@ -9,4 +9,15 @@
         </md-button>
       </div>
     </md-toolbar>
+    <md-content>
+        <md-card ng-repeat="offer in dialogShop.offers">
+            <md-card-title>
+                {{offer.ID}}
+            </md-card-title>
+            <p> Offer currency: {{offer.currencyType}}</p>
+            <p> Offer amount  : {{offer.amount}}</p>
+            <p> Offer price   : {{offer.price}}</p>
+            <p> You save      : {{offer.discount}}<p>
+        </md-card>
+    </md-content>
 <md-dialog>

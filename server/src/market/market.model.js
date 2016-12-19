@@ -50,14 +50,10 @@ module.exports = {
     },
 
     getMarketsByDevId : function(request, response) {
-        console.log("REQUEST");
-        console.log(request);
         market.find({devID : request.params.devID}).exec(function (err, res){
             if (err) {
-                console.log(err);
                 response.send(500, {error: err});
             } else {
-                console.log(res);
                 response.json({"result" : "SUCCESS", "markets" : res});
             }
         });
@@ -65,7 +61,6 @@ module.exports = {
 
     postMarket : function(Market, response) {
         market.create(Market, function (err, doc){
-                console.log("2");
                 var MarketSell = {
                     marketID: doc._id,
                     marketType: doc.marketType,
