@@ -13,14 +13,13 @@
       };
     });
 
-  MarketsController.$inject = ['accountService', 'marketService','$http', '$rootScope', '$mdDialog', '$stateParams'];
+  MarketsController.$inject = ['marketService','$http', '$rootScope', '$mdDialog', '$stateParams'];
 
-  function MarketsController(accountService, marketService, $http, $rootScope, $mdDialog, $stateParams) {
+  function MarketsController(marketService, $http, $rootScope, $mdDialog, $stateParams) {
       var ctrl = this;
 
-      ctrl.markets = [];
+      ctrl.markets = {};
       ctrl.currentMarket = {};
-      ctrl.trans = { name: "trans", description: "trans description"};
       ctrl.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
 
       ctrl.showCurrentMarket = function() {
@@ -31,13 +30,22 @@
       ctrl.postMarket = function() {
           ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
           console.log(ctrl.currentMarket);
-          marketService.postMarket(ctrl.currentMarket);
+          marketService.postMarket(ctrl.currentMarket)
+            .then (function () {
+                ctrl.initMarkets();
+            })
       };
 
-
-      ctrl.getMarkets = function() {
-          console.log(marketService.getMarkets());
+      ctrl.initMarkets = function() {
+          marketService.getMarketsByDevId($rootScope.rootParam.nickname)
+            .then( function (promise) {
+                console.log("PROMISE");
+                console.log(promise);
+                ctrl.markets = promise.markets;
+            })
       };
+
+      ctrl.initMarkets();
   }
 
 })();

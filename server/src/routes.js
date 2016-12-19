@@ -164,6 +164,7 @@
 ///MARKET
     var market = require('./market/market.model');
 // market ressourses
+
     router.get('/api/market/:marketID', function (request, response) {
         var marketID = request.params.marketID;
         market.getMarket(marketID, response);
@@ -173,9 +174,9 @@
         market.searchMarket(request, response);
     });
 
-    router.get('/api/market/:devID', function (request, response) {
+    router.get('/api/markets/:devID', function (request, response) {
         var devID = request.params.devID;
-        market.getMarketsByDevID(devID, response);
+        market.getMarketsByDevId(request, response);
     });
 
     router.get('/api/markets', function (request, response) {
@@ -183,7 +184,6 @@
     });
 
     router.post('/api/market', function (request, response) {
-        console.log(request);
         var Market = {
             devID: request.body.market.devID,
             marketType: request.body.market.marketType,
@@ -195,7 +195,6 @@
             currencyType1: request.body.market.currencyType1,
             currencyType2: request.body.market.currencyType2
         };
-        console.log(Market);
         market.postMarket(Market, response);
     });
 
@@ -331,60 +330,71 @@
 ///SHOP
     var shop = require('./shop/shop.model');
 // shop ressourses
-    router.get('/shop/:shopID', function (request, response) {
+    router.get('/api/shop/:shopID', function (request, response) {
         var ShopID = request.params.shopID;
         shop.getShop(ShopID, response);
     });
 
-    router.get('/shop/:name', function (request, response) {
+    router.get('/api/shop/:name', function (request, response) {
         shop.searchShop(request, response);
     });
 
-    router.get('/shops', function (request, response) {
+    router.get('/api/shops', function (request, response) {
         shop.getShops(response);
     });
 
-    router.post('/shop', function (request, response) {
+    router.get('/api/shops/:devID', function (request, response) {
+        var devID = request.params.devID;
+        shop.getShopsByDevId(request, response);
+    });
+
+
+    router.post('/api/shop', function (request, response) {
         var Shop = {
-            name: request.body.name,
-            marketID: request.body.marketID,
+            devID: request.body.shop.devID,
+            name: request.body.shop.name,
+            marketID: request.body.shop.marketID,
             offers: [],
-            payPalAcc: request.body.payPalAcc,
-            publicHistory: request.body.publicHistory,
+            payPalAcc: request.body.shop.payPalAcc,
+            publicHistory: request.body.shop.publicHistory,
             history: []
         };
         shop.postShop(Shop, response);
     });
 
-    router.put('/shop/history', function (request, response) {
+    router.put('/api/shop/history', function (request, response) {
         var Shop = request.body.shop;
         shop.updateShopHistory(Shop, response);
     });
 
-    router.delete('/shop/:shopID', function (request, response) {
+    router.delete('/api/shop/:shopID', function (request, response) {
         var ShopID = request.params.shopID;
         shop.clearShopHistory(ShopID, response);
     });
 
-    router.put('/shop/PayPal', function (request, response) {
+    router.put('/api/shop/PayPal', function (request, response) {
         var Shop = request.body.shop;
         shop.updateShopPayPalAcc(Shop, response);
     });
 
-    router.post('/shop/offer', function (request, response) {
+    router.post('/api/shop/offer', function (request, response) {
         var Shop = request.body.shop;
         shop.addShopOffer(Shop, response);
     });
 
-    router.put('/shop/offer', function (request, response) {
+    router.put('/api/shop/offer', function (request, response) {
         var Shop = request.body.shop;
-        shop.updateShopOffer(Shop, response);
+        var Offer = request.body.offer;
+        shop.updateShopOffer(Shop, Offer, response);
     });
 
 
-    router.delete('/shop/offer', function (request, response) {
-        var Shop = request.body.shop;
-        shop.removeShopOffer(Shop, response);
+    router.delete('/api/shop/offer/:shopID/:offerID', function (request, response) {
+        console.log("REMOVE OFFER");
+        console.log(request);
+        var ShopID = request.params.shopID;
+        var OfferID = request.params.offerID;
+        shop.removeShopOffer(ShopID, OfferID, response);
     });
 
 ///TRANSACTION
@@ -434,7 +444,6 @@
     });
 
     router.get('/paypal/complete', function (request, response) {
-        console.log(request.query);
         var PayerID = request.query.PayerID;
         var PaymentID = request.query.paymentId;
         myPayPal.executePayment(PaymentID, PayerID, response);

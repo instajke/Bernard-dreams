@@ -24,7 +24,7 @@ var market = mongoose.model('Market', marketSchema);
 
 module.exports = {
     getMarket : function(marketId, response) {
-        market.findOne({_id: new ObjectId(marketId)}).exec(function (err,res) {
+        market.findOne({_id: marketId}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -49,9 +49,18 @@ module.exports = {
         });
     },
 
+    getMarketsByDevId : function(request, response) {
+        market.find({devID : request.params.devID}).exec(function (err, res){
+            if (err) {
+                response.send(500, {error: err});
+            } else {
+                response.json({"result" : "SUCCESS", "markets" : res});
+            }
+        });
+    },
+
     postMarket : function(Market, response) {
         market.create(Market, function (err, doc){
-                console.log("2");
                 var MarketSell = {
                     marketID: doc._id,
                     marketType: doc.marketType,
