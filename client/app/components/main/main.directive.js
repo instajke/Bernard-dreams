@@ -148,7 +148,7 @@
         .then(function () {
           ctrl.showAlert("Registration successful!")
           ctrl.hide();
-          $state.go('account', {obj : ctrl.user})
+          $state.go('account', {nickname : ctrl.user.nickname})
         })
         // handle error
         .catch(function () {

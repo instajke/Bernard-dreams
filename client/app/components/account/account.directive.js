@@ -129,9 +129,13 @@
                     url: "history",
                     tooltip: "Open transactions history"
                 }, {
-                    name: "Buy",
-                    url: "buy",
+                    name: "Buy (Shop)",
+                    url: "shop",
                     tooltip: "Open shop"
+                }, {
+                    name: "Buy (Market)",
+                    url: "market",
+                    tooltip: "Open market"
                 }, {
                     name: "Connect!",
                     url: "connect",

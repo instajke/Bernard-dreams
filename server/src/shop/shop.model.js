@@ -7,6 +7,7 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
 var shopSchema = new Schema ({
+    devID: String,
     name: String,
     marketID: Schema.Types.ObjectId, // price per item ($)
     offers: [{ ID: Number, currencyType: String, amount: Number, price: Number, discount: Number }],
@@ -19,7 +20,7 @@ var shop = mongoose.model('Shop', shopSchema);
 
 module.exports = {
     getShop: function(ShopId, response) {
-        shop.findOne({_id: new ObjectId(ShopId)}).exec(function (err,res) {
+        shop.findOne({_id: ShopId}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -47,6 +48,21 @@ module.exports = {
             }
         });
     },
+
+    getShopsByDevId : function(request, response) {
+        console.log("REQUEST");
+        console.log(request);
+        shop.find({devID : request.params.devID}).exec(function (err, res){
+            if (err) {
+                console.log(err);
+                response.send(500, {error: err});
+            } else {
+                console.log(res);
+                response.json({"result" : "SUCCESS", "shops" : res});
+            }
+        });
+    },
+
 
     updateShopHistoryByMarketID: function (Shop, response) {
          shop.findOne({marketID: Shop.marketID}).exec(function (err,res) {
@@ -83,7 +99,7 @@ module.exports = {
     },
 
     clearShopHistory: function (ShopId, response) {
-        shop.findOne({_id: new ObjectId(ShopId)}).exec(function (err,res) {
+        shop.findOne({_id: ShopId}).exec(function (err,res) {
             if(err) {
                 response.send(500, {error: err});
             } else {
