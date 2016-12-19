@@ -66,6 +66,54 @@
         })(req, res, next);
     });
 
+    router.get('/api/facebook', function authenticateFacebook (req, res, next) {
+            req.session.returnTo = '/#' + '/account/home';
+            next ();
+        },
+        passport.authenticate ('facebook'));
+
+    router.get('/api/facebook/callback', function (req, res, next) {
+        var authenticator = passport.authenticate ('facebook', {
+            successRedirect: '/#/account/home',
+            failureRedirect: '/'
+        });
+
+        delete req.session.returnTo;
+        authenticator (req, res, next);
+    });
+
+    router.get('/api/google', function authenticateGoogle (req, res, next) {
+            req.session.returnTo = '/#' + '/account/home';
+            next ();
+        },
+        passport.authenticate ('google', { scope : ['profile', 'email'] }));
+
+    router.get('/api/google/callback', function (req, res, next) {
+        var authenticator = passport.authenticate ('google', {
+            successRedirect: req.session.returnTo,
+            failureRedirect: '/'
+        });
+
+        delete req.session.returnTo;
+        authenticator (req, res, next);
+    });
+
+    router.get('/api/twitter', function authenticateTwitter (req, res, next) {
+            req.session.returnTo = '/#' + '/account/home';
+            next ();
+        },
+        passport.authenticate ('twitter'));
+
+    router.get('/api/twitter/callback', function (req, res, next) {
+        var authenticator = passport.authenticate ('twitter', {
+            successRedirect: req.session.returnTo,
+            failureRedirect: '/'
+        });
+
+        delete req.session.returnTo;
+        authenticator (req, res, next);
+    });
+
     router.get('/api/logout', function(req, res) {
         req.logout();
         res.status(200).json({
@@ -83,6 +131,13 @@
             status: true
         });
     });
+
+    router.get('/api/getAuthUser', function(req,res) {
+        console.log(req.user);
+        res.send(req.isAuthenticated() ? req.user : '0');
+    });
+
+
 
     router.put('/api/paypal', function (request, response) {
       var query = { username : request.body.nickname };

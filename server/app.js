@@ -6,7 +6,7 @@ process.env.NODE_CONFIG_DIR = __dirname + '/config/';
 
 var express = require('express');
 var config = require('config');
-//var cors = require('cors');
+var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -14,7 +14,7 @@ var hash   = require('bcrypt-nodejs');
 var passport = require('passport');
 
 var session = require('express-session');
-var routes = require('./src/routes');
+
 
 
 
@@ -70,7 +70,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 // Enable CORS
-//app.use(cors());
+app.use(cors());
+
+var routes = require('./src/routes');
+
 
 require('./src/passport')(passport);
 

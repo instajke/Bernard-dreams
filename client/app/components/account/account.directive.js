@@ -168,8 +168,17 @@
 
         };
 
+        ctrl.checkLoggedIn = function() {
+            $http.get('api/getAuthUser')
+                .success(function(user){
+                    console.log(user);
+                    $rootScope.rootParam.nickname = user.username;
+            });
+        };
+
         ctrl.user = accountService.getUser($rootScope.rootParam.nickname).$$state.value;
         console.log(ctrl.user);
+        ctrl.checkLoggedIn();
         $state.transitionTo('account.home', $stateParams);
         ctrl.getTransactions();
     }

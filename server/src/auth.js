@@ -8,15 +8,15 @@ module.exports = {
     },
 
     'twitterAuth' : {
-        'consumerKey'        : 'ZV5UFiPZUS3iFO486r4rDxtRW',
-        'consumerSecret'     : 'dlFGyXfqllOqSnQvNnK2z3jy8xSxdlNeWC5YvRX62Lqr3HslpO',
-        'callbackURL'        : 'http://localhost:8888/auth/twitter/callback'
+        'consumerKey'        : 'iELCH5VFlzUNW7pY2RGQBBrdS',
+        'consumerSecret'     : 'wPhzbAiYRKjfAq2WoGrDEKTvv29lonEEMB6mMY7HZIS7UvWSZV',
+        'callbackURL'        : 'http://localhost:3000/api/twitter/callback'
     },
 
     'googleAuth' : {
-        'clientID'         : 'your-secret-clientID-here',
-        'clientSecret'     : 'your-client-secret-here',
-        'callbackURL'      : 'http://localhost:8888/auth/google/callback'
+        'clientID'         : '79570659241-ib42t4geja7cp1vsi5pigjo1934usnsh.apps.googleusercontent.com',
+        'clientSecret'     : 'KNFNsi2OmWsnVYXE76RwQ83K',
+        'callbackURL'      : 'http://localhost:3000/api/google/callback'
     }
 
 };

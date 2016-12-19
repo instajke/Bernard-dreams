@@ -56,29 +56,24 @@
         });
     };
 
-    vm.facebookLogin = function() {
+    vm.loginSocial = function() {
 
-        // call login from service
         var deferred = $q.defer();
 
-        $http.get('/api/facebook')
-            // handle success
-            .success(function (data, status) {
-                if(status === 200 && data.status){
-                    vm.showAlert(data);
+        $http.get('api/getAuthUser')
+            .success(function(user){
+                if (user !== '0') {
+                    console.log(user);
                     deferred.resolve();
-                } else {
-                    vm.showAlert(data);
-                    deferred.reject();
+                    vm.showAlert("Success!");
+                    $state.go('account', {nickname : user.nickname})
                 }
-            })
-            // handle error
-            .error(function (data) {
-                vm.showAlert(data);
-                deferred.reject();
-            });
+                else {
+                    deferred.reject();
 
-        // return promise object
+                }
+                console.log(user);
+            });
         return deferred.promise;
     };
 
@@ -148,7 +143,7 @@
         .then(function () {
           ctrl.showAlert("Registration successful!")
           ctrl.hide();
-          $state.go('account', {obj : ctrl.user})
+          $state.go('account', {nickname : ctrl.user.nickname})
         })
         // handle error
         .catch(function () {
