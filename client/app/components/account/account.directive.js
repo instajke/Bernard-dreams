@@ -59,12 +59,14 @@
         };
 
         $rootScope.showTransDialog = function(ev, trans) {
-            $rootScope.currentTrans = trans;
             $rootScope.transDialog.show({
                 controller: TransDialogController,
                 templateUrl: 'app/components/controls/DetailedItemInfo.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
+                locals: {
+                    currentTrans : trans
+                },
                 clickOutsideToClose: true
             });
         };
@@ -119,7 +121,7 @@
         $rootScope.fillSidenav = fillSidenav($rootScope.user);
 
         function fillSidenav(user) {
-            if (ctrl.user.isDev === false) {
+            if (!ctrl.user.isDev) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
                     url: "home",
@@ -161,7 +163,7 @@
                     tooltip: "Open controlled shops"
                 }]
             }
-        }
+        };
 
         ctrl.logout = function () {
 
@@ -172,15 +174,23 @@
 
         };
 
-        ctrl.user = accountService.getUser($rootScope.rootParam.nickname).$$state.value;
+        accountService.getUser($rootScope.rootParam.nickname)
+            .then( function(promise) {
+                console.log(promise);
+                ctrl.user = promise;
+                fillSidenav(ctrl.user);
+            }) ;
         console.log(ctrl.user);
         $state.transitionTo('account.home', $stateParams);
         ctrl.getTransactions();
     }
 
-    TransDialogController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog'];
+    TransDialogController.$inject = ['$scope', '$mdDialog', 'currentTrans'];
 
-    function TransDialogController($http, $scope, $rootScope, $mdDialog) {
+    function TransDialogController($scope, $mdDialog, currentTrans) {
+
+        $scope.currentTrans = currentTrans;
+
         $scope.hide = function() {
             $mdDialog.hide();
         };
@@ -190,7 +200,6 @@
         $scope.answer = function(answer) {
             $mdDialog.hide(answer);
         };
-        $scope.trans = $rootScope.currentTrans;
     }
 
     HistoryDialogController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog'];

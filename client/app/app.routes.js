@@ -54,6 +54,13 @@
         params: {
             nickname: null
         }
+    })
+    .state('account.gamerShops', {
+        url: '/shop',
+        template: '<gamerShops></gamerShops>',
+        params: {
+            nickname: null
+        }
     });
 
     $urlRouterProvider.otherwise('/');
