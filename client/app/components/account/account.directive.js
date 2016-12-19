@@ -174,6 +174,14 @@
 
         };
 
+        ctrl.checkLoggedIn = function() {
+            $http.get('api/getAuthUser')
+                .success(function(user){
+                    console.log(user);
+                    $rootScope.rootParam.nickname = user.username;
+                });
+        };
+
         accountService.getUser($rootScope.rootParam.nickname)
             .then( function(promise) {
                 console.log(promise);
@@ -181,6 +189,7 @@
                 fillSidenav(ctrl.user);
             }) ;
         console.log(ctrl.user);
+        ctrl.checkLoggedIn();
         $state.transitionTo('account.home', $stateParams);
         ctrl.getTransactions();
     }
