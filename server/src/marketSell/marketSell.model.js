@@ -12,6 +12,8 @@ var Schema = mongoose.Schema;
 
 var marketSellSchema = new Schema ({
     marketID: Schema.Types.ObjectId,
+    marketName: String,
+    devID: String,
     marketType: String,
     taxes: Number,
     currencyTypeSell: String,
@@ -19,19 +21,19 @@ var marketSellSchema = new Schema ({
     bestPrice: Number,
     curBuyings: Number, // if(curBuyings > newPrice) -> price changes in illusive markets
     newPrice: Number, // for illusive markets
-    offers: [ { Price: Number, Amount: Number, offersInPrice: [ { amount: Number, gamerID: Schema.Types.ObjectId }] }],
+    offers: [ { price: Number, amount: Number, offersInPrice: [ { amount: Number, userID: Schema.Types.ObjectId }] }],
     graphicSell: [{ price: Number, date: { type: Date, default: Date.now() }}] // price changing in a market
 });
 
 
 var marketSell = mongoose.model('MarketSell', marketSellSchema);
 
-exports.getMarketSell = function(marketId, response) {
-    marketSell.findOne({marketID: marketId}).exec(function (err,res) {
+exports.getMarketSell = function(devID, response) {
+    marketSell.find({devID: devID}).exec(function (err,res) {
         if(err){
             response.send(500, {error: err});
         } else {
-            response.json({"result": "SUCCESS", "marketSell": res});
+            response.json({"result": "SUCCESS", "marketSells": res});
         }
     });
 };
@@ -42,6 +44,18 @@ exports.postMarketSell = function(MarketSell) {
             console.warn(err);
         } else {
             console.warn("Success");
+        }
+    });
+};
+
+exports.updateEntireMarket = function (Market, response) {
+
+    marketSell.findOneAndUpdate({_id : Market._id}, Market, function (err, res) {
+        if (err)
+            response.status(500).send(err);
+        else {
+            res.save();
+            response.json({success: true});
         }
     });
 };

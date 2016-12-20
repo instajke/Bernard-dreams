@@ -5,17 +5,23 @@
       </md-toolbar>
         <md-card-content>
             <md-list>
+                <md-list-item class="md-3-line" layout-align="end center" ng-show="!shop.offers.length">
+                    <div class="md-list-item-text">
+                        No offers
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
                 <md-list-item class="md-3-line" ng-repeat="offer in shop.offers">
                     <div class="md-list-item-text">
                         <h3>{{offer.price}}</h3>
                         <h4>{{offer.amount}}</h4>
                         <p>{{offer.currencyType}}</p>
                     </div>
-                    <md-button class="md-secondary" ng-click="shopsCtrl.showUpdateOfferDialog($event, shop, offer)">Update</md-button>
-                    <md-button class="md-secondary" ng-click="shopsCtrl.removeOffer(shop, offer)">Remove</md-button>
-                    <md-divider md-inset ng-if="!$last"></md-divider>
+                    <md-button class="md-raised md-secondary" ng-click="shopsCtrl.showUpdateOfferDialog($event, shop, offer)">Update</md-button>
+                    <md-button class="md-raised md-secondary" ng-click="shopsCtrl.removeOffer(shop, offer)">Remove</md-button>
+                    <md-divider></md-divider>
                 </md-list-item>
-    </md-list>
+            </md-list>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
             <md-button class="md-icon-button" aria-label="Favorite">
@@ -37,34 +43,32 @@
             <span flex="5"></span>
             <md-card-title-text>Create new shop:</md-card-title-text>
         </md-toolbar>
+        <md-content layout="column">
+            <md-input-container>
+              <label>Shop name</label>
+              <input ng-model="shopsCtrl.currentShop.name">
+            </md-input-container>
 
-        <md-input-container>
-          <label>Shop name</label>
-          <input ng-model="shopsCtrl.currentShop.name">
-        </md-input-container>
+            <md-input-container>
+              <label>Defining market</label>
+              <md-select ng-model="shopsCtrl.currentShop.marketID">
+                <md-option><em>None</em></md-option>
+                <md-option ng-repeat="market in shopsCtrl.markets" ng-value="market._id">{{market._id}}</md-option>
+              </md-select>
+            </md-input-container>
 
-        <md-input-container>
-          <label>Defining market</label>
-          <md-select ng-model="shopsCtrl.currentShop.marketID">
-            <md-option><em>None</em></md-option>
-            <md-option ng-repeat="market in shopsCtrl.markets" ng-value="market._id">{{market._id}}</md-option>
-          </md-select>
-        </md-input-container>
+            <md-input-container>
+                <label>PayPal account</label>
+                <input ng-model="shopsCtrl.currentShop.payPalAcc">
+            </md-input-container>
 
-        <md-input-container>
-            <label>PayPal account</label>
-            <input ng-model="shopsCtrl.currentShop.payPalAcc">
-        </md-input-container>
+            <md-checkbox ng-model="shopsCtrl.currentShop.publicHistory" aria-label="Public history">
+                Allow public history: {{ shopsCtrl.currentShop.publicHistory }}
+            </md-checkbox>
 
-        <md-checkbox ng-model="shopsCtrl.currentShop.publicHistory" aria-label="Public history">
-            Allow public history: {{ shopsCtrl.currentShop.publicHistory }}
-        </md-checkbox>
-
-        <md-button ng-click="shopsCtrl.showCurrentShop()">
-            <label>Show shop</label>
-        </md-button>
-        <md-button ng-click="shopsCtrl.postShop()">
-            <label>Post shop</label>
-        </md-button>
+            <md-button class="md-raised md-primary md-hue-4" ng-click="shopsCtrl.postShop()">
+                <label>Post shop</label>
+            </md-button>
+        </md-content>
     </md-card>
 </md-content>
