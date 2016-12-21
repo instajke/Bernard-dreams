@@ -14,6 +14,7 @@
     router.put('/api/things/:id', thing.put);
 
     var User = require('./user/user.model');
+    var UserControl = require('./user/user.controller');
 
 
     router.post('/api/register', function(req, res) {
@@ -42,6 +43,14 @@
             res.json(user);
         });
     });
+
+    router.post('/api/user', function (request, response) {
+        var NewUser = request.body.user;
+        console.log("POST USER");
+        console.log(NewUser);
+        UserControl.updateUser(NewUser, response);
+    });
+
 
     router.post('/api/login', function(req, res, next) {
         passport.authenticate('local', function(err, user, info) {

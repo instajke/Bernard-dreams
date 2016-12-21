@@ -151,6 +151,20 @@
 
                 return deferred.promise;
         },
+          postUser: function(user) {
+
+              var deferred = $q.defer();
+
+              $http.post('/api/user', {user : user})
+                  .success(function() {
+                      deferred.resolve();
+                  })
+                  .error(function () {
+                      deferred.reject();
+                  });
+
+              return deferred.promise;
+          },
         updatePaypal: function(user) {
           var deferred = $q.defer();
 

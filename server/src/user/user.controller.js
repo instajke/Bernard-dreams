@@ -102,3 +102,20 @@ exports.put = function(req, res, next) {
     });
   });
 };
+
+exports.updateUser = function(User, response) {
+  console.log("UPDATE USER");
+  console.log(User);
+  user.findById(User._id, function(err, user) {
+    if (err) {
+      response.send(500, {error: err});
+    } else {
+      user.email = User.email;
+      user.name = User.name;
+      user.surname = User.surname;
+      user.description = User.description;
+      user.save();
+      response.json({success: true});
+    }
+  })
+};
