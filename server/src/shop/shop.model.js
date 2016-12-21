@@ -148,9 +148,6 @@ module.exports = {
                         res.offers[i] = Offer;
                     }
                 }
-                console.log(Offer);
-                console.log("RESPONSE OFFERS");
-                console.log(res.offers);
                 //res.offers[Shop.offers.ID - 1] = Shop.offers;
                 res.save();
                 response.json({success: true});

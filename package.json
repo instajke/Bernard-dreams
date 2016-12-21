@@ -4,16 +4,13 @@
   "version": "0.1.0",
   "repository": "instajke/bernard-dreams",
   "scripts": {
-    "start": "node ./node_modules/gulp/bin/gulp.js",
-    "test": "node ./node_modules/gulp/bin/gulp.js test",
-    "dist": "node ./node_modules/gulp/bin/gulp.js dist",
+    "start": "node --harmony ./node_modules/gulp/bin/gulp.js",
+    "test": "node --harmony ./node_modules/gulp/bin/gulp.js test",
+    "dist": "node --harmony ./node_modules/gulp/bin/gulp.js dist",
     "coveralls": "cat ./coverage/lcov.info | node ./node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {
-    "angular": "^1.5.9",
-    "angular-animate": "^1.5.9",
-    "angular-aria": "^1.5.9",
-    "angular-material": "^1.1.1",
+    "bower": "latest",
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.15.0",
     "config": "^1.16.0",

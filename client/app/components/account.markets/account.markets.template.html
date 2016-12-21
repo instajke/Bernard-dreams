@@ -1,85 +1,173 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
-    <md-card ng-repeat="market in marketsCtrl.markets">
-      <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
-        <md-card-title-text>{{market.name}}</md-card-title-text>
-      </md-toolbar>
-        <md-card-content>
-            <p> {{market.marketType}} </p>
-            <p> {{market.description}} </p>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button class="md-icon-button" aria-label="Favorite">
-                <md-icon class="material-icons">&#xE87D;</md-icon>
-                <md-tooltip>Like</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Settings">
-                <md-icon class="material-icons">&#xE8EE;</md-icon>
-                <md-tooltip>View detailed information</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Share">
-                <md-icon class="material-icons">&#xE854;</md-icon>
-                <md-tooltip>Share</md-tooltip>
-            </md-button>
-        </md-card-actions>
-    </md-card>
-    <md-card>
-        <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="defaul center">
-            <span flex="5"></span>
-            <md-card-title-text>Create new market:</md-card-title-text>
-        </md-toolbar>
+    <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Manage general markets">
+            <md-card ng-repeat="market in marketsCtrl.markets">
+              <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                <md-card-title-text>{{market.name}}</md-card-title-text>
+              </md-toolbar>
+                <md-card-content>
+                    <p> {{market.marketType}} </p>
+                    <p> {{market.description}} </p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                        <md-icon class="material-icons">&#xE87D;</md-icon>
+                        <md-tooltip>Like</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="marketsCtrl.showManageMarketDialog($event, market)">
+                        <md-icon class="material-icons">&#xE8EE;</md-icon>
+                        <md-tooltip>View detailed information</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Share">
+                        <md-icon class="material-icons">&#xE854;</md-icon>
+                        <md-tooltip>Share</md-tooltip>
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+            <md-card>
+                <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="defaul center">
+                    <span flex="5"></span>
+                    <md-card-title-text>Create new market:</md-card-title-text>
+                </md-toolbar>
 
-        <md-input-container>
-          <label>Market name</label>
-          <input ng-model="marketsCtrl.currentMarket.name">
-        </md-input-container>
+                <md-input-container>
+                  <label>Market name</label>
+                  <input ng-model="marketsCtrl.currentMarket.name">
+                </md-input-container>
 
-        <md-input-container>
-          <label>Market type</label>
-          <input ng-model="marketsCtrl.currentMarket.marketType">
-        </md-input-container>
+                <md-input-container>
+                  <label>Market type</label>
+                  <input ng-model="marketsCtrl.currentMarket.marketType">
+                </md-input-container>
 
-        <md-input-container>
-            <label>Market description</label>
-            <input ng-model="marketsCtrl.currentMarket.description">
-        </md-input-container>
+                <md-input-container>
+                    <label>Market description</label>
+                    <input ng-model="marketsCtrl.currentMarket.description">
+                </md-input-container>
 
-        <md-input-container >
-          <label>Market tax</label>
-          <input ng-model="marketsCtrl.currentMarket.tax">
-        </md-input-container>
+                <md-input-container >
+                  <label>Market tax</label>
+                  <input ng-model="marketsCtrl.currentMarket.tax">
+                </md-input-container>
 
-        <md-checkbox ng-model="marketsCtrl.currentMarket.showOffers" aria-label="Show offers">
-            Show offers: {{ marketsCtrl.currentMarket.showOffers }}
-        </md-checkbox>
+                <md-checkbox ng-model="marketsCtrl.currentMarket.showOffers" aria-label="Show offers">
+                    Show offers: {{ marketsCtrl.currentMarket.showOffers }}
+                </md-checkbox>
 
-        <md-input-container ng-model="marketsCtrl.currentMarket.newPrice">
-            <label>Price</label>
-            <input ng-model="marketsCtrl.currentMarket.newPrice">
-        </md-input-container>
+                <md-input-container ng-model="marketsCtrl.currentMarket.newPrice">
+                    <label>Price</label>
+                    <input ng-model="marketsCtrl.currentMarket.newPrice">
+                </md-input-container>
 
-        <md-input-container>
-          <label>Internal currency type: </label>
-          <md-select ng-model="marketsCtrl.currentMarket.currencyType1">
-            <md-option><em>None</em></md-option>
-            <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
-          </md-select>
-        </md-input-container>
-        <md-input-container>
-          <label>External currency type: </label>
-          <md-select ng-model="marketsCtrl.currentMarket.currencyType2">
-            <md-option><em>None</em></md-option>
-            <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
-          </md-select>
-        </md-input-container>
+                <md-input-container>
+                  <label>Internal currency type: </label>
+                  <md-select ng-model="marketsCtrl.currentMarket.currencyType1">
+                    <md-option><em>None</em></md-option>
+                    <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container>
+                  <label>External currency type: </label>
+                  <md-select ng-model="marketsCtrl.currentMarket.currencyType2">
+                    <md-option><em>None</em></md-option>
+                    <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
+                  </md-select>
+                </md-input-container>
 
-        <md-button ng-click="marketsCtrl.showCurrentMarket()">
-            <label>Show market</label>
-        </md-button>
-        <md-button ng-click="marketsCtrl.postMarket()">
-            <label>Post market</label>
-        </md-button>
-        <md-button ng-click="marketsCtrl.getMarkets()">
-            <label>Get markets</label>
-        </md-button>
-    </md-card>
+                <md-button class="md-raised md-primary md-hue-4" ng-click="marketsCtrl.postMarket()">
+                    <label>Post market</label>
+                </md-button>
+            </md-card>
+        </md-tab>
+        <md-tab label="Manage Buy markets">
+            <md-card ng-repeat="market in marketsCtrl.marketBuys">
+              <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                <md-card-title-text>{{market.marketName}}</md-card-title-text>
+              </md-toolbar>
+                <md-card-content>
+                    <p> {{market.currencyAnother}} </p>
+                    <p> {{market.currencyTypeBuy}} </p>
+                    <md-toolbar class="md-secondary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                        <md-card-title-text>Market offers</md-card-title-text>
+                    </md-toolbar>
+                    <md-list>
+                        <md-list-item class="md-3-line" layout-align="end center" ng-show="!market.offers.length">
+                            <div class="md-list-item-text">
+                                No offers
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                        <md-list-item class="md-3-line" ng-repeat="offer in market.offers">
+                            <div class="md-list-item-text">
+                                <h3>{{offer.price}}</h3>
+                                <h4>{{offer.amount}}</h4>
+                            </div>
+                            <md-button class="md-raised md-secondary" ng-click="marketsCtrl.showUpdateOfferDialog($event, market, offer)">Update</md-button>
+                            <md-button class="md-raised md-secondary" ng-click="marketsCtrl.removeOffer(market, offer)">Remove</md-button>
+                            <md-divider md-inset></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                        <md-icon class="material-icons">&#xE87D;</md-icon>
+                        <md-tooltip>Like</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="marketsCtrl.showManageMarketBuyDialog($event, market)">
+                        <md-icon class="material-icons">&#xE8EE;</md-icon>
+                        <md-tooltip>View detailed information</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Share">
+                        <md-icon class="material-icons">&#xE854;</md-icon>
+                        <md-tooltip>Share</md-tooltip>
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </md-tab>
+        <md-tab label="Manage Sell markets">
+            <md-card ng-repeat="market in marketsCtrl.marketSells">
+              <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                <md-card-title-text>{{market.marketName}}</md-card-title-text>
+              </md-toolbar>
+                <md-card-content>
+                    <p> {{market.currencyTypeAnother}} </p>
+                    <p> {{market.currencyTypeSell}} </p>
+                    <md-toolbar class="md-secondary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                        <md-card-title-text>Market offers</md-card-title-text>
+                    </md-toolbar>
+                    <md-list>
+                        <md-list-item class="md-3-line" layout-align="end center" ng-show="!market.offers.length">
+                            <div class="md-list-item-text">
+                                No offers
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                        <md-list-item class="md-3-line" ng-repeat="offer in market.offers">
+                            <div class="md-list-item-text">
+                                <h3>{{offer.price}}</h3>
+                                <h4>{{offer.amount}}</h4>
+                            </div>
+                            <md-button class="md-raised md-secondary" ng-click="marketsCtrl.showUpdateOfferDialog($event, market, offer)">Update</md-button>
+                            <md-button class="md-raised md-secondary" ng-click="marketsCtrl.removeOffer(market, offer)">Remove</md-button>
+                            <md-divider md-inset></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-icon-button" aria-label="Favorite">
+                        <md-icon class="material-icons">&#xE87D;</md-icon>
+                        <md-tooltip>Like</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="marketsCtrl.showManageMarketSellDialog($event, market)">
+                        <md-icon class="material-icons">&#xE8EE;</md-icon>
+                        <md-tooltip>View detailed information</md-tooltip>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Share">
+                        <md-icon class="material-icons">&#xE854;</md-icon>
+                        <md-tooltip>Share</md-tooltip>
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </md-tab>
+    </md-tabs>
 </md-content>

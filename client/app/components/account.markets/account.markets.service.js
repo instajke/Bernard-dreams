@@ -43,6 +43,42 @@
 
                 return deferred.promise;
         },
+        getBuyMarketsByDevId : function(devId) {
+            var deferred = $q.defer();
+
+            $http.get('/api/marketBuy/' + devId)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
+        getSellMarketsByDevId : function(devId) {
+            var deferred = $q.defer();
+
+            $http.get('/api/marketSell/' + devId)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
         getShops : function() {
             var deferred = $q.defer();
             $http.get('/shops')

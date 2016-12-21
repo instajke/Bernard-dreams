@@ -227,6 +227,11 @@
         market.updateMarketDescription(Market, response);
     });
 
+    router.put('/api/market', function (request, response) {
+        var Market = request.body.market;
+        market.updateMarket(Market, response);
+    })
+
 ///DEVELOPER
     var developer = require('./developer/developer.model');
 // developer ressourses
@@ -261,28 +266,33 @@
 ///MARKETBUY
     var marketBuy = require('./marketBuy/marketBuy.model');
 // marketBuy ressourses
-    router.get('/marketBuy/:marketID', function (request, response) {
-        var MarketID = request.params.marketID;
-        marketBuy.getMarketBuy(MarketID, response);
+    router.get('/api/marketBuy/:devID', function (request, response) {
+        var DevID = request.params.devID;
+        marketBuy.getMarketBuy(DevID, response);
     });
 
-    router.put('/marketBuy/tax', function (request, response) {
+    router.put('/api/marketBuy', function (request, response) {
+        var MarketBuy = request.body.market;
+        marketBuy.updateEntireMarket(MarketBuy, response);
+    });
+
+    router.put('/api/marketBuy/tax', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         marketBuy.updateTax(MarketBuy, response);
     });
 
-    router.put('/marketBuy/marketType', function (request, response) {
+    router.put('/api/marketBuy/marketType', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         marketBuy.updateMarketType(MarketBuy, response);
     });
 
-    router.put('/marketBuy/:userID', function (request, response) {
+    router.put('/api/marketBuy/:userID', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         var userID = request.params.userID;
         marketBuy.findUserOffer(MarketBuy, userID, response);
     });
 
-    router.post('/marketBuy/:userID', function (request, response) {
+    router.post('/api/marketBuy/:userID', function (request, response) {
         var MarketID = request.body.marketBuy._id;
         var userID = request.params.userID;
         var price = request.body.price;
@@ -290,7 +300,7 @@
         marketBuy.findOrCreateOffer(MarketID, userID, price, amount, response);
     });
 
-    router.delete('/marketBuy/:userID', function (request, response) {
+    router.delete('/api/marketBuy/:userID', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         var userID = request.params.userID;
         var price = request.body.price;
@@ -300,28 +310,33 @@
 ///MARKETSELL
     var marketSell = require('./marketSell/marketSell.model');
 // marketSell ressourses
-    router.get('/marketSell/:marketID', function (request, response) {
-        var MarketID = request.params.marketID;
-        marketSell.getMarketSell(MarketID, response);
+    router.get('/api/marketSell/:devID', function (request, response) {
+        var DevID = request.params.devID;
+        marketSell.getMarketSell(DevID, response);
     });
 
-    router.put('/marketSell/tax', function (request, response) {
+    router.put('/api/marketSell', function (request, response) {
+        var MarketSell = request.body.market;
+        marketSell.updateEntireMarket(MarketSell, response);
+    })
+
+    router.put('/api/marketSell/tax', function (request, response) {
         var MarketSell = request.body.marketSell;
         marketSell.updateTax(MarketSell, response);
     });
 
-    router.put('/marketSell/marketType', function (request, response) {
+    router.put('/api/marketSell/marketType', function (request, response) {
         var MarketSell = request.body.marketSell;
         marketSell.updateMarketType(MarketSell, response);
     });
 
-    router.put('/marketSell/:userID', function (request, response) {
+    router.put('/api/marketSell/:userID', function (request, response) {
         var MarketSell = request.body.marketSell;
         var userID = request.params.userID;
         marketSell.findUserOffer(MarketSell, userID, response);
     });
 
-    router.post('/marketSell/:userID', function (request, response) {
+    router.post('/api/marketSell/:userID', function (request, response) {
         var MarketID = request.body.marketSell._id;
         var userID = request.params.userID;
         var price = request.body.price;
@@ -329,7 +344,7 @@
         marketSell.findOrCreateOffer(MarketID, userID, price, amount, response);
     });
 
-    router.delete('/marketSell/:userID', function (request, response) {
+    router.delete('/api/marketSell/:userID', function (request, response) {
         var MarketSell = request.body.marketSell;
         var userID = request.params.userID;
         var price = request.body.price;

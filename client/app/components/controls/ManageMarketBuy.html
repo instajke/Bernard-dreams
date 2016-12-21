@@ -1,12 +1,12 @@
-<md-card layout="column" style="width: 500px; height: 600px;">
+<md-card style="width: 500px; height: 600px;">
     <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="defaul center">
         <span flex="5"></span>
-        <md-card-title-text>Manage market</md-card-title-text>
+        <md-card-title-text>Update buy market</md-card-title-text>
     </md-toolbar>
     <md-content layout="column">
         <md-input-container>
           <label>Market name</label>
-          <input ng-model="currentMarket.name">
+          <input ng-model="currentMarket.marketName">
         </md-input-container>
 
         <md-input-container>
@@ -14,38 +14,34 @@
           <input ng-model="currentMarket.marketType">
         </md-input-container>
 
-        <md-input-container>
-            <label>Market description</label>
-            <input ng-model="currentMarket.description">
-        </md-input-container>
-
         <md-input-container >
-          <label>Market tax</label>
-          <input ng-model="currentMarket.tax">
-        </md-input-container>
-
-        <md-checkbox ng-model="currentMarket.showOffers" aria-label="Show offers">
-            Show offers: {{ currentMarket.showOffers }}
-        </md-checkbox>
-
-        <md-input-container ng-model="currentMarket.newPrice">
-            <label>Price</label>
-            <input ng-model="currentMarket.newPrice">
+          <label>Market taxes</label>
+          <input ng-model="currentMarket.taxes">
         </md-input-container>
 
         <md-input-container>
           <label>Internal currency type: </label>
-          <md-select ng-model="currentMarket.currencyType1">
+          <md-select ng-model="currentMarket.currencyAnother">
             <md-option><em>None</em></md-option>
             <md-option ng-repeat="curr in currencies" ng-value="curr.name">{{curr.name}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container>
           <label>External currency type: </label>
-          <md-select ng-model="currentMarket.currencyType2">
+          <md-select ng-model="currentMarket.currencyTypeBuy">
             <md-option><em>None</em></md-option>
             <md-option ng-repeat="curr in currencies" ng-value="curr.name">{{curr.name}}</md-option>
           </md-select>
+        </md-input-container>
+
+        <md-input-container ng-model="currentMarket.curBuyings">
+            <label>Price</label>
+            <input ng-model="currentMarket.newPrice">
+        </md-input-container>
+
+        <md-input-container ng-model="currentMarket.newPrice">
+            <label>Price</label>
+            <input ng-model="currentMarket.newPrice">
         </md-input-container>
     </md-content>
 

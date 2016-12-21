@@ -26,7 +26,7 @@ module.exports = {
     getMarket : function(marketId, response) {
         market.findOne({_id: marketId}).exec(function (err,res) {
             if(err){
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 response.json({"result": "SUCCESS", "market": res});
             }
@@ -36,7 +36,7 @@ module.exports = {
     searchMarket : function(request, response) {
         market.find({name: request.params.name}).exec(function (err,res){
             if(err){
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 response.json({"result": "SUCCESS", "market": res});
             }
@@ -52,7 +52,7 @@ module.exports = {
     getMarketsByDevId : function(request, response) {
         market.find({devID : request.params.devID}).exec(function (err, res){
             if (err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 response.json({"result" : "SUCCESS", "markets" : res});
             }
@@ -63,6 +63,8 @@ module.exports = {
         market.create(Market, function (err, doc){
                 var MarketSell = {
                     marketID: doc._id,
+                    marketName: doc.marketName + ' Sell',
+                    devID: doc.devID,
                     marketType: doc.marketType,
                     taxes: doc.tax,
                     currencyTypeSell: doc.currencyType1,
@@ -75,6 +77,8 @@ module.exports = {
                 };
                 var MarketBuy = {
                     marketID: doc._id,
+                    marketName: doc.marketName + ' Buy',
+                    devID: doc.devID,
                     marketType: doc.marketType,
                     taxes: doc.tax,
                     currencyAnother: doc.currencyType1,
@@ -93,7 +97,7 @@ module.exports = {
     updateMarketShowOffers : function (Market, response) {
         market.findOne({_id: Market._id}).exec(function (err,res) {
             if(err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 res.showOffers = Market.showOffers;
                 res.save();
@@ -105,7 +109,7 @@ module.exports = {
     updateMarketType : function (Market, response) {
         market.findOne({_id: Market._id}).exec(function (err,res) {
             if(err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 res.marketType = Market.marketType;
                 res.save();
@@ -117,7 +121,7 @@ module.exports = {
     updateMarketTax : function (Market, response) {
         market.findOne({_id: Market._id}).exec(function (err,res) {
             if(err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 res.tax = Market.tax;
                 res.save();
@@ -129,9 +133,21 @@ module.exports = {
     updateMarketDescription : function (Market, response) {
         market.findOne({_id: Market._id}).exec(function (err,res) {
             if(err) {
-                response.send(500, {error: err});
+                response.status(500).send(err);
             } else {
                 res.description = Market.description;
+                res.save();
+                response.json({success: true});
+            }
+        });
+    },
+
+    updateMarket : function (Market, response) {
+
+        market.findOneAndUpdate({_id : Market._id}, Market, function (err, res) {
+            if (err)
+                response.status(500).send(err);
+            else {
                 res.save();
                 response.json({success: true});
             }
