@@ -272,7 +272,6 @@ exports.updateUser = function(User, response) {
       response.json({success: true});
     }
   })
->>>>>>> origin/master
 };
 
 exports.bullshit = function(UserId, response) {
