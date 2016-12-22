@@ -151,13 +151,12 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             // func1
             var success = false;
             var index = -1;
-            for(var i = 0; i < res.wallet.length; i++)
-            {
-                if(res.wallet[i].marketID == marketID) {
-                    if(index == -1)
+            for (var i = 0; i < res.wallet.length; i++) {
+                if (res.wallet[i].marketID == marketID) {
+                    if (index == -1)
                         index = i;
-                    if(res.wallet[i].currencyType == currencyType) {
-                        if(res.wallet[i].amount >= cost) {
+                    if (res.wallet[i].currencyType == currencyType) {
+                        if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
                             success = true;
                             // make pay
@@ -167,8 +166,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                             myWallet.amount = cost;
                             var myHistory = historyHelper(myWallet);
                             res.history.push(myHistory);
-                            if(i != index) {
-                                if(res.wallet[index].currencyType == currencyType2) {
+                            if (i != index) {
+                                if (res.wallet[index].currencyType == currencyType2) {
                                     // update history
                                     myWallet = res.wallet[index];
                                     myWallet.amount = amount;
@@ -179,8 +178,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                             } else {
                                 // func2
                                 var notfound = true;
-                                for(; i < res.wallet.length; i++) {
-                                    if(res.wallet[i].currencyType == currencyType2) {
+                                for (; i < res.wallet.length; i++) {
+                                    if (res.wallet[i].currencyType == currencyType2) {
                                         // update history
                                         myWallet = res.wallet[i];
                                         myWallet.amount = amount;
@@ -191,7 +190,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         break;
                                     }
                                 }
-                                if(notfound) {
+                                if (notfound) {
                                     var newWallet = {};
                                     newWallet.currencyType = currencyType2;
                                     newWallet.amount = amount;
@@ -206,12 +205,13 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                     }
                 }
             }
-            if(success) {
+            if (success) {
                 res.save();
                 callback(marketID, transaction, indexOffer, amount, response);
             }
         }
     });
+};
 
 exports.updateUser = function(User, response) {
   console.log("UPDATE USER");
