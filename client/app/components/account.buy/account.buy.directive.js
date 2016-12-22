@@ -19,6 +19,21 @@
       var ctrl = this;
 
       
+
   }
+    
+    connectShopCtrl.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', 'currentUser'];
+    
+    function connectShopCtrl(accountService, $http, $rootScope, $mdDialog, currentUser) {
+        var ctrl = this;
+        
+        ctrl.currentMarket = {};
+        
+        ctrl.connect = function(market) {
+            //TODO: init wallet, add to the account
+            var wallet = { currencyType : market.currencyType1, amount : 0, marketID : market._id };
+            currentUser 
+        }
+    }
 
 })();

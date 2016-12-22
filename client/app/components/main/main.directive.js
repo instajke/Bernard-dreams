@@ -23,9 +23,26 @@
     vm.user = {};
     vm.isOpen             = false;
     vm.selectedDirection  = "down";
-    vm.selectedMode       = "md-fling";
+    vm.selectedMode       = "md-fling md-fab-top-right";
     vm.status = '';
     vm.$mdDialog          = $mdDialog;
+      
+    //FAB Log In
+    vm.fabHidden = false;
+    vm.fabOpen = false;
+    vm.hover = false;
+    
+    $scope.$watch('mainVm.fabOpen', function(isOpen) {
+        if (isOpen) {
+            $timeout(function() {
+                $scope.tooltipVisible = vm.fabOpen;
+            }, 600);
+        } else {
+            $scope.tooltipVisible = vm.fabOpen;
+        }
+    })
+      
+    
 
     vm.showAlert = function(res) {
         alert = $mdDialog.alert({

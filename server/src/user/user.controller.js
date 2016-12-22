@@ -2,6 +2,17 @@
 
 var user = require('./user.model.js');
 
+function historyHelper(wallet)
+{
+    var myHistory = {};
+    myHistory.date = Date.now();
+    myHistory.currencyType = wallet.currencyType;
+    myHistory.amount = wallet.amount;
+    myHistory.marketID = wallet.marketID;
+    return myHistory;
+};
+
+
 /**
  * GET /users
  *
@@ -79,20 +90,13 @@ exports.post = function(req, res, next) {
  *
  */
 exports.put = function(req, res, next) {
-  user.findById(req.params.id, function(err, user) {
+  user.findOneAndUpdate({_id : req.params.id}, function(err, user) {
     if (err) {
       return next(err);
     }
     if (!user) {
       return res.status(404).send('Not Found');
     }
-
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.name = req.body.name;
-    user.surname = req.body.surname;
-    user.bio = req.body.bio;
-
 
     user.save(function(err) {
       if (err) {
@@ -101,4 +105,141 @@ exports.put = function(req, res, next) {
       return res.status(200).json(user);
     });
   });
+};
+
+exports.updateUserIsDev = function (User, response) {
+    user.findById(User.userID).exec(function (err, res) {
+        if (err) {
+            response.send(500, {error: err});
+        } else {
+            res.isDev = User.isDev;
+            res.save();
+            response.json({success: true});
+        }
+    });
+};
+
+exports.updateWallet = function (User, response) {
+    user.findById({ _id : User._id }).exec(function (err, res) {
+        if (err) {
+            response.send(500, {error: err});
+        } else {
+            var newCurrency = true;
+            for(var i = 0; i < res.wallet.length; i++)
+            {
+                if(res.wallet[i].marketID == User.wallet.marketID)
+                    if(res.wallet[i].currencyType == User.wallet.currencyType)
+                    {
+                        console.log("update wallet!");
+                        newCurrency = false;
+                        res.wallet[i].amount += User.wallet.amount;
+                    }
+            }
+            if(newCurrency)
+                res.wallet.push(User.wallet);
+            var myHistory = historyHelper(User.wallet);
+            res.history.push(myHistory);
+            res.save();
+        }
+    });
+};
+
+exports.justCheckPayingCapacity = function(userId, cost, currencyType, marketID, price, amount, response, callback) {
+    user.findOne({userID: userId}).exec(function (err, res) {
+        if (err) {
+            response.send(500, {error: err});
+        } else {
+            // func1
+            for (var i = 0; i < res.wallet.length; i++) {
+                if (res.wallet[i].marketID == marketID) {
+                    if (res.wallet[i].currencyType == currencyType) {
+                        if (res.wallet[i].amount >= cost) {
+                            console.log("Cool! Gamer is able to pay");
+                            // make pay
+                            res.wallet[i].amount -= cost;
+                            // update history
+                            var myWallet = res.wallet[i];
+                            myWallet.amount = cost;
+                            var myHistory = historyHelper(myWallet);
+                            res.history.push(myHistory);
+                            res.save();
+                            callback(marketID, userId, price, amount, response);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    });
+};
+
+exports.checkPayingCapacity = function (userId, transaction, cost, currencyType, amount, currencyType2, marketID, indexOffer, response, callback) {
+    user.findOne({userID: userId}).exec(function (err, res) {
+        if (err) {
+            response.send(500, {error: err});
+        } else {
+            // func1
+            var success = false;
+            var index = -1;
+            for(var i = 0; i < res.wallet.length; i++)
+            {
+                if(res.wallet[i].marketID == marketID) {
+                    if(index == -1)
+                        index = i;
+                    if(res.wallet[i].currencyType == currencyType) {
+                        if(res.wallet[i].amount >= cost) {
+                            console.log("Cool! Gamer is able to pay");
+                            success = true;
+                            // make pay
+                            res.wallet[i].amount -= cost;
+                            // update history
+                            var myWallet = res.wallet[i];
+                            myWallet.amount = cost;
+                            var myHistory = historyHelper(myWallet);
+                            res.history.push(myHistory);
+                            if(i != index) {
+                                if(res.wallet[index].currencyType == currencyType2) {
+                                    // update history
+                                    myWallet = res.wallet[index];
+                                    myWallet.amount = amount;
+                                    myHistory = historyHelper(myWallet);
+                                    res.history.push(myHistory);
+                                    res.wallet[index].amount += amount;
+                                }
+                            } else {
+                                // func2
+                                var notfound = true;
+                                for(; i < res.wallet.length; i++) {
+                                    if(res.wallet[i].currencyType == currencyType2) {
+                                        // update history
+                                        myWallet = res.wallet[i];
+                                        myWallet.amount = amount;
+                                        myHistory = historyHelper(myWallet);
+                                        res.history.push(myHistory);
+                                        res.wallet[index].amount += amount;
+                                        notfound = false;
+                                        break;
+                                    }
+                                }
+                                if(notfound) {
+                                    var newWallet = {};
+                                    newWallet.currencyType = currencyType2;
+                                    newWallet.amount = amount;
+                                    newWallet.marketID = marketID;
+                                    myHistory = historyHelper(myWallet);
+                                    res.history.push(myHistory);
+                                    res.wallet.push(newWallet);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if(success) {
+                res.save();
+                callback(marketID, transaction, indexOffer, amount, response);
+            }
+        }
+    });
 };

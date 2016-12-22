@@ -140,8 +140,9 @@
 
 
     router.put('/api/paypal', function (request, response) {
-      var query = { username : request.body.nickname };
-      User.update(query, { paypal : request.body.paypal }, {new : true}, function (err, res) {
+      var query = { username : request.body.user.nickname };
+      console.log(request);
+      User.update(query, { paypal : request.body.user.paypal }, {new : true}, function (err, res) {
           if (err) {
               response.send(500, {error: err});
           } else {
@@ -160,6 +161,8 @@
           }
       });
     });
+
+
 
 ///MARKET
     var market = require('./market/market.model');

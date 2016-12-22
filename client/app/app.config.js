@@ -5,9 +5,9 @@
     .module('app')
     .config(config);
 
-  config.$inject = ['$translateProvider', 'tmhDynamicLocaleProvider', '$httpProvider', '$compileProvider', '$mdIconProvider'];
+  config.$inject = ['$translateProvider', 'tmhDynamicLocaleProvider', '$httpProvider', '$compileProvider', '$mdIconProvider', '$mdThemingProvider'];
 
-  function config($translateProvider, tmhDynamicLocaleProvider, $httpProvider, $compileProvider, $mdIconProvider) {
+  function config($translateProvider, tmhDynamicLocaleProvider, $httpProvider, $compileProvider, $mdIconProvider, $mdThemingProvider) {
 
     // Angular perfs best practices
     $httpProvider.useApplyAsync(true);
@@ -20,6 +20,12 @@
     });
     $translateProvider.fallbackLanguage('en');
     $translateProvider.useLocalStorage();
+
+    $mdThemingProvider.theme('default')
+        .primaryPalette('green');
+
+    $mdThemingProvider.theme('altTheme')
+        .dark();
 
     // i18n angular-dynamic-locale
     tmhDynamicLocaleProvider.localeLocationPattern('/i18n/angular/angular-locale_{{locale}}.js');

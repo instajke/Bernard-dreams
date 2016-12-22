@@ -15,7 +15,8 @@ var marketSchema = new Schema ({
     tax: Number, // percents
     newPrice: Number, // amount of buying that might change price in illusive markets
     currencyType1: String, // gold
-    currencyType2: String // gems
+    currencyType2: String, // gems
+    shopBinded: Boolean
     //priceBuy: Number,
     // priceSell: Number
 });

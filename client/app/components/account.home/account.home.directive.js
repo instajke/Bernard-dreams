@@ -37,7 +37,10 @@
 
 
       ctrl.updatePaypalAccount = function () {
-          accountService.updatePaypal(ctrl.currentUser);
+          accountService.updatePaypal(ctrl.currentUser)
+            .then ( function (response) {
+                ctrl.showAlert(response);
+            });
           ctrl.showAlert("Paypal account has been updated.")
       };
 
