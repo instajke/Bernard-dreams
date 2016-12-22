@@ -23,6 +23,22 @@ var session = require('express-session');
  */
 var mongodbUrl = 'mongodb://' + config.DB_HOST + ':' + config.DB_PORT + '/' + config.DB_NAME;
 
+// for MongoDB by Compose service
+if (process.env.VCAP_SERVICES) {
+  var env = JSON.parse(process.env.VCAP_SERVICES);
+
+  if (env['user-provided']) { // for Compose
+    var cm = env['user-provided'][0].credentials;
+    var dbname = 'klemanpromos'; // you noted this earlier
+    mongodbUrl = 'mongodb://'
+        + cm.user
+        + ':' + cm.password
+        + '@' + cm.uri
+        + ':' + cm.port
+        + '/' + dbname;
+  }
+}
+
 // Database options
 // Option auto_reconnect is defaulted to true
 var dbOptions = {
