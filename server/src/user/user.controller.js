@@ -166,6 +166,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             for (var i = 0; i < res.wallet.length; i++) {
                 if (res.wallet[i].marketID == marketID) {
                     if (index == -1) index = i;
+                    if (index == -1)
+                        index = i;
                     if (res.wallet[i].currencyType == currencyType) {
                         if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
@@ -253,6 +255,24 @@ exports.updateUser = function (User, response) {
             });
         }
     });
+};
+
+exports.updateUser = function(User, response) {
+  console.log("UPDATE USER");
+  console.log(User);
+  user.findById(User._id, function(err, user) {
+    if (err) {
+      response.send(500, {error: err});
+    } else {
+      user.email = User.email;
+      user.name = User.name;
+      user.surname = User.surname;
+      user.description = User.description;
+      user.save();
+      response.json({success: true});
+    }
+  })
+>>>>>>> origin/master
 };
 
 exports.bullshit = function(UserId, response) {

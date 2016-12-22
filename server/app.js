@@ -23,6 +23,11 @@ var session = require('express-session');
  */
 var mongodbUrl = 'mongodb://' + config.DB_HOST + ':' + config.DB_PORT + '/' + config.DB_NAME;
 
+// for MongoDB by Compose service
+if (process.env.PORT) {
+  mongodbUrl = 'mongodb://instajke:klemanpromos!@aws-eu-central-1-portal.0.dblayer.com:15332/klemanpromos-db?ssl=true';
+}
+
 // Database options
 // Option auto_reconnect is defaulted to true
 var dbOptions = {
@@ -92,11 +97,12 @@ app.use(routes);
 // Static files
 app.use('/', express.static(__dirname + '/../public'));
 
-// Once database open, start server
+// Once database open, start servers
 mongoose.connection.once('open', function callback() {
   console.log('Connection with database succeeded.');
   app.listen(config.APP_PORT, function() {
     console.log('app listening on port %d in %s mode', this.address().port, app.settings.env);
+    console.log(this.address().address);
   });
 });
 
