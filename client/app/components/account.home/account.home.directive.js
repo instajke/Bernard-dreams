@@ -19,6 +19,11 @@
       var ctrl = this;
 
       ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
+      accountService.getUser($rootScope.rootParam.nickname)
+          .then( function(promise) {
+              console.log(promise);
+              ctrl.newUser = promise;
+          }) ;
 
       ctrl.showAlert = function(res) {
             alert = $mdDialog.alert({
@@ -44,8 +49,22 @@
           ctrl.showAlert("Paypal account has been updated.")
       };
 
+      ctrl.updateUserAccount = function () {
+          console.log(ctrl.newUser);
+          accountService.postUser(ctrl.newUser);
+      };
+
+      ctrl.postMarket = function() {
+          ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
+          console.log(ctrl.currentMarket);
+          accHomeService.postMarket(ctrl.currentMarket)
+              .then (function () {
+                  ctrl.initMarkets();
+              })
+      };
+
       ctrl.confirm = function () {
-          accountService.upgradeToDev(ctrl.currentUser)
+          accountService.upgradeToDev(ctrl.user);
           ctrl.showAlert("U r dev now");
           $state.go('account', $stateParams);
       };

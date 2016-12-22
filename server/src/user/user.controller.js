@@ -12,14 +12,6 @@ function historyHelper(wallet)
     return myHistory;
 };
 
-
-/**
- * GET /users
- *
- * @description
- * list of users
- *
- */
 exports.find = function(req, res, next) {
   user.find(function(err, users) {
     if (err) {
@@ -29,13 +21,6 @@ exports.find = function(req, res, next) {
   });
 };
 
-/**
- * GET /users/:id
- *
- * @description
- * Find user by id
- *
- */
 exports.get = function(req, res, next) {
   user.find({ email : req.params.email, password : req.params.password}, function(err, user) {
     if (err) {
@@ -65,14 +50,6 @@ exports.findByEmail = function(req, res, next) {
   });
 };
 
-
-/**
- * POST /users
- *
- * @description
- * Create a new user
- *
- */
 exports.post = function(req, res, next) {
   user.create(req.body, function(err, user) {
     if (err) {
@@ -82,13 +59,6 @@ exports.post = function(req, res, next) {
   });
 };
 
-/**
- * PUT /users/:id
- *
- * @description
- * Update a user
- *
- */
 exports.put = function(req, res, next) {
   user.findOneAndUpdate({_id : req.params.id}, function(err, user) {
     if (err) {
@@ -242,4 +212,20 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
         }
     });
+
+exports.updateUser = function(User, response) {
+  console.log("UPDATE USER");
+  console.log(User);
+  user.findById(User._id, function(err, user) {
+    if (err) {
+      response.send(500, {error: err});
+    } else {
+      user.email = User.email;
+      user.name = User.name;
+      user.surname = User.surname;
+      user.description = User.description;
+      user.save();
+      response.json({success: true});
+    }
+  })
 };

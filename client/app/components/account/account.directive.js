@@ -188,8 +188,8 @@
                 ctrl.user = promise;
                 fillSidenav(ctrl.user);
             }) ;
-        console.log(ctrl.user);
         ctrl.checkLoggedIn();
+        console.log(ctrl.user);
         $state.transitionTo('account.home', $stateParams);
         ctrl.getTransactions();
     }
