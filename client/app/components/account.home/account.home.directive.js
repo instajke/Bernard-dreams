@@ -17,11 +17,16 @@
 
   function AccountHomeController(accountService, $http, $rootScope, $mdDialog) {
       var ctrl = this;
+      
+      ctrl.user = {};
 
-      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
+      accountService.getUser($rootScope.rootParam.nickname)
+        .then(function(promise) {
+            ctrl.user = promise;
+        });
+              
       accountService.getUser($rootScope.rootParam.nickname)
           .then( function(promise) {
-              console.log(promise);
               ctrl.newUser = promise;
           }) ;
 
@@ -39,24 +44,13 @@
                 });
       };
 
-
-
-      ctrl.updatePaypalAccount = function () {
-          accountService.updatePaypal(ctrl.currentUser)
-            .then ( function (response) {
-                ctrl.showAlert(response);
-            });
-          ctrl.showAlert("Paypal account has been updated.")
-      };
-
       ctrl.updateUserAccount = function () {
-          console.log(ctrl.newUser);
+
           accountService.postUser(ctrl.newUser);
       };
 
       ctrl.postMarket = function() {
           ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
-          console.log(ctrl.currentMarket);
           accHomeService.postMarket(ctrl.currentMarket)
               .then (function () {
                   ctrl.initMarkets();

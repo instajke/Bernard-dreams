@@ -4,11 +4,11 @@ var gamer = require('../user/user.logic');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AV8CV49yFM01ha4e4N2hWpEQkSBLdTaGQgvCdJPJrF2LOD-pHV3r-H_U3Xmr-bpFXfNR9OaR9co2fXRR',
-    'client_secret': 'EI58OXlnatIBdOhWAAx4DebjMxvIVZZ_FsrXkEE_oFeXg42zyo6aq8pSOirxW99AcbswXop4-Nhy4Pco'
+    'client_id': 'Acmv3k9LnYgKLuOO0qaAQ5B-PTQ-PrpvY4uSWPZH_zRvTn13RzCwoReQUZjPriZix-s3XX16XdciMjet',
+    'client_secret': 'EOG5xdmFc69_I2Lpk8EMbBWlMfi8mwHioB7RvK1uYvT4DbPY1RyugCLmUPBV_w81HnMjJP434XHoS6-V'
 });
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose').set('debug', true);
 
 var Schema = mongoose.Schema;
 

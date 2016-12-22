@@ -2,7 +2,7 @@
     var express = require('express');
     var router = express.Router();
     var passport = require('passport');
-    var mongoose = require('mongoose');
+    var mongoose = require('mongoose').set('debug', true);
     var Schema = mongoose.Schema,
       ObjectId = Schema.ObjectId;
 
@@ -44,9 +44,13 @@
         });
     });
 
+    router.get('/api/usersshop/:userId', function (req, res) {
+        UserControl.bullshit(req.params.userId, res);
+        console.log(res);
+    });
+
     router.post('/api/user', function (request, response) {
         var NewUser = request.body.user;
-        console.log("POST USER");
         console.log(NewUser);
         UserControl.updateUser(NewUser, response);
     });
@@ -233,7 +237,19 @@
     router.put('/api/market', function (request, response) {
         var Market = request.body.market;
         market.updateMarket(Market, response);
-    })
+    });
+
+    router.get('/api/gamermarkets/:usedID', function(request, response) {
+        console.log("GAMER MARKETS REQUEST");
+        console.log(request);
+        User.findOne({ username : "u" }, function(err, user) {
+            console.log("we found user");
+            console.log(user);
+            if (err)
+                res.send(err);
+            market.getMarketsConnectedToUser(user, response);
+        });
+    });
 
 ///DEVELOPER
     var developer = require('./developer/developer.model');
@@ -357,14 +373,20 @@
 ///SHOP
     var shop = require('./shop/shop.model');
 // shop ressourses
-    router.get('/api/shop/:shopID', function (request, response) {
-        var ShopID = request.params.shopID;
-        shop.getShop(ShopID, response);
+    //router.get('/api/shop/:shopID', function (request, response) {
+    //    var ShopID = request.params.shopID;
+    //    shop.getShop(ShopID, response);
+    //});
+
+    router.get('/api/shop/:marketID', function(request, response) {
+        console.log("Get shop mark id");
+        var marketID = request.params.marketID;
+        shop.getShopByMarketId(marketID, response);
     });
 
-    router.get('/api/shop/:name', function (request, response) {
-        shop.searchShop(request, response);
-    });
+    //router.get('/api/shop/:name', function (request, response) {
+    //    shop.searchShop(request, response);
+    //});
 
     router.get('/api/shops', function (request, response) {
         shop.getShops(response);
@@ -373,6 +395,13 @@
     router.get('/api/shops/:devID', function (request, response) {
         var devID = request.params.devID;
         shop.getShopsByDevId(request, response);
+    });
+
+    router.post('/api/shops/', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        shop.findShopsByMarketId(marketIdArray, response);
     });
 
 
@@ -459,7 +488,7 @@
 
     var myPayPal = require('./paypal/paypal.model');
 
-    router.get('/paypal/approve', function (request, response) {
+    router.post('/api/paypal/approve', function (request, response) {
         var marketID = request.body.marketID;
         var Offer = request.body.offer;
         var devPayPalAcc = request.body.payPalAcc;

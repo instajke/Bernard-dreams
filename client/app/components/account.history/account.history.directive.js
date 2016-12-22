@@ -18,7 +18,10 @@
   function AccountHistoryController(accountService, $http, $rootScope, $mdDialog) {
       var ctrl = this;
 
-      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
+      ctrl.user = accountService.getUser($rootScope.rootParam.nickname)
+        .then(function(promise) {
+            ctrl.user = promise;
+        });
       
       ctrl.transactions = ctrl.user.transactions;
 

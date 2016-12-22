@@ -26,7 +26,6 @@
       ctrl.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
 
       ctrl.showCurrentMarket = function() {
-          console.log(ctrl.currentMarket);
           $rootScope.showAlert(ctrl.currentMarket);
       };
 
@@ -71,7 +70,6 @@
 
       ctrl.postMarket = function() {
           ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
-          console.log(ctrl.currentMarket);
           marketService.postMarket(ctrl.currentMarket)
             .then (function () {
                 ctrl.initMarkets();
@@ -83,8 +81,6 @@
       ctrl.initMarkets = function() {
           marketService.getMarketsByDevId($rootScope.rootParam.nickname)
             .then( function (promise) {
-                console.log("PROMISE");
-                console.log(promise);
                 ctrl.markets = promise.markets;
             })
       };
@@ -99,11 +95,9 @@
       ctrl.initSellMarkets = function() {
           marketService.getSellMarketsByDevId($rootScope.rootParam.nickname)
             .then( function ( promise ) {
-                console.log("SELL MARKETS PROMISE");
-                console.log(promise);
+
                 ctrl.marketSells = promise.marketSells;
-                console.log("MARKET SELLS");
-                console.log(ctrl.marketSells);
+
             })
       };
 
@@ -132,7 +126,6 @@
       };
 
       $scope.updateMarket = function() {
-          console.log("we are in update market method");
           $http.put('/api/market', {market : $scope.currentMarket})
             .then(function (response) {
 

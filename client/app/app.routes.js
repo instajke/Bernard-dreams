@@ -57,7 +57,7 @@
     })
     .state('account.gamerShops', {
         url: '/shop',
-        template: '<gamerShops></gamerShops>',
+        template: '<gamershop></gamershop>',
         params: {
             nickname: null
         }

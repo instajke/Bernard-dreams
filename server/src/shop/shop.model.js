@@ -1,7 +1,7 @@
 /**
  * Created by arseniy on 10/29/2016.
  */
-var mongoose = require('mongoose');
+var mongoose = require('mongoose').set('debug', true);
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
@@ -45,6 +45,19 @@ module.exports = {
                 response.send(500, {error: err});
             } else {
                 response.json({"result": "SUCCESS", "shops": res});
+            }
+        });
+    },
+
+    getShopByMarketId: function(marketID, response) {
+        console.log("model method marketID");
+        console.log(marketID);
+        shop.findOne({marketID : marketID}).exec(function(err, res) {
+            if (err) {
+                response.send(500, {err: err});
+            } else {
+                response.json({"result" : "SUCCESS", "shop": res});
+                console.log(res);
             }
         });
     },
@@ -174,8 +187,18 @@ module.exports = {
                 response.json({"result": "SUCCESS", "offers": res});
             }
         });
-    }
+    },
 
+    findShopsByMarketId : function(marketIdArray, response) {
+        marketIdArray.forEach(function(item) {
+            item = Schema.Types.ObjectId(item);
+        });
+        console.log("converted array");
+        console.log(marketIdArray);
+        shop.find({ marketID : { $in : marketIdArray }}, function ( err, docs ) {
+                response.json({"result" : "SUCCESS", "shops" : docs});
+            })
+        }
 };
 
 function reduceOffersID(res, Shop) {

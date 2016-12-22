@@ -127,25 +127,15 @@
             var deferred = $q.defer();
 
             $http.get('/api/user/' + nickname)
-                /*.then(function(response) {
-                     console.log(response);
-                     currentUser = response.data;
-                });*/
                 .success(function(data, status) {
                     if (status === 200) {
-                        console.log("STATUS 200");
-                        console.log(data);
                         deferred.resolve(data);
                     }
                     else {
-                        console.log("ELSE");
-                        console.log(data);
                         deferred.reject();
                     }
                 })
                 .error (function (data) {
-                    console.log("ERROR");
-                    console.log(data);
                     deferred.reject();
                 });
 

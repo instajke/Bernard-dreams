@@ -37,39 +37,9 @@
                 });
         };
 
-        $rootScope.transactions = [];
-        $rootScope.currentTrans = {};
-        $rootScope.transDialog = $mdDialog;
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
-
-        ctrl.getTransactions = function() {
-            $http.get('/api/things')
-                .then(function(response) {
-                    $rootScope.transactions = response.data;
-                });
-        };
-
-        ctrl.postTrans = function() {
-            $http.post('/api/things', ctrl.trans)
-                .then(function() {
-                    ctrl.status = 'OK';
-                });
-        };
-
-        $rootScope.showTransDialog = function(ev, trans) {
-            $rootScope.transDialog.show({
-                controller: TransDialogController,
-                templateUrl: 'app/components/controls/DetailedItemInfo.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    currentTrans : trans
-                },
-                clickOutsideToClose: true
-            });
-        };
 
         $rootScope.showHistoryDialog = function(ev, transactions) {
             $rootScope.transactions = transactions;
@@ -113,15 +83,13 @@
                 $mdSidenav(navId)
                     .toggle()
                     .then(function() {
-                        $log.debug("toggle " + navId + " is done");
+                        fillSidenav(ctrl.user)
                     });
             }, 50);
         }
 
-        $rootScope.fillSidenav = fillSidenav($rootScope.user);
-
         function fillSidenav(user) {
-            if (!ctrl.user.isDev) {
+            if (!user.isDev) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
                     url: "home",
@@ -177,54 +145,21 @@
         ctrl.checkLoggedIn = function() {
             $http.get('api/getAuthUser')
                 .success(function(user){
-                    console.log(user);
                     $rootScope.rootParam.nickname = user.username;
                 });
         };
-
+        
+        console.log("user nickname is");
+        console.log($rootScope.rootParam.nickname);
+        ctrl.checkLoggedIn();
         accountService.getUser($rootScope.rootParam.nickname)
             .then( function(promise) {
-                console.log(promise);
                 ctrl.user = promise;
+                console.log("current user is");
+                console.log(ctrl.user);
                 fillSidenav(ctrl.user);
             }) ;
-        ctrl.checkLoggedIn();
-        console.log(ctrl.user);
         $state.transitionTo('account.home', $stateParams);
-        ctrl.getTransactions();
-    }
-
-    TransDialogController.$inject = ['$scope', '$mdDialog', 'currentTrans'];
-
-    function TransDialogController($scope, $mdDialog, currentTrans) {
-
-        $scope.currentTrans = currentTrans;
-
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-    }
-
-    HistoryDialogController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog'];
-
-    function HistoryDialogController($http, $scope, $rootScope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        }
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-        $scope.transactions = $rootScope.transactions;
-        $scope.showTransDialog = $rootScope.showTransDialog;
     }
 
     UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog'];

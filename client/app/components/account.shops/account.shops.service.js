@@ -67,10 +67,6 @@
             var deferred = $q.defer();
 
             $http.get('/api/user/' + nickname)
-                /*.then(function(response) {
-                     console.log(response);
-                     currentUser = response.data;
-                });*/
                 .success(function(data, status) {
                     if (status === 200) {
                         deferred.resolve(data);

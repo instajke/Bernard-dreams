@@ -2,13 +2,14 @@
     <md-card-content>
         <md-input-container>
               <label>Select market: </label>
-              <md-select ng-model="connectShopCtrl.currentMarket.marketID">
+              <md-select ng-model="currentMarket.marketID">
                 <md-option><em>None</em></md-option>
-                <md-option ng-repeat="market in connectShopCtrl.markets" ng-show="market.shopBinded" ng-value="market._id">{{market.name}}</md-option>
+                <md-option ng-repeat="market in availableMarkets" ng-value="$index">{{market.name}}</md-option>
               </md-select>
             </md-input-container>
-            <md-button class="md-raised md-hue-4" ng-click="connectShopCtrl.connect(">
+            <md-button class="md-raised md-hue-4" ng-click="connect()">
                 <md-tooltip>Connect game shop to your account</md-tooltip>
+                {{currentMarket.marketID}}
             </md-button>
     </md-card-content>
 </md-card>

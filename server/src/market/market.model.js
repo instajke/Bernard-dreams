@@ -29,6 +29,8 @@ module.exports = {
             if(err){
                 response.status(500).send(err);
             } else {
+                console.log("GOT MARKET");
+                console.log(res);
                 response.json({"result": "SUCCESS", "market": res});
             }
         });
@@ -153,5 +155,10 @@ module.exports = {
                 response.json({success: true});
             }
         });
+    },
+
+    getMarketsConnectedToUser : function (User, response) {
+
+
     }
 }

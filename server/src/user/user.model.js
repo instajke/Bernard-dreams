@@ -29,7 +29,8 @@ var User = new Schema({
     isDev: { type: Boolean, default: null },
     date: { type: Date, default: Date.now() },
     transactions: [Transactions],
-    wallet: [Wallet]
+    wallet: [Wallet],
+    connectedMarkets: [ { marketID : Schema.Types.ObjectId} ]
 });
 
 User.plugin(passportLocalMongoose);
