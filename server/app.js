@@ -26,7 +26,7 @@ var mongodbUrl = 'mongodb://' + config.DB_HOST + ':' + config.DB_PORT + '/' + co
 // for MongoDB by Compose service
 if (process.env.VCAP_SERVICES) {
   var env = JSON.parse(process.env.VCAP_SERVICES);
-  console.log(env);
+  console.error(env);
   if (env['user-provided']) { // for Compose
     var cm = env['user-provided'][0].credentials;
     var dbname = 'klemanpromos'; // you noted this earlier
