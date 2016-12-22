@@ -5,6 +5,9 @@
       </md-toolbar>
         <md-card-content>
             <md-list>
+                <md-toolbar class="md-secondary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                    <md-card-title-text>Shop offers</md-card-title-text>
+                </md-toolbar>
                 <md-list-item class="md-3-line" layout-align="end center" ng-show="!shop.offers.length">
                     <div class="md-list-item-text">
                         No offers
@@ -43,7 +46,7 @@
             <span flex="5"></span>
             <md-card-title-text>Create new shop:</md-card-title-text>
         </md-toolbar>
-        <md-content layout="column">
+        <md-card-content layout="column">
             <md-input-container>
               <label>Shop name</label>
               <input ng-model="shopsCtrl.currentShop.name">
@@ -53,7 +56,7 @@
               <label>Defining market</label>
               <md-select ng-model="shopsCtrl.currentShop.marketID">
                 <md-option><em>None</em></md-option>
-                <md-option ng-repeat="market in shopsCtrl.markets" ng-value="market._id">{{market._id}}</md-option>
+                <md-option ng-repeat="market in shopsCtrl.markets" ng-show="!market.shopBinded" ng-value="market._id">{{market._id}}</md-option>
               </md-select>
             </md-input-container>
 
@@ -69,6 +72,6 @@
             <md-button class="md-raised md-primary md-hue-4" ng-click="shopsCtrl.postShop()">
                 <label>Post shop</label>
             </md-button>
-        </md-content>
+        </md-card-content>
     </md-card>
 </md-content>

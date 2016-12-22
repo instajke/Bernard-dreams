@@ -8,6 +8,7 @@
                 <md-card-content>
                     <p> {{market.marketType}} </p>
                     <p> {{market.description}} </p>
+                    <md-divider></md-divider>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-icon-button" aria-label="Favorite">
@@ -29,54 +30,55 @@
                     <span flex="5"></span>
                     <md-card-title-text>Create new market:</md-card-title-text>
                 </md-toolbar>
+                <md-card-content layout="column">
+                    <md-input-container>
+                      <label>Market name</label>
+                      <input ng-model="marketsCtrl.currentMarket.name">
+                    </md-input-container>
 
-                <md-input-container>
-                  <label>Market name</label>
-                  <input ng-model="marketsCtrl.currentMarket.name">
-                </md-input-container>
+                    <md-input-container>
+                      <label>Market type</label>
+                      <input ng-model="marketsCtrl.currentMarket.marketType">
+                    </md-input-container>
 
-                <md-input-container>
-                  <label>Market type</label>
-                  <input ng-model="marketsCtrl.currentMarket.marketType">
-                </md-input-container>
+                    <md-input-container>
+                        <label>Market description</label>
+                        <input ng-model="marketsCtrl.currentMarket.description">
+                    </md-input-container>
 
-                <md-input-container>
-                    <label>Market description</label>
-                    <input ng-model="marketsCtrl.currentMarket.description">
-                </md-input-container>
+                    <md-input-container >
+                      <label>Market tax</label>
+                      <input ng-model="marketsCtrl.currentMarket.tax">
+                    </md-input-container>
 
-                <md-input-container >
-                  <label>Market tax</label>
-                  <input ng-model="marketsCtrl.currentMarket.tax">
-                </md-input-container>
+                    <md-checkbox ng-model="marketsCtrl.currentMarket.showOffers" aria-label="Show offers">
+                        Show offers: {{ marketsCtrl.currentMarket.showOffers }}
+                    </md-checkbox>
 
-                <md-checkbox ng-model="marketsCtrl.currentMarket.showOffers" aria-label="Show offers">
-                    Show offers: {{ marketsCtrl.currentMarket.showOffers }}
-                </md-checkbox>
+                    <md-input-container ng-model="marketsCtrl.currentMarket.newPrice">
+                        <label>Price</label>
+                        <input ng-model="marketsCtrl.currentMarket.newPrice">
+                    </md-input-container>
 
-                <md-input-container ng-model="marketsCtrl.currentMarket.newPrice">
-                    <label>Price</label>
-                    <input ng-model="marketsCtrl.currentMarket.newPrice">
-                </md-input-container>
+                    <md-input-container>
+                      <label>Internal currency type: </label>
+                      <md-select ng-model="marketsCtrl.currentMarket.currencyType1">
+                        <md-option><em>None</em></md-option>
+                        <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
+                      </md-select>
+                    </md-input-container>
+                    <md-input-container>
+                      <label>External currency type: </label>
+                      <md-select ng-model="marketsCtrl.currentMarket.currencyType2">
+                        <md-option><em>None</em></md-option>
+                        <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
+                      </md-select>
+                    </md-input-container>
 
-                <md-input-container>
-                  <label>Internal currency type: </label>
-                  <md-select ng-model="marketsCtrl.currentMarket.currencyType1">
-                    <md-option><em>None</em></md-option>
-                    <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
-                  </md-select>
-                </md-input-container>
-                <md-input-container>
-                  <label>External currency type: </label>
-                  <md-select ng-model="marketsCtrl.currentMarket.currencyType2">
-                    <md-option><em>None</em></md-option>
-                    <md-option ng-repeat="curr in marketsCtrl.currencies" ng-value="curr.name">{{curr.name}}</md-option>
-                  </md-select>
-                </md-input-container>
-
-                <md-button class="md-raised md-primary md-hue-4" ng-click="marketsCtrl.postMarket()">
-                    <label>Post market</label>
-                </md-button>
+                    <md-button class="md-raised md-primary md-hue-4" ng-click="marketsCtrl.postMarket()">
+                        <label>Post market</label>
+                    </md-button>
+                </md-card-content>
             </md-card>
         </md-tab>
         <md-tab label="Manage Buy markets">

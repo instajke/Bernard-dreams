@@ -1,6 +1,6 @@
 var paypal = require('paypal-rest-sdk');
 var shop = require('../shopHelper');
-var gamer = require('../gamer/gamer.logic');
+var gamer = require('../user/user.logic');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live

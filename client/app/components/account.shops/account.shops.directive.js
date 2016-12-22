@@ -31,14 +31,30 @@
       };
 
       ctrl.postShop = function() {
+          var index = 0;
           ctrl.currentShop.devID = $rootScope.rootParam.nickname;
           console.log(ctrl.currentShop);
+          for (var i = 0; i < ctrl.markets.length; ++i)
+          {
+                if (ctrl.markets[i]._id == ctrl.currentShop.marketID)
+                {
+                    index = i;
+                    ctrl.markets[i].shopBinded = true;
+                }
+          }
+          ctrl.updateMarket(ctrl.markets[index]);
           shopService.postShop(ctrl.currentShop)
             .then (function () {
                 ctrl.initShops();
             })
-
       };
+
+      ctrl.updateMarket = function(market){
+          $http.put('/api/market', { market : market })
+            .then( function () {
+                ctrl.initMarkets();
+            })
+      }
 
       ctrl.initShops = function() {
           shopService.getShopsByDevId($rootScope.rootParam.nickname)
