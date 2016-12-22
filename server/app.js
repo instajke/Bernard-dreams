@@ -24,9 +24,9 @@ var session = require('express-session');
 var mongodbUrl = 'mongodb://' + config.DB_HOST + ':' + config.DB_PORT + '/' + config.DB_NAME;
 
 // for MongoDB by Compose service
-if (process.env.APP_PORT) {
+//if (process.env.APP_PORT) {
   mongodbUrl = 'mongodb://instajke:klemanpromos!@aws-eu-central-1-portal.0.dblayer.com:15332/klemanpromos-db?ssl=true';
-}
+//}
 
 // Database options
 // Option auto_reconnect is defaulted to true
