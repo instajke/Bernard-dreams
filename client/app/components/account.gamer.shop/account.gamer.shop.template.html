@@ -1,4 +1,13 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
+    <md-toolbar class="md-secondary md-hue-1" layout="row" layout-align="default center">
+        <md-toolbar-tools>
+            <span flex="5"></span>
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="shopCtrl.showConnectShopDialog()">
+                <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
+                <md-tooltip>Connect new shop</md-tooltip>
+            </md-button>
+        </md-toolbar-tools>
+    </md-toolbar>
     <md-card ng-repeat="shop in shops">
       <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
         <md-card-title-text>{{shop.name}}</md-card-title-text>
@@ -40,5 +49,4 @@
             </md-button>
         </md-card-actions>
     </md-card>
-    <md-button ng-click="shopCtrl.showConnectShopDialog()">Connect shop!</md-button>
 </md-content>

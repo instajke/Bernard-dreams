@@ -1,10 +1,8 @@
 <div layout="column" class="layout-column">
     <md-toolbar class="md-primary md-hue-4" id="top">
         <div class="md-toolbar-tools">
-          <md-button class="md-icon-button" aria-label="Settings">
-              <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
-              <md-tooltip>Open side panel</md-tooltip>
-          </md-button><a href="#/"><span>KleManProMos</span></a><span flex=""></span>
+            <span flex="5"></span>
+          <a href="#/"><span>KleManProMos</span></a><span flex=""></span>
         </div>
     </md-toolbar>
     <md-content layout="column" style="background: none; min-height: calc(100vh - 128px)">
@@ -19,10 +17,10 @@
                         <input ng-model="mainVm.user.password" type="password"> </md-input-container>
                 </div>
                 <div layout="row" layout-align="center top">
-                    <md-fab-speed-dial 
-                       ng-hide="mainVm.fabHidden" 
-                       md-open="mainVm.fabOpen" 
-                       md-direction='{{mainVm.selectedDirection}}' 
+                    <md-fab-speed-dial
+                       ng-hide="mainVm.fabHidden"
+                       md-open="mainVm.fabOpen"
+                       md-direction='{{mainVm.selectedDirection}}'
                        class="md-fling"
                        ng-mouseenter = "mainVm.fabOpen = true"
                        ng-mouseleave = "mainVm.fabOpen = false">
@@ -56,9 +54,9 @@
             </div>
     </md-content>
     <md-toolbar class="md-primary md-hue-4">
-        <div class="md-toolbar-tools" layout="row" id="bottom" flex>
-            <span flex="10"></span>
+        <div class="md-toolbar-tools" layout="row" layout-align="end center" id="bottom" flex>
             <p style="color:white">Made by <span style="color : navy; ">KleManProMos</span></p>
+            <span flex="5"></span>
         </div>
     </md-toolbar>
 </div>

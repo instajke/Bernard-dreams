@@ -290,6 +290,13 @@
         marketBuy.getMarketBuy(DevID, response);
     });
 
+    router.post('/api/marketBuys/', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        marketBuy.getMarketBuysByMarketIds(marketIdArray, response);
+    });
+
     router.put('/api/marketBuy', function (request, response) {
         var MarketBuy = request.body.market;
         marketBuy.updateEntireMarket(MarketBuy, response);
@@ -334,10 +341,17 @@
         marketSell.getMarketSell(DevID, response);
     });
 
+    router.post('/api/marketSells', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        marketSell.getMarketSellsByMarketIds(marketIdArray, response);
+    });
+
     router.put('/api/marketSell', function (request, response) {
         var MarketSell = request.body.market;
         marketSell.updateEntireMarket(MarketSell, response);
-    })
+    });
 
     router.put('/api/marketSell/tax', function (request, response) {
         var MarketSell = request.body.marketSell;

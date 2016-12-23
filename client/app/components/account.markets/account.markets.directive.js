@@ -13,9 +13,9 @@
       };
     });
 
-  MarketsController.$inject = ['marketService','$http', '$rootScope', '$mdDialog', '$stateParams'];
+  MarketsController.$inject = ['marketService','$http', '$rootScope', '$mdDialog', '$stateParams', 'localStorageService'];
 
-  function MarketsController(marketService, $http, $rootScope, $mdDialog, $stateParams) {
+  function MarketsController(marketService, $http, $rootScope, $mdDialog, $stateParams, localStorageService) {
       var ctrl = this;
 
       ctrl.markets = {};
@@ -69,7 +69,7 @@
       };
 
       ctrl.postMarket = function() {
-          ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
+          ctrl.currentMarket.devID = localStorageService.get("user")._id;
           marketService.postMarket(ctrl.currentMarket)
             .then (function () {
                 ctrl.initMarkets();
@@ -79,21 +79,21 @@
       };
 
       ctrl.initMarkets = function() {
-          marketService.getMarketsByDevId($rootScope.rootParam.nickname)
+          marketService.getMarketsByDevId(localStorageService.get("user")._id)
             .then( function (promise) {
                 ctrl.markets = promise.markets;
             })
       };
 
       ctrl.initBuyMarkets = function() {
-          marketService.getBuyMarketsByDevId($rootScope.rootParam.nickname)
+          marketService.getBuyMarketsByDevId(localStorageService.get("user")._id)
             .then( function ( promise ) {
                 ctrl.marketBuys = promise.marketBuys;
             })
       };
 
       ctrl.initSellMarkets = function() {
-          marketService.getSellMarketsByDevId($rootScope.rootParam.nickname)
+          marketService.getSellMarketsByDevId(localStorageService.get("user")._id)
             .then( function ( promise ) {
 
                 ctrl.marketSells = promise.marketSells;

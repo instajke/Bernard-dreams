@@ -119,6 +119,10 @@
                     url: "market",
                     tooltip: "Open market"
                 }, {
+                    name: "Sell (Market)",
+                    url: "sell",
+                    tooltip: "Open market"
+                }, {
                     name: "Connect!",
                     url: "connect",
                     tooltip: "Connect new game account"
@@ -172,9 +176,9 @@
         //$state.transitionTo('account.home', ctrl.user.username);
     }
 
-    UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog'];
+    UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$state', '$mdDialog', 'localStorageService'];
 
-    function UpgradeDialogController(accountService, $http, $scope, $rootScope, $mdDialog) {
+    function UpgradeDialogController(accountService, $http, $scope, $rootScope, $state, $mdDialog, localStorageService) {
       var ctrl = this;
 
       $scope.hide = function() {
@@ -187,11 +191,17 @@
           $mdDialog.hide(answer);
       };
 
-      ctrl.confirm = function () {
-        accountService.upgradeToDev(localStorageService.get("user"))
-          .then( function () {
-            $rootScope.showAlert("U r dev now");
-          })
+      $scope.confirm = function () {
+            var user = localStorageService.get("user");
+            console.log("we are confirmin")
+            console.log(user);
+            user.isDev = true;
+            localStorageService.set("user", user);
+            accountService.postUser(user)
+            .then( function (promise) {
+                $rootScope.showAlert("U r dev now");
+            })
+            $state.go('account');
       }
     }
 

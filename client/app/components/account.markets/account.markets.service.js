@@ -39,10 +39,10 @@
                 .error(function(data) {
                     deferred.reject(data);
                 });
-            
+
             return deferred.promise;
         },
-          
+
         getMarketsByDevId : function(devId) {
             var deferred = $q.defer();
 
@@ -65,6 +65,42 @@
             var deferred = $q.defer();
 
             $http.get('/api/marketBuy/' + devId)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
+        getBuyMarketsBuysByMarketIds : function (marketIdArray) {
+                var deferred = $q.defer();
+
+                $http.post('/api/marketBuys', marketIdArray)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
+        getBuyMarketSellsByMarketIds : function (marketIdArray) {
+                var deferred = $q.defer();
+
+                $http.post('/api/marketSells', marketIdArray)
                 .success(function(data, status) {
                     if (status === 200) {
                         deferred.resolve(data);
@@ -131,7 +167,7 @@
                 console.log("ERROR")
                 deferred.reject(response);
             });
-            
+
             return deferred.promise;
         },
         getUser: function(nickname) {

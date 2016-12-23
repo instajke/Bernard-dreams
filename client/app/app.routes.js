@@ -23,44 +23,30 @@
     .state('account.home', {
       url: '/home',
       template: '<acchome></acchome>',
-      params: {
-        nickname: null
-      }
     })
     .state('account.history', {
       url: '/history',
       template: '<history></history>',
-      params: {
-        nickname: null
-      }
     })
     .state('account.buy', {
       url: '/buy',
       template: '<buy></buy>',
-      params: {
-        nickname: null
-      }
+    })
+    .state('account.sell', {
+        url: '/sell',
+        template: '<sell></sell>',
     })
     .state('account.markets', {
         url: '/markets',
         template: '<markets></markets>',
-        params: {
-            nickname: null
-        }
     })
     .state('account.shops', {
         url: '/shops',
         template: '<shops></shops>',
-        params: {
-            nickname: null
-        }
     })
     .state('account.gamerShops', {
         url: '/shop',
         template: '<gamershop></gamershop>',
-        params: {
-            nickname: null
-        }
     });
 
     $urlRouterProvider.otherwise('/');
