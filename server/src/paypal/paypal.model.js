@@ -24,10 +24,22 @@ var paymentSchema = new Schema ({
     marketID: Schema.Types.ObjectId
 });
 
+var Payment = mongoose.model('Payment', paymentSchema);
+
+function postPayment(Payment, response) {
+    Payment.create(Payment, function (err, res) {
+        if(err){
+            response.send(500, {error: err});
+        } else {
+            console.log("Payment is created!")
+        }
+    });
+};
+
 module.exports = {
 
     getPayment: function (PaymentID, response) {
-        paymentSchema.findOne({paymentID: PaymentID}).exec(function (err,res) {
+        Payment.findOne({paymentID: PaymentID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -37,7 +49,7 @@ module.exports = {
     },
 
     getPayerPayments: function (PayerID, response) {
-        paymentSchema.find({payerID: PayerID}).exec(function (err,res) {
+        Payment.find({payerID: PayerID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -47,7 +59,7 @@ module.exports = {
     },
 
     getPayeePayments: function (Payee, response) {
-        paymentSchema.find({payee: Payee}).exec(function (err,res) {
+        Payment.find({payee: Payee}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -57,7 +69,7 @@ module.exports = {
     },
 
     getApprovePayments: function (Approve, response) {
-        paymentSchema.find({approve: Approve}).exec(function (err,res) {
+        Payment.find({approve: Approve}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -123,7 +135,7 @@ module.exports = {
     },
 
     executePayment: function(PaymentID, PayerID, response) {
-        paymentSchema.findOne({paymentID: PaymentID}).exec(function (err,res) {
+        Payment.findOne({paymentID: PaymentID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -174,13 +186,3 @@ module.exports = {
     }
 
 };
-
-function postPayment(Payment, response) {
-    paymentSchema.create(Payment, function (err, res) {
-        if(err){
-            response.send(500, {error: err});
-        } else {
-            console.log("Payment is created!")
-        }
-    });
-}

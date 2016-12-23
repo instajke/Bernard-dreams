@@ -9,9 +9,9 @@
             , bindToController: true
         };
     });
-    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', '$q'];
+    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', '$q', 'localStorageService'];
 
-    function gamerShopCtrl(accountService, marketService, $http, $scope, $rootScope, $mdDialog, $q) {
+    function gamerShopCtrl(accountService, marketService, $http, $scope, $rootScope, $mdDialog, $q, localStorageService) {
         var ctrl = this;
 
         ctrl.connectShopDlg = $mdDialog;
@@ -45,8 +45,7 @@
 
             console.log("we are inside get shops by market id");
 
-            accountService.getUser($rootScope.rootParam.nickname).then(function (promise) {
-                $scope.currentUser = promise;
+                $scope.currentUser = localStorageService.get("user");
                 $scope.currentUser.wallet.forEach(function(item) {
                     userMarkets.push(item.marketID);
                     console.log("array of marketID");
@@ -69,16 +68,13 @@
                             deferred.reject();
                         });
                 });
-            });
 
             return deferred.promise;
         };
 
         $scope.initMarkets = function () {
-            accountService.getUser($rootScope.rootParam.nickname).then
-            (function(promise) {
-                $scope.currentUser = promise;
-                console.log($scope.currentUser);
+                $scope.currentUser = localStorageService.get("user");
+
                 marketService.getMarkets().then
                 (function (promise) {
                     console.log("initializing markets");
@@ -95,7 +91,6 @@
                         console.log($scope.shops);
                     })
                 })
-            })
         };
 
         ctrl.showConnectShopDialog = function (ev) {
@@ -161,17 +156,7 @@
 
                 return deferred.promise;
         };
-        /*
-        $scope.$on('$stateChangeSuccess', function () {
-            accountService.getUser($rootScope.rootParam.nickname).then(function (promise) {
-                $scope.currentUser = promise;
-                console.log("CURR USER");
-                console.log($scope.currentUser);
-            });
-            $scope.initMarkets();
-            ctrl.getShopsByMarketId();
-        })
-        */
+
         $scope.connect = function () {
             var market = $scope.availableMarkets[$scope.currentMarket.marketID];
             console.log("current market: ");
@@ -190,6 +175,7 @@
                 .then( function(promise) {
                     $scope.initMarkets();
                     ctrl.connectShopDlg.hide();
+                    localStorageService.set("user", $scope.currentUser);
                 });
         };
 

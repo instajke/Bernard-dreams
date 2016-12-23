@@ -13,15 +13,22 @@
             };
         });
 
-    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams'];
+    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams', 'localStorageService'];
 
-    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams) {
+    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams ,localStorageService) {
 
         var ctrl = this;
 
         $rootScope.rootParam = $stateParams;
 
-        ctrl.user = {};
+        if (!localStorageService.get("user")) {
+            accountService.getUser($rootScope.rootParam.nickname)
+                .then( function (promise) {
+                    ctrl.user = promise;
+                    localStorageService.set("user", ctrl.user);
+                    ctrl.user = localStorageService.get("user");
+                })
+        }
 
         $rootScope.showAlert = function(text) {
             alert = $mdDialog.alert({
@@ -148,18 +155,12 @@
                     $rootScope.rootParam.nickname = user.username;
                 });
         };
-        
-        console.log("user nickname is");
-        console.log($rootScope.rootParam.nickname);
+
+
+        ctrl.user = localStorageService.get("user");
         ctrl.checkLoggedIn();
-        accountService.getUser($rootScope.rootParam.nickname)
-            .then( function(promise) {
-                ctrl.user = promise;
-                console.log("current user is");
-                console.log(ctrl.user);
-                fillSidenav(ctrl.user);
-            }) ;
-        $state.transitionTo('account.home', $stateParams);
+        fillSidenav(ctrl.user);
+        //$state.transitionTo('account.home', ctrl.user.username);
     }
 
     UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog'];
