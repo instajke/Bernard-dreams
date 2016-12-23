@@ -26,8 +26,8 @@ var paymentSchema = new Schema ({
 
 var Payment = mongoose.model('Payment', paymentSchema);
 
-function postPayment(Payment, response) {
-    Payment.create(Payment, function (err, res) {
+function postPayment(payment, response) {
+    Payment.create(payment, function (err, res) {
         if(err){
             response.send(500, {error: err});
         } else {

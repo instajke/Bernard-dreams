@@ -13,9 +13,9 @@
       };
     });
 
-  shopsController.$inject = ['shopService','$http', '$rootScope', '$mdDialog', '$stateParams'];
+  shopsController.$inject = ['shopService','$http', '$rootScope', '$mdDialog', '$stateParams', 'localStorageService'];
 
-  function shopsController(shopService, $http, $rootScope, $mdDialog, $stateParams) {
+  function shopsController(shopService, $http, $rootScope, $mdDialog, $stateParams, localStorageService) {
       var ctrl = this;
 
       ctrl.shops = {};
@@ -31,7 +31,7 @@
 
       ctrl.postShop = function() {
           var index = 0;
-          ctrl.currentShop.devID = $rootScope.rootParam.nickname;
+          ctrl.currentShop.devID = localStorageService.get("user").username;
           for (var i = 0; i < ctrl.markets.length; ++i)
           {
                 if (ctrl.markets[i]._id == ctrl.currentShop.marketID)
@@ -55,14 +55,14 @@
       }
 
       ctrl.initShops = function() {
-          shopService.getShopsByDevId($rootScope.rootParam.nickname)
+          shopService.getShopsByDevId(localStorageService.get("user").username)
             .then( function (promise) {
                 ctrl.shops = promise.shops;
             })
       };
 
       ctrl.initMarkets = function() {
-          shopService.getMarkets($rootScope.rootParam.nickname)
+          shopService.getMarkets(localStorageService.get("user").username)
             .then( function(promise) {
                 ctrl.markets = promise.markets;
             })

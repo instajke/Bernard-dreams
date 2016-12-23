@@ -21,14 +21,18 @@
 
         $rootScope.rootParam = $stateParams;
 
-        if (!localStorageService.get("user")) {
+        if (localStorageService.get("user") === '') {
             accountService.getUser($rootScope.rootParam.nickname)
                 .then( function (promise) {
-                    ctrl.user = promise;
-                    localStorageService.set("user", ctrl.user);
+                    console.log("we are inside bullshit if");
+                    console.log($rootScope.rootParam.nickname);
+                    console.log(promise);
+                    localStorageService.set("user", promise);
                     ctrl.user = localStorageService.get("user");
                 })
         }
+        ctrl.user = localStorageService.get("user");
+
 
         $rootScope.showAlert = function(text) {
             alert = $mdDialog.alert({
@@ -95,7 +99,8 @@
             }, 50);
         }
 
-        function fillSidenav(user) {
+        function fillSidenav() {
+            var user = localStorageService.get("user");
             if (!user.isDev) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
@@ -142,6 +147,8 @@
 
         ctrl.logout = function () {
 
+            localStorageService.set("user", '');
+
           accountService.logout()
             .then(function () {
               $state.go('home');
@@ -152,7 +159,9 @@
         ctrl.checkLoggedIn = function() {
             $http.get('api/getAuthUser')
                 .success(function(user){
-                    $rootScope.rootParam.nickname = user.username;
+                    console.log("check log in");
+                    console.log(user);
+                    localStorageService.set("user", user);
                 });
         };
 
@@ -179,7 +188,7 @@
       };
 
       ctrl.confirm = function () {
-        accountService.upgradeToDev($rootScope.rootParam.nickname)
+        accountService.upgradeToDev(localStorageService.get("user"))
           .then( function () {
             $rootScope.showAlert("U r dev now");
           })
