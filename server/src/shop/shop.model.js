@@ -78,9 +78,10 @@ module.exports = {
             if(err) {
                 response.send(500, {error: err});
             } else {
+                console.log("try update");
                 res.history.push(Shop.history);
                 res.save();
-                response.json({success: true});
+                //response.json({success: true});
             }
         });
     },

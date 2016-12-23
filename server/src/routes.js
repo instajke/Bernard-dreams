@@ -502,18 +502,29 @@
 
     var myPayPal = require('./paypal/paypal.model');
 
-    router.post('/api/paypal/approve', function (request, response) {
+
+
+    router.get('/api/paypal/approve', function (request, response) {
+        // test data
+        /*var marketID = "585d52025cf76a2e2c949832";
+        var Offer = {};
+        Offer.price = 0.1;
+        Offer.discount = 0;
+        Offer.currencyType = "Gems";
+        Offer.amount = 100;
+        var devPayPalAcc = "arseniy-sell@gmail.com";
+        var userID = "585d0ff0097b320eccc5419c";*/
         var marketID = request.body.marketID;
         var Offer = request.body.offer;
-        var devPayPalAcc = request.body.payPalAcc;
-        var gamerID = request.body.gamerID;
+        var devPayPalAcc = request.body.paypal;
+        var userID = request.body._id;
         // a bit dangerous here without parsing...
         var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
         var total = price * Offer.amount;
-        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, gamerID, response);
+        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, userID, response);
     });
 
-    router.get('/paypal/complete', function (request, response) {
+    router.get('/api/paypal/complete', function (request, response) {
         var PayerID = request.query.PayerID;
         var PaymentID = request.query.paymentId;
         myPayPal.executePayment(PaymentID, PayerID, response);

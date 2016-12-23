@@ -1,6 +1,6 @@
 var paypal = require('paypal-rest-sdk');
 var shop = require('../shopHelper');
-var gamer = require('../user/user.logic');
+var user = require('../user/user.controller');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
@@ -13,7 +13,7 @@ var mongoose = require('mongoose').set('debug', true);
 var Schema = mongoose.Schema;
 
 var paymentSchema = new Schema ({
-    gamerID: Schema.Types.ObjectId,
+    userID: Schema.Types.ObjectId,
     paymentID: String,
     payerID: String,
     approved: Boolean,
@@ -31,6 +31,7 @@ function postPayment(payment, response) {
         if(err){
             response.send(500, {error: err});
         } else {
+            console.log(payment.userID);
             console.log("Payment is created!")
         }
     });
@@ -78,14 +79,14 @@ module.exports = {
         });
     },
 
-    createPayment: function (marketID, Offer, devPayPalAcc, price, total, gamerID, response) {
+    createPayment: function (marketID, Offer, devPayPalAcc, price, total, userID, response) {
         var create_payment_json = {
             "intent": "sale",
             "payer": {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:3000/paypal/complete",
+                "return_url": "http://localhost:3000/api/paypal/complete",
                 "cancel_url": "http://localhost:3000"
             },
             "transactions": [{
@@ -120,15 +121,16 @@ module.exports = {
                 }
                 console.log(payment);
                 var myPayment = {};
-                myPayment.gamerID = gamerID;
+                myPayment.userID = mongoose.Types.ObjectId(userID);
                 myPayment.paymentID = payment.id;
                 myPayment.approved = false;
                 myPayment.total = total;
                 myPayment.payee = devPayPalAcc;
                 myPayment.currencyType = Offer.currencyType;
                 myPayment.amount = Offer.amount;
-                myPayment.marketID = marketID;
+                myPayment.marketID = mongoose.Types.ObjectId(marketID);
                 myPayment.payerID = "None";
+                console.log(myPayment);
                 postPayment(myPayment, response);
             }
         });
@@ -150,7 +152,6 @@ module.exports = {
                         "payee":{ "email": res.payee }
                     }]
                 };
-
                 paypal.payment.execute(PaymentID, execute_payment_json, function (error, payment) {
                     if (error) {
                         console.log(error.response);
@@ -169,16 +170,17 @@ module.exports = {
                         Shop.history.date = Date.now();
                         shop.updateShopHistoryByMarketID(Shop, response);
                         var Gamer = {};
-                        Gamer.userID = res.gamerID;
+                        Gamer._id = res.userID;
                         Gamer.wallet = {};
                         Gamer.wallet.amount = res.amount;
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
-                        gamer.UpdateWallet(Gamer, response);
+                        user.updateWallet(Gamer, response);
+                       
                         // update user wallet
                         // update shop history
                         console.log(payment);
-                        response.redirect('http://localhost:3000/');
+                        response.redirect('http://localhost:3000');
                     }
                 });
             }

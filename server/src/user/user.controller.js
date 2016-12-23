@@ -83,6 +83,7 @@ exports.updateUserIsDev = function (User, response) {
             });
         }
         else {
+            console.log("try to update");
             res.isDev = User.isDev;
             res.save();
             response.json({
@@ -103,7 +104,7 @@ exports.updateWallet = function (User, response) {
         else {
             var newCurrency = true;
             for (var i = 0; i < res.wallet.length; i++) {
-                if (res.wallet[i].marketID == User.wallet.marketID)
+                if (res.wallet[i].marketID.toString() == User.wallet.marketID.toString())
                     if (res.wallet[i].currencyType == User.wallet.currencyType) {
                         console.log("update wallet!");
                         newCurrency = false;
@@ -112,7 +113,7 @@ exports.updateWallet = function (User, response) {
             }
             if (newCurrency) res.wallet.push(User.wallet);
             var myHistory = historyHelper(User.wallet);
-            res.history.push(myHistory);
+            res.transactions.push(myHistory);
             res.save();
         }
     });
