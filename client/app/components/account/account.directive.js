@@ -166,13 +166,14 @@
                     console.log("check log in");
                     console.log(user);
                     localStorageService.set("user", user);
+                    fillSidenav(user);
                 });
         };
 
 
         ctrl.user = localStorageService.get("user");
         ctrl.checkLoggedIn();
-        fillSidenav(ctrl.user);
+
         //$state.transitionTo('account.home', ctrl.user.username);
     }
 
