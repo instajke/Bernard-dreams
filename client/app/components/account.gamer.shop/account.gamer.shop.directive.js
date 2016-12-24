@@ -140,7 +140,7 @@
                 .success(function(data, status) {
                     console.log("paypal");
                     console.log(data);
-                    $window.location.href = data;
+                    //$window.location.href = data;
                     if (status === 200) {
                         deferred.resolve(data);
                         console.log("STATUS 200 DATA");

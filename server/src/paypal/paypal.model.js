@@ -86,8 +86,8 @@ module.exports = {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:3000/api/paypal/complete",
-                "cancel_url": "http://localhost:3000"
+                "return_url": "http://kmpm.eu-gb.mybluemix.net/api/paypal/complete",
+                "cancel_url": "http://kmpm.eu-gb.mybluemix.net/"
             },
             "transactions": [{
                 "amount": {
@@ -116,7 +116,7 @@ module.exports = {
                     //Redirect user to this endpoint for redirect url
                     if (payment.links[index].rel === 'approval_url') {
                         console.log(payment.links[index].href);
-                        response.send(payment.links[index].href);
+                        response.redirect(payment.links[index].href);
                     }
                 }
                 console.log(payment);
@@ -180,7 +180,9 @@ module.exports = {
                         // update user wallet
                         // update shop history
                         console.log(payment);
-                        response.redirect('http://localhost:3002');
+
+                        response.redirect('http://kmpm.eu-gb.mybluemix.net/');
+
                     }
                 });
             }
