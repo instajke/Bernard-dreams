@@ -25,7 +25,7 @@ var mongodbUrl = 'mongodb://' + config.DB_HOST + ':' + config.DB_PORT + '/' + co
 
 // for MongoDB by Compose service
 if (process.env.PORT) {
-  mongodbUrl = 'mongodb://instajke:klemanpromos!@aws-eu-central-1-portal.0.dblayer.com:15332,aws-eu-central-1-portal.1.dblayer.com:15332/klemanpromos-db?ssl=true';
+  mongodbUrl = 'mongodb://instajke:klemanpromos!@aws-eu-central-1-portal.1.dblayer.com:15332/klemanpromos-db?ssl=true';
 }
 
 // Database options

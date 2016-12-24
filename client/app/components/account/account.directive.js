@@ -20,18 +20,18 @@
         var ctrl = this;
 
         $rootScope.rootParam = $stateParams;
-
-        if (localStorageService.get("user") === '') {
-            accountService.getUser($rootScope.rootParam.nickname)
-                .then( function (promise) {
-                    console.log("we are inside bullshit if");
-                    console.log($rootScope.rootParam.nickname);
-                    console.log(promise);
-                    localStorageService.set("user", promise);
-                    ctrl.user = localStorageService.get("user");
-                })
-        }
-        ctrl.user = localStorageService.get("user");
+        //
+        //if (localStorageService.get("user") === '') {
+        //    accountService.getUser($rootScope.rootParam.nickname)
+        //        .then( function (promise) {
+        //            console.log("we are inside bullshit if");
+        //            console.log($rootScope.rootParam.nickname);
+        //            console.log(promise);
+        //            localStorageService.set("user", promise);
+        //            ctrl.user = localStorageService.get("user");
+        //        })
+        //}
+        //ctrl.user = localStorageService.get("user");
 
 
         $rootScope.showAlert = function(text) {
@@ -169,9 +169,9 @@
                 });
         };
 
-
-        ctrl.user = localStorageService.get("user");
         ctrl.checkLoggedIn();
+        ctrl.user = localStorageService.get("user");
+
         fillSidenav(ctrl.user);
         //$state.transitionTo('account.home', ctrl.user.username);
     }
