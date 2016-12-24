@@ -8,9 +8,9 @@ var User = require('./user/user.model.js');
 var configAuth = require('./auth');
 
 module.exports = function(passport) {
-    //passport.use(User.createStrategy());
-    //passport.serializeUser(User.serializeUser());
-    //passport.deserializeUser(User.deserializeUser());
+    passport.use(User.createStrategy());
+    passport.serializeUser(User.serializeUser());
+    passport.deserializeUser(User.deserializeUser());
 
 
     // Facebook strategy
