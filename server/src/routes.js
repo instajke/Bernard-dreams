@@ -17,138 +17,138 @@
     var UserControl = require('./user/user.controller');
 
 
-    router.post('/api/register', function(req, res) {
-        User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
-        surname: req.body.user.surname, description : req.body.user.bio}),
-            req.body.user.password, function(err, account) {
-                if (err) {
-                    return res.status(500).json({
-                        err: err
-                    });
-                }
-                req.body.username = req.body.user.nickname;
-                req.body.password = req.body.user.password;
-                passport.authenticate('local')(req ,res, function () {
-                    return res.status(200).json({
-                        status: 'Registration successful!'
-                    });
-                });
-            });
-    });
-
-    router.get('/api/user/:username', function (req, res) {
-        User.findOne({ username : req.params.username }, function(err, user) {
-            if (err)
-                res.send(err);
-            res.json(user);
-        });
-    });
-
-    router.get('/api/usersshop/:userId', function (req, res) {
-        UserControl.bullshit(req.params.userId, res);
-        console.log(res);
-    });
-
-    router.post('/api/user', function (request, response) {
-        var NewUser = request.body.user;
-        console.log(NewUser);
-        UserControl.updateUser(NewUser, response);
-    });
-
-
-    router.post('/api/login', function(req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return res.status(401).json({
-                    err: info
-                });
-            }
-            req.logIn(user, function(err) {
-                if (err) {
-                    return res.status(500).json({
-                        err: 'Could not log in user'
-                    });
-                }
-                res.status(200).json({
-                    status: 'Login successful!'
-                });
-            });
-        })(req, res, next);
-    });
-
-    router.get('/api/facebook', function authenticateFacebook (req, res, next) {
-            req.session.returnTo = '/#' + '/account/home';
-            next ();
-        },
-        passport.authenticate ('facebook'));
-
-    router.get('/api/facebook/callback', function (req, res, next) {
-        var authenticator = passport.authenticate ('facebook', {
-            successRedirect: '/#/account/home',
-            failureRedirect: '/'
-        });
-
-        delete req.session.returnTo;
-        authenticator (req, res, next);
-    });
-
-    router.get('/api/google', function authenticateGoogle (req, res, next) {
-            req.session.returnTo = '/#' + '/account/home';
-            next ();
-        },
-        passport.authenticate ('google', { scope : ['profile', 'email'] }));
-
-    router.get('/api/google/callback', function (req, res, next) {
-        var authenticator = passport.authenticate ('google', {
-            successRedirect: req.session.returnTo,
-            failureRedirect: '/'
-        });
-
-        delete req.session.returnTo;
-        authenticator (req, res, next);
-    });
-
-    router.get('/api/twitter', function authenticateTwitter (req, res, next) {
-            req.session.returnTo = '/#' + '/account/home';
-            next ();
-        },
-        passport.authenticate ('twitter'));
-
-    router.get('/api/twitter/callback', function (req, res, next) {
-        var authenticator = passport.authenticate ('twitter', {
-            successRedirect: req.session.returnTo,
-            failureRedirect: '/'
-        });
-
-        delete req.session.returnTo;
-        authenticator (req, res, next);
-    });
-
-    router.get('/api/logout', function(req, res) {
-        req.logout();
-        res.status(200).json({
-            status: 'Bye!'
-        });
-    });
-
-    router.get('/api/status', function(req, res) {
-        if (!req.isAuthenticated()) {
-            return res.status(200).json({
-                status: false
-            });
-        }
-        res.status(200).json({
-            status: true
-        });
-    });
-
-    router.get('/api/getAuthUser', function(req,res) {
-        console.log(req.user);
-        res.send(req.isAuthenticated() ? req.user : '0');
-    });
+    //router.post('/api/register', function(req, res) {
+    //    User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
+    //    surname: req.body.user.surname, description : req.body.user.bio}),
+    //        req.body.user.password, function(err, account) {
+    //            if (err) {
+    //                return res.status(500).json({
+    //                    err: err
+    //                });
+    //            }
+    //            req.body.username = req.body.user.nickname;
+    //            req.body.password = req.body.user.password;
+    //            passport.authenticate('local')(req ,res, function () {
+    //                return res.status(200).json({
+    //                    status: 'Registration successful!'
+    //                });
+    //            });
+    //        });
+    //});
+    //
+    //router.get('/api/user/:username', function (req, res) {
+    //    User.findOne({ username : req.params.username }, function(err, user) {
+    //        if (err)
+    //            res.send(err);
+    //        res.json(user);
+    //    });
+    //});
+    //
+    //router.get('/api/usersshop/:userId', function (req, res) {
+    //    UserControl.bullshit(req.params.userId, res);
+    //    console.log(res);
+    //});
+    //
+    //router.post('/api/user', function (request, response) {
+    //    var NewUser = request.body.user;
+    //    console.log(NewUser);
+    //    UserControl.updateUser(NewUser, response);
+    //});
+    //
+    //
+    //router.post('/api/login', function(req, res, next) {
+    //    passport.authenticate('local', function(err, user, info) {
+    //        if (err) {
+    //            return next(err);
+    //        }
+    //        if (!user) {
+    //            return res.status(401).json({
+    //                err: info
+    //            });
+    //        }
+    //        req.logIn(user, function(err) {
+    //            if (err) {
+    //                return res.status(500).json({
+    //                    err: 'Could not log in user'
+    //                });
+    //            }
+    //            res.status(200).json({
+    //                status: 'Login successful!'
+    //            });
+    //        });
+    //    })(req, res, next);
+    //});
+    //
+    //router.get('/api/facebook', function authenticateFacebook (req, res, next) {
+    //        req.session.returnTo = '/#' + '/account/home';
+    //        next ();
+    //    },
+    //    passport.authenticate ('facebook'));
+    //
+    //router.get('/api/facebook/callback', function (req, res, next) {
+    //    var authenticator = passport.authenticate ('facebook', {
+    //        successRedirect: '/#/account/home',
+    //        failureRedirect: '/'
+    //    });
+    //
+    //    delete req.session.returnTo;
+    //    authenticator (req, res, next);
+    //});
+    //
+    //router.get('/api/google', function authenticateGoogle (req, res, next) {
+    //        req.session.returnTo = '/#' + '/account/home';
+    //        next ();
+    //    },
+    //    passport.authenticate ('google', { scope : ['profile', 'email'] }));
+    //
+    //router.get('/api/google/callback', function (req, res, next) {
+    //    var authenticator = passport.authenticate ('google', {
+    //        successRedirect: req.session.returnTo,
+    //        failureRedirect: '/'
+    //    });
+    //
+    //    delete req.session.returnTo;
+    //    authenticator (req, res, next);
+    //});
+    //
+    //router.get('/api/twitter', function authenticateTwitter (req, res, next) {
+    //        req.session.returnTo = '/#' + '/account/home';
+    //        next ();
+    //    },
+    //    passport.authenticate ('twitter'));
+    //
+    //router.get('/api/twitter/callback', function (req, res, next) {
+    //    var authenticator = passport.authenticate ('twitter', {
+    //        successRedirect: req.session.returnTo,
+    //        failureRedirect: '/'
+    //    });
+    //
+    //    delete req.session.returnTo;
+    //    authenticator (req, res, next);
+    //});
+    //
+    //router.get('/api/logout', function(req, res) {
+    //    req.logout();
+    //    res.status(200).json({
+    //        status: 'Bye!'
+    //    });
+    //});
+    //
+    //router.get('/api/status', function(req, res) {
+    //    if (!req.isAuthenticated()) {
+    //        return res.status(200).json({
+    //            status: false
+    //        });
+    //    }
+    //    res.status(200).json({
+    //        status: true
+    //    });
+    //});
+    //
+    //router.get('/api/getAuthUser', function(req,res) {
+    //    console.log(req.user);
+    //    res.send(req.isAuthenticated() ? req.user : '0');
+    //});
 
 
 
