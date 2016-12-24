@@ -57,7 +57,7 @@ gulp.task('client:serve', function(cb) {
 
   // Proxy Middleware to Express app
   var proxyServer = proxy('/api', {
-    target: 'http://localhost:3002'
+    target: 'http://kmpm.eu-gb.mybluemix.net'
   });
 
   browserSync.instance = browserSync.init({
