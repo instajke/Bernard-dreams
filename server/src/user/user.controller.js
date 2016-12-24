@@ -270,6 +270,8 @@ exports.updateUser = function(User, response) {
       user.surname = User.surname;
       user.description = User.description;
       user.isDev = User.isDev;
+      user.wallet = User.wallet;
+      user.transactions = User.transactions;
       user.save();
       response.json({success: true});
     }

@@ -173,7 +173,6 @@
         ctrl.checkLoggedIn();
         ctrl.user = localStorageService.get("user");
 
-
         //$state.transitionTo('account.home', ctrl.user.username);
     }
 
