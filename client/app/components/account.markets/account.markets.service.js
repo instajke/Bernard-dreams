@@ -25,6 +25,24 @@
 
                 return deferred.promise;
         },
+        getMarket : function(marketId) {
+            var deferred = $q.defer();
+            $http.get('/api/market/' + marketId)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error(function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        },
+
         getMarketsByDevId : function(devId) {
             var deferred = $q.defer();
 
@@ -61,6 +79,42 @@
 
                 return deferred.promise;
         },
+        getBuyMarketsBuysByMarketIds : function (marketIdArray) {
+                var deferred = $q.defer();
+
+                $http.post('/api/marketBuys', marketIdArray)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
+        getBuyMarketSellsByMarketIds : function (marketIdArray) {
+                var deferred = $q.defer();
+
+                $http.post('/api/marketSells', marketIdArray)
+                .success(function(data, status) {
+                    if (status === 200) {
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
+                    }
+                })
+                .error (function (data) {
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+        },
         getSellMarketsByDevId : function(devId) {
             var deferred = $q.defer();
 
@@ -82,10 +136,6 @@
         getShops : function() {
             var deferred = $q.defer();
             $http.get('/shops')
-                /*.then(function(response) {
-                     console.log(response);
-                     currentUser = response.data;
-                });*/
                 .success(function(response, status) {
                     if (status !== 500) {
                         deferred.resolve();
@@ -100,14 +150,30 @@
 
                 return deferred.promise;
         },
+        getShopByMarketID : function(marketID) {
+            var deferred = $q.defer();
+            $http.get('/api/shop/' + marketID)
+                .success(function(response, status) {
+                if (status !== 500) {
+                    deferred.resolve(response);
+                }
+                else {
+                    console.log("Status 500");
+                    console.log(response);
+                    deferred.reject(response);
+                }
+            })
+            .error (function (response) {
+                console.log("ERROR")
+                deferred.reject(response);
+            });
+
+            return deferred.promise;
+        },
         getUser: function(nickname) {
             var deferred = $q.defer();
 
             $http.get('/api/user/' + nickname)
-                /*.then(function(response) {
-                     console.log(response);
-                     currentUser = response.data;
-                });*/
                 .success(function(data, status) {
                     if (status === 200) {
                         deferred.resolve(data);

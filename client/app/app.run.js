@@ -11,6 +11,7 @@
 
     // Get lang from browser
     var nav = $window.navigator;
+
     var lang = nav.language || nav.browserLanguage || nav.systemLanguage || nav.userLanguage;
 
     if (lang.length > 2) {

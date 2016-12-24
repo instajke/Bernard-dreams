@@ -2,7 +2,7 @@
     var express = require('express');
     var router = express.Router();
     var passport = require('passport');
-    var mongoose = require('mongoose');
+    var mongoose = require('mongoose').set('debug', true);
     var Schema = mongoose.Schema,
       ObjectId = Schema.ObjectId;
 
@@ -44,9 +44,13 @@
         });
     });
 
+    router.get('/api/usersshop/:userId', function (req, res) {
+        UserControl.bullshit(req.params.userId, res);
+        console.log(res);
+    });
+
     router.post('/api/user', function (request, response) {
         var NewUser = request.body.user;
-        console.log("POST USER");
         console.log(NewUser);
         UserControl.updateUser(NewUser, response);
     });
@@ -233,7 +237,19 @@
     router.put('/api/market', function (request, response) {
         var Market = request.body.market;
         market.updateMarket(Market, response);
-    })
+    });
+
+    router.get('/api/gamermarkets/:usedID', function(request, response) {
+        console.log("GAMER MARKETS REQUEST");
+        console.log(request);
+        User.findOne({ username : "u" }, function(err, user) {
+            console.log("we found user");
+            console.log(user);
+            if (err)
+                res.send(err);
+            market.getMarketsConnectedToUser(user, response);
+        });
+    });
 
 ///DEVELOPER
     var developer = require('./developer/developer.model');
@@ -272,6 +288,13 @@
     router.get('/api/marketBuy/:devID', function (request, response) {
         var DevID = request.params.devID;
         marketBuy.getMarketBuy(DevID, response);
+    });
+
+    router.post('/api/marketBuys/', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        marketBuy.getMarketBuysByMarketIds(marketIdArray, response);
     });
 
     router.put('/api/marketBuy', function (request, response) {
@@ -318,10 +341,17 @@
         marketSell.getMarketSell(DevID, response);
     });
 
+    router.post('/api/marketSells', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        marketSell.getMarketSellsByMarketIds(marketIdArray, response);
+    });
+
     router.put('/api/marketSell', function (request, response) {
         var MarketSell = request.body.market;
         marketSell.updateEntireMarket(MarketSell, response);
-    })
+    });
 
     router.put('/api/marketSell/tax', function (request, response) {
         var MarketSell = request.body.marketSell;
@@ -357,14 +387,20 @@
 ///SHOP
     var shop = require('./shop/shop.model');
 // shop ressourses
-    router.get('/api/shop/:shopID', function (request, response) {
-        var ShopID = request.params.shopID;
-        shop.getShop(ShopID, response);
+    //router.get('/api/shop/:shopID', function (request, response) {
+    //    var ShopID = request.params.shopID;
+    //    shop.getShop(ShopID, response);
+    //});
+
+    router.get('/api/shop/:marketID', function(request, response) {
+        console.log("Get shop mark id");
+        var marketID = request.params.marketID;
+        shop.getShopByMarketId(marketID, response);
     });
 
-    router.get('/api/shop/:name', function (request, response) {
-        shop.searchShop(request, response);
-    });
+    //router.get('/api/shop/:name', function (request, response) {
+    //    shop.searchShop(request, response);
+    //});
 
     router.get('/api/shops', function (request, response) {
         shop.getShops(response);
@@ -373,6 +409,13 @@
     router.get('/api/shops/:devID', function (request, response) {
         var devID = request.params.devID;
         shop.getShopsByDevId(request, response);
+    });
+
+    router.post('/api/shops/', function (request, response) {
+        var marketIdArray = request.body;
+        console.log("MarketID array");
+        console.log(marketIdArray);
+        shop.findShopsByMarketId(marketIdArray, response);
     });
 
 
@@ -459,18 +502,29 @@
 
     var myPayPal = require('./paypal/paypal.model');
 
-    router.get('/paypal/approve', function (request, response) {
+
+
+    router.get('/api/paypal/approve', function (request, response) {
+        // test data
+        /*var marketID = "585d52025cf76a2e2c949832";
+        var Offer = {};
+        Offer.price = 0.1;
+        Offer.discount = 0;
+        Offer.currencyType = "Gems";
+        Offer.amount = 100;
+        var devPayPalAcc = "arseniy-sell@gmail.com";
+        var userID = "585d0ff0097b320eccc5419c";*/
         var marketID = request.body.marketID;
         var Offer = request.body.offer;
-        var devPayPalAcc = request.body.payPalAcc;
-        var gamerID = request.body.gamerID;
+        var devPayPalAcc = request.body.paypal;
+        var userID = request.body._id;
         // a bit dangerous here without parsing...
         var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
         var total = price * Offer.amount;
-        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, gamerID, response);
+        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, userID, response);
     });
 
-    router.get('/paypal/complete', function (request, response) {
+    router.get('/api/paypal/complete', function (request, response) {
         var PayerID = request.query.PayerID;
         var PaymentID = request.query.paymentId;
         myPayPal.executePayment(PaymentID, PayerID, response);

@@ -13,17 +13,12 @@
       };
     });
 
-  AccountHomeController.$inject = ['accountService','$http', '$rootScope', '$mdDialog'];
+  AccountHomeController.$inject = ['accountService','$http', '$rootScope', '$mdDialog', '$state', 'localStorageService'];
 
-  function AccountHomeController(accountService, $http, $rootScope, $mdDialog) {
+  function AccountHomeController(accountService, $http, $rootScope, $mdDialog, $state, localStorageService) {
       var ctrl = this;
 
-      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
-      accountService.getUser($rootScope.rootParam.nickname)
-          .then( function(promise) {
-              console.log(promise);
-              ctrl.newUser = promise;
-          }) ;
+      ctrl.newUser = localStorageService.get("user");
 
       ctrl.showAlert = function(res) {
             alert = $mdDialog.alert({
@@ -39,24 +34,14 @@
                 });
       };
 
-
-
-      ctrl.updatePaypalAccount = function () {
-          accountService.updatePaypal(ctrl.currentUser)
-            .then ( function (response) {
-                ctrl.showAlert(response);
-            });
-          ctrl.showAlert("Paypal account has been updated.")
-      };
-
       ctrl.updateUserAccount = function () {
-          console.log(ctrl.newUser);
+
           accountService.postUser(ctrl.newUser);
+          localStorageService.set("user", ctrl.newUser);
       };
 
       ctrl.postMarket = function() {
-          ctrl.currentMarket.devID = $rootScope.rootParam.nickname;
-          console.log(ctrl.currentMarket);
+          ctrl.currentMarket.devID = localStorageService.get("user").nickname;
           accHomeService.postMarket(ctrl.currentMarket)
               .then (function () {
                   ctrl.initMarkets();
@@ -70,6 +55,7 @@
       };
 
       $rootScope.pageClass = "page-home";
+
   }
 
 })();

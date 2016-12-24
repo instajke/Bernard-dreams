@@ -38,6 +38,16 @@ exports.getMarketSell = function(devID, response) {
     });
 };
 
+exports.getMarketSellsByMarketIds = function (marketIdArray, response) {
+    marketIdArray.forEach(function(item) {
+        item = Schema.Types.ObjectId(item);
+    });
+
+    marketSell.find( { _id : { $in : marketIdArray }}, function (err, docs) {
+        response.json({"result" : "SUCCESS", "markets" : docs});
+    })
+};
+
 exports.postMarketSell = function(MarketSell) {
     marketSell.create(MarketSell, function (err, res){
         if(err) {

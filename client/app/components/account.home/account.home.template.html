@@ -33,26 +33,23 @@
             <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
                 <md-card-title-text>Account information</md-card-title-text>
             </md-toolbar>
-            <div layout="row">
-              <md-input-container name="paypal-account" flex>
-                  <input ng-model="accHomeCtrl.currentUser.paypal" placeholder="Enter your new paypal account">
-              </md-input-container>
-              <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.updatePaypalAccount()">Update paypal</md-button>
-              <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.showCurrentuser()">Show user</md-button>
-              <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.confirm()">Upgrade</md-button>
-          </div>
-            <md-input-container>
-                <input ng-model="accHomeCtrl.newUser.email" placeholder="Enter your new email">
-            </md-input-container>
-            <md-input-container>
-                <input ng-model="accHomeCtrl.newUser.name" placeholder="Enter your new name">
-            </md-input-container>
-            <md-input-container>
-                <input ng-model="accHomeCtrl.newUser.surname" placeholder="Enter your new surname">
-            </md-input-container>
-            <md-input-container>
-                <input ng-model="accHomeCtrl.newUser.description" placeholder="Enter your new descriptions">
-            </md-input-container>
+            <div layout="column">
+                <md-input-container name="paypal-account" flex>
+                  <input ng-model="accHomeCtrl.newUser.paypal" type="email" placeholder="Enter your new paypal account">
+                </md-input-container>
+                <md-input-container>
+                    <input ng-model="accHomeCtrl.newUser.email" placeholder="Enter your new email">
+                </md-input-container>
+                <md-input-container>
+                    <input ng-model="accHomeCtrl.newUser.name" placeholder="Enter your new name">
+                </md-input-container>
+                <md-input-container>
+                    <input ng-model="accHomeCtrl.newUser.surname" placeholder="Enter your new surname">
+                </md-input-container>
+                <md-input-container>
+                    <input ng-model="accHomeCtrl.newUser.description" placeholder="Enter your new descriptions">
+                </md-input-container>
+            </div>
             <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.updateUserAccount()">Update your account</md-button>
         </md-card> <span flex="5"></span> </div>
 </md-content>

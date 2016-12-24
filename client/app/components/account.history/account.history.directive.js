@@ -13,13 +13,13 @@
       };
     });
 
-  AccountHistoryController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog'];
+  AccountHistoryController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', 'localStorageService'];
 
-  function AccountHistoryController(accountService, $http, $rootScope, $mdDialog) {
+  function AccountHistoryController(accountService, $http, $rootScope, $mdDialog, localStorageService) {
       var ctrl = this;
 
-      ctrl.user = accountService.getUser($rootScope.rootParam.nickname);
-      
+      ctrl.user = localStorageService.get("user");
+
       ctrl.transactions = ctrl.user.transactions;
 
       $rootScope.pageClass = "page-history";

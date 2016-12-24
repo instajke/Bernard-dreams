@@ -1,9 +1,7 @@
 'use strict';
-
 var user = require('./user.model.js');
 
-function historyHelper(wallet)
-{
+function historyHelper(wallet) {
     var myHistory = {};
     myHistory.date = Date.now();
     myHistory.currencyType = wallet.currencyType;
@@ -11,114 +9,125 @@ function historyHelper(wallet)
     myHistory.marketID = wallet.marketID;
     return myHistory;
 };
-
-exports.find = function(req, res, next) {
-  user.find(function(err, users) {
-    if (err) {
-      return next(err);
-    }
-    return res.status(200).json(users);
-  });
-};
-
-exports.get = function(req, res, next) {
-  user.find({ email : req.params.email, password : req.params.password}, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(404).send('Not Found');
-    }
-    return res.status(200).json(user);
-  });
-};
-
-exports.findByEmail = function(req, res, next) {
-  var accountProjection = {
-    __v : false,
-    _id : false
-  };
-
-  user.find({email : req.params.email, password : req.params.password}, accountProjection, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(404).send('Not Found');
-    }
-    return res.status(200).json(user);
-  });
-};
-
-exports.post = function(req, res, next) {
-  user.create(req.body, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    return res.status(201).json(user);
-  });
-};
-
-exports.put = function(req, res, next) {
-  user.findOneAndUpdate({_id : req.params.id}, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(404).send('Not Found');
-    }
-
-    user.save(function(err) {
-      if (err) {
-        return next(err);
-      }
-      return res.status(200).json(user);
+exports.find = function (req, res, next) {
+    user.find(function (err, users) {
+        if (err) {
+            return next(err);
+        }
+        return res.status(200).json(users);
     });
-  });
 };
-
+exports.get = function (req, res, next) {
+    user.find({
+        email: req.params.email
+        , password: req.params.password
+    }, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(404).send('Not Found');
+        }
+        return res.status(200).json(user);
+    });
+};
+exports.findByEmail = function (req, res, next) {
+    var accountProjection = {
+        __v: false
+        , _id: false
+    };
+    user.find({
+        email: req.params.email
+        , password: req.params.password
+    }, accountProjection, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(404).send('Not Found');
+        }
+        return res.status(200).json(user);
+    });
+};
+exports.post = function (req, res, next) {
+    user.create(req.body, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        return res.status(201).json(user);
+    });
+};
+exports.put = function (req, res, next) {
+    user.findOneAndUpdate({
+        _id: req.params.id
+    }, function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(404).send('Not Found');
+        }
+        user.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).json(user);
+        });
+    });
+};
 exports.updateUserIsDev = function (User, response) {
     user.findById(User.userID).exec(function (err, res) {
         if (err) {
-            response.send(500, {error: err});
-        } else {
+            response.send(500, {
+                error: err
+            });
+        }
+        else {
+            console.log("try to update");
             res.isDev = User.isDev;
             res.save();
-            response.json({success: true});
+            response.json({
+                success: true
+            });
         }
     });
 };
-
 exports.updateWallet = function (User, response) {
-    user.findById({ _id : User._id }).exec(function (err, res) {
+    user.findById({
+        _id: User._id
+    }).exec(function (err, res) {
         if (err) {
-            response.send(500, {error: err});
-        } else {
+            response.send(500, {
+                error: err
+            });
+        }
+        else {
             var newCurrency = true;
-            for(var i = 0; i < res.wallet.length; i++)
-            {
-                if(res.wallet[i].marketID == User.wallet.marketID)
-                    if(res.wallet[i].currencyType == User.wallet.currencyType)
-                    {
+            for (var i = 0; i < res.wallet.length; i++) {
+                if (res.wallet[i].marketID.toString() == User.wallet.marketID.toString())
+                    if (res.wallet[i].currencyType == User.wallet.currencyType) {
                         console.log("update wallet!");
                         newCurrency = false;
                         res.wallet[i].amount += User.wallet.amount;
                     }
             }
-            if(newCurrency)
-                res.wallet.push(User.wallet);
+            if (newCurrency) res.wallet.push(User.wallet);
             var myHistory = historyHelper(User.wallet);
-            res.history.push(myHistory);
+            res.transactions.push(myHistory);
             res.save();
         }
     });
 };
-
-exports.justCheckPayingCapacity = function(userId, cost, currencyType, marketID, price, amount, response, callback) {
-    user.findOne({userID: userId}).exec(function (err, res) {
+exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID, price, amount, response, callback) {
+    user.findOne({
+        userID: userId
+    }).exec(function (err, res) {
         if (err) {
-            response.send(500, {error: err});
-        } else {
+            response.send(500, {
+                error: err
+            });
+        }
+        else {
             // func1
             for (var i = 0; i < res.wallet.length; i++) {
                 if (res.wallet[i].marketID == marketID) {
@@ -142,17 +151,22 @@ exports.justCheckPayingCapacity = function(userId, cost, currencyType, marketID,
         }
     });
 };
-
 exports.checkPayingCapacity = function (userId, transaction, cost, currencyType, amount, currencyType2, marketID, indexOffer, response, callback) {
-    user.findOne({userID: userId}).exec(function (err, res) {
+    user.findOne({
+        userID: userId
+    }).exec(function (err, res) {
         if (err) {
-            response.send(500, {error: err});
-        } else {
+            response.send(500, {
+                error: err
+            });
+        }
+        else {
             // func1
             var success = false;
             var index = -1;
             for (var i = 0; i < res.wallet.length; i++) {
                 if (res.wallet[i].marketID == marketID) {
+                    if (index == -1) index = i;
                     if (index == -1)
                         index = i;
                     if (res.wallet[i].currencyType == currencyType) {
@@ -175,7 +189,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     res.history.push(myHistory);
                                     res.wallet[index].amount += amount;
                                 }
-                            } else {
+                            }
+                            else {
                                 // func2
                                 var notfound = true;
                                 for (; i < res.wallet.length; i++) {
@@ -210,6 +225,36 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                 callback(marketID, transaction, indexOffer, amount, response);
             }
         }
+    })
+};
+exports.updateUser = function (User, response) {
+    console.log("UPDATE USER");
+    console.log(User);
+    user.findById(User._id, function (err, user) {
+        if (err) {
+            console.log("ERROR");
+            console.log(err);
+            response.send(500, {
+                error: err
+            });
+        }
+        else {
+            user.email = User.email;
+            user.name = User.name;
+            user.surname = User.surname;
+            user.description = User.description;
+            user.paypal = User.paypal;
+            user.wallet = User.wallet;
+            user.transactions = User.transactions;
+            user.isDev = User.isDev;
+            console.log("USER");
+            console.log(user);
+            user.save();
+            response.json({
+                success: true,
+                user: user
+            });
+        }
     });
 };
 
@@ -224,8 +269,19 @@ exports.updateUser = function(User, response) {
       user.name = User.name;
       user.surname = User.surname;
       user.description = User.description;
+      user.isDev = User.isDev;
       user.save();
       response.json({success: true});
     }
   })
 };
+
+exports.bullshit = function(UserId, response) {
+    user.findById(UserId)
+        .populate({ path : 'wallet.marketID', model : 'Market'})
+        .exec(function(err, result) {
+            if (err)
+                response.status(500).send(err);
+            response.json({success: true, result : result});
+        });
+}

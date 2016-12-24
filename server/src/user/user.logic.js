@@ -7,7 +7,7 @@ exports.UpdateWallets = function (user, offers, response) {
         for (var i = 0; i < offers.length; i++) {
             user.userID = offers[i].userID;
             user.wallet.amount = offers[i].amount;
-            User.updateWallet(mygamer, response);
+            User.updateWallet(user, response);
         }
     };
 

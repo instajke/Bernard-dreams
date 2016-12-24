@@ -13,9 +13,9 @@
       };
     });
 
-  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q'];
+  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q', '$timeout'];
 
-  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q) {
+  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q, $timeout) {
 
     var vm = this;
     var alert;
@@ -80,7 +80,6 @@
         $http.get('api/getAuthUser')
             .success(function(user){
                 if (user !== '0') {
-                    console.log(user);
                     deferred.resolve();
                     vm.showAlert("Success!");
                     $state.go('account', {nickname : user.nickname})
@@ -89,7 +88,6 @@
                     deferred.reject();
 
                 }
-                console.log(user);
             });
         return deferred.promise;
     };

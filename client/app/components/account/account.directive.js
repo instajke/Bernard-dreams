@@ -13,15 +13,26 @@
             };
         });
 
-    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams'];
+    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams', 'localStorageService'];
 
-    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams) {
+    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams ,localStorageService) {
 
         var ctrl = this;
 
         $rootScope.rootParam = $stateParams;
 
-        ctrl.user = {};
+        if (localStorageService.get("user") === '') {
+            accountService.getUser($rootScope.rootParam.nickname)
+                .then( function (promise) {
+                    console.log("we are inside bullshit if");
+                    console.log($rootScope.rootParam.nickname);
+                    console.log(promise);
+                    localStorageService.set("user", promise);
+                    ctrl.user = localStorageService.get("user");
+                })
+        }
+        ctrl.user = localStorageService.get("user");
+
 
         $rootScope.showAlert = function(text) {
             alert = $mdDialog.alert({
@@ -37,39 +48,9 @@
                 });
         };
 
-        $rootScope.transactions = [];
-        $rootScope.currentTrans = {};
-        $rootScope.transDialog = $mdDialog;
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
-
-        ctrl.getTransactions = function() {
-            $http.get('/api/things')
-                .then(function(response) {
-                    $rootScope.transactions = response.data;
-                });
-        };
-
-        ctrl.postTrans = function() {
-            $http.post('/api/things', ctrl.trans)
-                .then(function() {
-                    ctrl.status = 'OK';
-                });
-        };
-
-        $rootScope.showTransDialog = function(ev, trans) {
-            $rootScope.transDialog.show({
-                controller: TransDialogController,
-                templateUrl: 'app/components/controls/DetailedItemInfo.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {
-                    currentTrans : trans
-                },
-                clickOutsideToClose: true
-            });
-        };
 
         $rootScope.showHistoryDialog = function(ev, transactions) {
             $rootScope.transactions = transactions;
@@ -113,15 +94,14 @@
                 $mdSidenav(navId)
                     .toggle()
                     .then(function() {
-                        $log.debug("toggle " + navId + " is done");
+                        fillSidenav(ctrl.user)
                     });
             }, 50);
         }
 
-        $rootScope.fillSidenav = fillSidenav($rootScope.user);
-
-        function fillSidenav(user) {
-            if (!ctrl.user.isDev) {
+        function fillSidenav() {
+            var user = localStorageService.get("user");
+            if (!user.isDev) {
                 $rootScope.sidenavMenuItems = [{
                     name: "My account",
                     url: "home",
@@ -137,6 +117,10 @@
                 }, {
                     name: "Buy (Market)",
                     url: "market",
+                    tooltip: "Open market"
+                }, {
+                    name: "Sell (Market)",
+                    url: "sell",
                     tooltip: "Open market"
                 }, {
                     name: "Connect!",
@@ -167,6 +151,8 @@
 
         ctrl.logout = function () {
 
+            localStorageService.set("user", '');
+
           accountService.logout()
             .then(function () {
               $state.go('home');
@@ -177,59 +163,22 @@
         ctrl.checkLoggedIn = function() {
             $http.get('api/getAuthUser')
                 .success(function(user){
+                    console.log("check log in");
                     console.log(user);
-                    $rootScope.rootParam.nickname = user.username;
+                    localStorageService.set("user", user);
                 });
         };
 
-        accountService.getUser($rootScope.rootParam.nickname)
-            .then( function(promise) {
-                console.log(promise);
-                ctrl.user = promise;
-                fillSidenav(ctrl.user);
-            }) ;
+
+        ctrl.user = localStorageService.get("user");
         ctrl.checkLoggedIn();
-        console.log(ctrl.user);
-        $state.transitionTo('account.home', $stateParams);
-        ctrl.getTransactions();
+        fillSidenav(ctrl.user);
+        //$state.transitionTo('account.home', ctrl.user.username);
     }
 
-    TransDialogController.$inject = ['$scope', '$mdDialog', 'currentTrans'];
+    UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$state', '$mdDialog', 'localStorageService'];
 
-    function TransDialogController($scope, $mdDialog, currentTrans) {
-
-        $scope.currentTrans = currentTrans;
-
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-    }
-
-    HistoryDialogController.$inject = ['$http', '$scope', '$rootScope', '$mdDialog'];
-
-    function HistoryDialogController($http, $scope, $rootScope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        }
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-        $scope.transactions = $rootScope.transactions;
-        $scope.showTransDialog = $rootScope.showTransDialog;
-    }
-
-    UpgradeDialogController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog'];
-
-    function UpgradeDialogController(accountService, $http, $scope, $rootScope, $mdDialog) {
+    function UpgradeDialogController(accountService, $http, $scope, $rootScope, $state, $mdDialog, localStorageService) {
       var ctrl = this;
 
       $scope.hide = function() {
@@ -242,11 +191,17 @@
           $mdDialog.hide(answer);
       };
 
-      ctrl.confirm = function () {
-        accountService.upgradeToDev($rootScope.rootParam.nickname)
-          .then( function () {
-            $rootScope.showAlert("U r dev now");
-          })
+      $scope.confirm = function () {
+            var user = localStorageService.get("user");
+            console.log("we are confirmin")
+            console.log(user);
+            user.isDev = true;
+            localStorageService.set("user", user);
+            accountService.postUser(user)
+            .then( function (promise) {
+                $rootScope.showAlert("U r dev now");
+            })
+            $state.go('account');
       }
     }
 

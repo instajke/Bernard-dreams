@@ -1,19 +1,19 @@
 var paypal = require('paypal-rest-sdk');
 var shop = require('../shopHelper');
-var gamer = require('../user/user.logic');
+var user = require('../user/user.controller');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AV8CV49yFM01ha4e4N2hWpEQkSBLdTaGQgvCdJPJrF2LOD-pHV3r-H_U3Xmr-bpFXfNR9OaR9co2fXRR',
-    'client_secret': 'EI58OXlnatIBdOhWAAx4DebjMxvIVZZ_FsrXkEE_oFeXg42zyo6aq8pSOirxW99AcbswXop4-Nhy4Pco'
+    'client_id': 'Acmv3k9LnYgKLuOO0qaAQ5B-PTQ-PrpvY4uSWPZH_zRvTn13RzCwoReQUZjPriZix-s3XX16XdciMjet',
+    'client_secret': 'EOG5xdmFc69_I2Lpk8EMbBWlMfi8mwHioB7RvK1uYvT4DbPY1RyugCLmUPBV_w81HnMjJP434XHoS6-V'
 });
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose').set('debug', true);
 
 var Schema = mongoose.Schema;
 
 var paymentSchema = new Schema ({
-    gamerID: Schema.Types.ObjectId,
+    userID: Schema.Types.ObjectId,
     paymentID: String,
     payerID: String,
     approved: Boolean,
@@ -24,10 +24,23 @@ var paymentSchema = new Schema ({
     marketID: Schema.Types.ObjectId
 });
 
+var Payment = mongoose.model('Payment', paymentSchema);
+
+function postPayment(payment, response) {
+    Payment.create(payment, function (err, res) {
+        if(err){
+            response.send(500, {error: err});
+        } else {
+            console.log(payment.userID);
+            console.log("Payment is created!")
+        }
+    });
+};
+
 module.exports = {
 
     getPayment: function (PaymentID, response) {
-        paymentSchema.findOne({paymentID: PaymentID}).exec(function (err,res) {
+        Payment.findOne({paymentID: PaymentID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -37,7 +50,7 @@ module.exports = {
     },
 
     getPayerPayments: function (PayerID, response) {
-        paymentSchema.find({payerID: PayerID}).exec(function (err,res) {
+        Payment.find({payerID: PayerID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -47,7 +60,7 @@ module.exports = {
     },
 
     getPayeePayments: function (Payee, response) {
-        paymentSchema.find({payee: Payee}).exec(function (err,res) {
+        Payment.find({payee: Payee}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -57,7 +70,7 @@ module.exports = {
     },
 
     getApprovePayments: function (Approve, response) {
-        paymentSchema.find({approve: Approve}).exec(function (err,res) {
+        Payment.find({approve: Approve}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -66,14 +79,14 @@ module.exports = {
         });
     },
 
-    createPayment: function (marketID, Offer, devPayPalAcc, price, total, gamerID, response) {
+    createPayment: function (marketID, Offer, devPayPalAcc, price, total, userID, response) {
         var create_payment_json = {
             "intent": "sale",
             "payer": {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:3000/paypal/complete",
+                "return_url": "http://localhost:3000/api/paypal/complete",
                 "cancel_url": "http://localhost:3000"
             },
             "transactions": [{
@@ -108,22 +121,23 @@ module.exports = {
                 }
                 console.log(payment);
                 var myPayment = {};
-                myPayment.gamerID = gamerID;
+                myPayment.userID = mongoose.Types.ObjectId(userID);
                 myPayment.paymentID = payment.id;
                 myPayment.approved = false;
                 myPayment.total = total;
                 myPayment.payee = devPayPalAcc;
                 myPayment.currencyType = Offer.currencyType;
                 myPayment.amount = Offer.amount;
-                myPayment.marketID = marketID;
+                myPayment.marketID = mongoose.Types.ObjectId(marketID);
                 myPayment.payerID = "None";
+                console.log(myPayment);
                 postPayment(myPayment, response);
             }
         });
     },
 
     executePayment: function(PaymentID, PayerID, response) {
-        paymentSchema.findOne({paymentID: PaymentID}).exec(function (err,res) {
+        Payment.findOne({paymentID: PaymentID}).exec(function (err,res) {
             if(err){
                 response.send(500, {error: err});
             } else {
@@ -138,7 +152,6 @@ module.exports = {
                         "payee":{ "email": res.payee }
                     }]
                 };
-
                 paypal.payment.execute(PaymentID, execute_payment_json, function (error, payment) {
                     if (error) {
                         console.log(error.response);
@@ -157,16 +170,17 @@ module.exports = {
                         Shop.history.date = Date.now();
                         shop.updateShopHistoryByMarketID(Shop, response);
                         var Gamer = {};
-                        Gamer.userID = res.gamerID;
+                        Gamer._id = res.userID;
                         Gamer.wallet = {};
                         Gamer.wallet.amount = res.amount;
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
-                        gamer.UpdateWallet(Gamer, response);
+                        user.updateWallet(Gamer, response);
+                       
                         // update user wallet
                         // update shop history
                         console.log(payment);
-                        response.redirect('http://localhost:3000/');
+                        response.redirect('http://localhost:3000');
                     }
                 });
             }
@@ -174,13 +188,3 @@ module.exports = {
     }
 
 };
-
-function postPayment(Payment, response) {
-    paymentSchema.create(Payment, function (err, res) {
-        if(err){
-            response.send(500, {error: err});
-        } else {
-            console.log("Payment is created!")
-        }
-    });
-}
