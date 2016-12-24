@@ -18,7 +18,7 @@
 
     // Home
     router.get('/', function (req, res){
-        res.sendfile('index.html');
+        res.sendfile('client/index.html');
     });
 
 
