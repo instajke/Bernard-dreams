@@ -9,9 +9,9 @@
             , bindToController: true
         };
     });
-    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', '$q', 'localStorageService'];
+    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', '$q', 'localStorageService', '$window'];
 
-    function gamerShopCtrl(accountService, marketService, $http, $scope, $rootScope, $mdDialog, $q, localStorageService) {
+    function gamerShopCtrl(accountService, marketService, $http, $scope, $rootScope, $mdDialog, $q, localStorageService, $window) {
         var ctrl = this;
 
         ctrl.connectShopDlg = $mdDialog;
@@ -140,6 +140,7 @@
                 .success(function(data, status) {
                     console.log("paypal");
                     console.log(data);
+                    $window.location.href = data;
                     if (status === 200) {
                         deferred.resolve(data);
                         console.log("STATUS 200 DATA");

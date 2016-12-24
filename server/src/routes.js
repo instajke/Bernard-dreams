@@ -504,7 +504,7 @@
 
 
 
-    router.get('/api/paypal/approve', function (request, response) {
+    router.post('/api/paypal/approve', function (request, response) {
         // test data
         /*var marketID = "585d52025cf76a2e2c949832";
         var Offer = {};
@@ -516,8 +516,8 @@
         var userID = "585d0ff0097b320eccc5419c";*/
         var marketID = request.body.marketID;
         var Offer = request.body.offer;
-        var devPayPalAcc = request.body.paypal;
-        var userID = request.body._id;
+        var devPayPalAcc = request.body.devPayPalAcc;
+        var userID = request.body.gamerID;
         // a bit dangerous here without parsing...
         var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
         var total = price * Offer.amount;
