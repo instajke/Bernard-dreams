@@ -176,11 +176,11 @@ module.exports = {
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
                         user.updateWallet(Gamer, response);
-                       
+
                         // update user wallet
                         // update shop history
                         console.log(payment);
-                        response.redirect('http://localhost:3000');
+                        response.redirect('http://localhost:3002');
                     }
                 });
             }
