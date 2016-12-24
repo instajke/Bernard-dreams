@@ -41,7 +41,7 @@ exports.getMarketBuysByMarketIds = function (marketIdArray, response) {
         item = Schema.Types.ObjectId(item);
     });
 
-    marketBuy.find( { _id : { $in : marketIdArray }}, function (err, docs) {
+    marketBuy.find( { marketID : { $in : marketIdArray }}, function (err, docs) {
         response.json({"result" : "SUCCESS", "markets" : docs});
     })
 };

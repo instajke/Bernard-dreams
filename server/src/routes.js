@@ -27,7 +27,7 @@ var path = require('path');
 
 router.post('/api/register', function(req, res) {
         User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
-        surname: req.body.user.surname, description : req.body.user.bio}),
+        surname: req.body.user.surname, description : req.body.user.bio, wallet : []}),
             req.body.user.password, function(err, account) {
                 if (err) {
                     return res.status(500).json({
@@ -512,7 +512,7 @@ router.post('/api/register', function(req, res) {
 
 
 
-    router.get('/api/paypal/approve', function (request, response) {
+    router.post('/api/paypal/approve', function (request, response) {
         // test data
         /*var marketID = "585d52025cf76a2e2c949832";
         var Offer = {};
@@ -524,8 +524,8 @@ router.post('/api/register', function(req, res) {
         var userID = "585d0ff0097b320eccc5419c";*/
         var marketID = request.body.marketID;
         var Offer = request.body.offer;
-        var devPayPalAcc = request.body.paypal;
-        var userID = request.body._id;
+        var devPayPalAcc = request.body.devPayPalAcc;
+        var userID = request.body.gamerID;
         // a bit dangerous here without parsing...
         var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
         var total = price * Offer.amount;

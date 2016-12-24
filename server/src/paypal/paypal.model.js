@@ -116,7 +116,7 @@ module.exports = {
                     //Redirect user to this endpoint for redirect url
                     if (payment.links[index].rel === 'approval_url') {
                         console.log(payment.links[index].href);
-                        response.redirect(payment.links[index].href);
+                        response.send(payment.links[index].href);
                     }
                 }
                 console.log(payment);
