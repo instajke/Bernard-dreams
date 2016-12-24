@@ -17,7 +17,7 @@
     var UserControl = require('./user/user.controller');
 
     // Home
-    app.get('/', function (req, res){
+    router.get('/', function (req, res){
         res.sendfile('index.html');
     });
 
