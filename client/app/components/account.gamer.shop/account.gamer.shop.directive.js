@@ -169,13 +169,17 @@
             };
 
             console.log(wallet);
-            $scope.currentUser.wallet.push(wallet);
-            $scope.currentMarket.connectedMarkets.push(connectingMarket);
-            accountService.postUser($scope.currentUser)
+
+            var user = localStorageService.get("user");
+            console.log("CURRENT USER");
+            console.log(user);
+            user.wallet.push(wallet);
+            console.log(user);
+            accountService.postUser(user)
                 .then( function(promise) {
                     $scope.initMarkets();
                     ctrl.connectShopDlg.hide();
-                    localStorageService.set("user", $scope.currentUser);
+                    localStorageService.set("user", user);
                 });
         };
 
