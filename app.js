@@ -3,7 +3,7 @@
 // Set default environment variables
 //process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.NODE_ENV = 'development';
-process.env.NODE_CONFIG_DIR = __dirname + '/config/';
+process.env.NODE_CONFIG_DIR = __dirname + '/server/config/';
 
 var express = require('express');
 var config = require('config');
@@ -78,10 +78,10 @@ app.use(cookieParser());
 // Enable CORS
 app.use(cors());
 
-var routes = require('./src/routes');
+var routes = require(__dirname + '/server/src/routes');
 
 
-require('./src/passport')(passport);
+require(__dirname + '/server/src/passport')(passport);
 
 // required for passport
 app.use(session({
@@ -93,10 +93,14 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // Bootstrap routes
+// Static files
+app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/bower_components'));
+app.use('/vendors', express.static(__dirname + '/bower_components'));
 app.use(routes);
 
-// Static files
-app.use('/', express.static(__dirname + '/../public'));
+
+
 
 // Once database open, start servers
 mongoose.connection.once('open', function callback() {

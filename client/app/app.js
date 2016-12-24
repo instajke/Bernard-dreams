@@ -9,7 +9,6 @@
                     'ui.router',
                     'pascalprecht.translate',
                     'tmh.dynamicLocale',
-                    'appTemplates',
                     'ngMaterial',
                     'ui.validate',
                     'LocalStorageModule']);

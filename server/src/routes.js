@@ -5,6 +5,8 @@
     var mongoose = require('mongoose').set('debug', true);
     var Schema = mongoose.Schema,
       ObjectId = Schema.ObjectId;
+var path = require('path');
+
 
     var thing = require('./thing/thing.controller');
 // things ressources
@@ -18,7 +20,7 @@
 
     // Home
     router.get('/', function (req, res){
-        res.sendfile('client/index.html');
+        res.sendFile('index.html');
     });
 
 
