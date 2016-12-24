@@ -8,7 +8,7 @@ var User = require('./user/user.model.js');
 var configAuth = require('./auth');
 
 module.exports = function(passport) {
-    passport.use(new localStrategy(User.authenticate()));
+    passport.use(User.createStrategy());
     passport.serializeUser(User.serializeUser());
     passport.deserializeUser(User.deserializeUser());
 

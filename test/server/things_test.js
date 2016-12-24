@@ -2,7 +2,7 @@ var request = require('supertest');
 var should = require('should');
 var mongoose = require('mongoose');
 
-var app = require('../../server/app');
+var app = require('../../app');
 
 describe('CRUD on things ressources', function() {
 
