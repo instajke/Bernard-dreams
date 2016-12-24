@@ -16,8 +16,14 @@
     var User = require('./user/user.model');
     var UserControl = require('./user/user.controller');
 
+    // Home
+    app.get('/', function (req, res){
+        res.sendfile('index.html');
+    });
 
-    router.post('/api/register', function(req, res) {
+
+
+router.post('/api/register', function(req, res) {
         User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
         surname: req.body.user.surname, description : req.body.user.bio}),
             req.body.user.password, function(err, account) {
