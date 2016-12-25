@@ -1,6 +1,6 @@
 'use strict';
 
-var gamerLogic = require('../gamer/gamer.logic');
+var userLogic = require('../user/user.logic');
 var myConst = require('../consts');
 var sellHelper = require('../sellIllusiveHelper');
 
@@ -99,7 +99,7 @@ exports.findUserOffer = function(Market, userId, response) {
             var offers = [];
             for(var i = 0; i < res.offers.length; i++) {
                 for(var j = 0; j < res.offers[i].offersInPrice.length; j++) {
-                    if(res.offers[i].offersInPrice[j].gamerID == userId)
+                    if(res.offers[i].offersInPrice[j].userID.toString() == userId.toString())
                     {
                         found = true;
                         console.log("found offer");
@@ -126,7 +126,7 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
             for(var i = 0; i < res.offers.length; i++) {
                 if(res.offers[i].Price == price) {
                     for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
-                        if (res.offers[i].offersInPrice[j].gamerID == userId) {
+                        if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                             console.log("found offer");
                             found = true;
                             res.offers[i].offersInPrice[j].amount += amount;
@@ -144,7 +144,7 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                 offers.offersInPrice = [];
                 var offer = {};
                 offer.amount = amount;
-                offer.gamerID = userId;
+                offer.userID = userId;
                 offers.offersInPrice.push(offer);
                 res.offers.push(offers);
                 console.log("create offer");
@@ -164,7 +164,7 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
             for(var i = 0; i < res.offers.length; i++) {
                 if (res.offers[i].Price == price) {
                     for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
-                        if (res.offers[i].offersInPrice[j].gamerID == userId) {
+                        if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                             console.log("found offer");
                             found = true;
                             var mygamer = {};
@@ -173,7 +173,7 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
                             mygamer.wallet.amount = res.offers[i].offersInPrice[j].amount;
                             mygamer.wallet.marketID = Market._id;
                             mygamer.wallet.currencyType = res.currencyTypeBuy;
-                            gamerLogic.UpdateWallet(mygamer);
+                            userLogic.UpdateWallet(mygamer);
                             res.offers[i].offersInPrice.splice(j, 1);
                             res.save();
                             response.json({success: true});
@@ -209,7 +209,7 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
     });
 };
 
-exports.checkPriceBuy = function(gamer, response, callbackGamer, callbackMarketUpdate) {
+exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, callbackMarketUpdate) {
     marketBuy.findOne({marketID: gamer.wallet.marketID}).exec(function (err, res) {
         if(err){
             response.send(500, {error: err});
@@ -217,7 +217,7 @@ exports.checkPriceBuy = function(gamer, response, callbackGamer, callbackMarketU
             var transaction = false;
             for(var i = 0; i < res.offers.length; i++)
             {
-                if(res.offers[i].Price == gamer.DesirePrice)
+                if(res.offers[i].Price == desirePrice)
                 {
                     var index = i;
                     console.log("Cool! Transaction is possible! Price is found");
@@ -228,7 +228,7 @@ exports.checkPriceBuy = function(gamer, response, callbackGamer, callbackMarketU
                         gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * gamer.wallet.amount);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
-                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
+                        callbackGamer(gamer._id, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
                             res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                     } else {
                         // calculate cost
@@ -242,11 +242,11 @@ exports.checkPriceBuy = function(gamer, response, callbackGamer, callbackMarketU
                         if(res.offers[i].Amount == gamer.wallet.amount)
                             if(isPartial) {
                                 console.log("Not Cool! It will pe partial transaction!");
-                                callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
+                                callbackGamer(gamer._id, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
                                     res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                             } else {
                                 console.log("Cool! It will be full transaction, but it needs updates!");
-                                callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
+                                callbackGamer(gamer._id, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
                                     res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                             }
                     }
@@ -283,7 +283,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
                     } else {
                         var myOffer = {};
                         myOffer.amount = amount;
-                        myOffer.gamerID = res.offers[index].offersInPrice[i].gamerID;
+                        myOffer.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer);
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             res.offers[index].offersInPrice.splice(i, 1);
@@ -298,7 +298,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
                 wallet.currencyType = res.currencyTypeBuy;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
-                gamerLogic.UpdateWallets(myGamer, myOffers, response);
+                userLogic.UpdateWallets(myGamer, myOffers, response);
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
