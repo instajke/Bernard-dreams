@@ -66,7 +66,7 @@ module.exports = {
         market.create(Market, function (err, doc){
                 var MarketSell = {
                     marketID: doc._id,
-                    marketName: doc.marketName + ' Sell',
+                    marketName: doc.name + ' Sell',
                     devID: doc.devID,
                     marketType: doc.marketType,
                     taxes: doc.tax,
@@ -80,7 +80,7 @@ module.exports = {
                 };
                 var MarketBuy = {
                     marketID: doc._id,
-                    marketName: doc.marketName + ' Buy',
+                    marketName: doc.name + ' Buy',
                     devID: doc.devID,
                     marketType: doc.marketType,
                     taxes: doc.tax,

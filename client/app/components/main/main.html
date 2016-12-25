@@ -21,28 +21,29 @@
                        ng-hide="mainVm.fabHidden"
                        md-open="mainVm.fabOpen"
                        md-direction='{{mainVm.selectedDirection}}'
-                       class="md-fling"
+                       class="md-scale"
                        ng-mouseenter = "mainVm.fabOpen = true"
                        ng-mouseleave = "mainVm.fabOpen = false">
                         <md-fab-trigger>
                             <md-button class="md-raised md-hue-2">
-                                <md-tooltip md-direction="left" md-visible="tooltipVisible">Sign into the system</md-tooltip> Sign In </md-button>
+                                <md-tooltip md-direction="left">Sign into the system</md-tooltip> Sign In </md-button>
                         </md-fab-trigger>
                         <md-fab-actions>
                             <md-button class="md-accent md-mini" href="api/google">
-                                <md-tooltip md-direction="left" md-visible="tooltipVisible">Sign in using Google account</md-tooltip>
+                                <md-tooltip md-direction="left">Sign in using Google account</md-tooltip>
                                 <md-icon md-svg-icon="google_plus"></md-icon>
                             </md-button>
                             <md-button class="md-accent md-mini" href="api/twitter">
-                                <md-tooltip md-direction="left" md-visible="tooltipVisible">Sign in using Twitter account</md-tooltip>
+                                <md-tooltip md-direction="left">Sign in using Twitter account</md-tooltip>
                                 <md-icon md-svg-icon="twitter"></md-icon>
                             </md-button>
                             <md-button class="md-accent md-mini" href="api/facebook">
-                                <md-tooltip md-direction="left" md-visible="tooltipVisible">Sign in using Facebook</md-tooltip>
+                                <md-tooltip md-direction="left">Sign in using Facebook</md-tooltip>
                                 <md-icon md-svg-icon="facebook"></md-icon>
                             </md-button>
-                            <md-button md-no-ink class="md-raised md-warn  md-mini" ng-click="mainVm.login()"> Log in
-                                <md-tooltip md-direction="left" md-visible="tooltipVisible">Sign in with KleManProMos account</md-tooltip>
+                            <md-button md-no-ink class="md-raised md-warn  md-mini" ng-click="mainVm.login()">
+                                <md-tooltip md-direction="left">Sign in with KleManProMos account</md-tooltip>
+                                Log in
                             </md-button>
                         </md-fab-actions>
                     </md-fab-speed-dial>

@@ -38,7 +38,10 @@
 
                     <md-input-container>
                       <label>Market type</label>
-                      <input ng-model="marketsCtrl.currentMarket.marketType">
+                      <md-select ng-model="marketsCtrl.currentMarket.marketType">
+                        <md-option><em>None</em></md-option>
+                        <md-option ng-repeat="type in marketsCtrl.marketTypes" ng-value="type.name">{{type.name}}</md-option>
+                      </md-select>
                     </md-input-container>
 
                     <md-input-container>
