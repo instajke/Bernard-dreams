@@ -79,7 +79,7 @@ module.exports = {
         });
     },
 
-    createPayment: function (marketID, Offer, devPayPalAcc, price, total, userID, response) {
+    createPayment: function (marketID, Offer, devPayPalAcc, total, userID, response) {
         var create_payment_json = {
             "intent": "sale",
             "payer": {
@@ -96,11 +96,11 @@ module.exports = {
                 },
                 "item_list": {
                     "items": [{
-                        "name": Offer.currencyType,
+                        "name": Offer.amount.toString() + " " + Offer.currencyType,
                         "sku": Offer.currencyType,
-                        "price": price,
+                        "price": total,
                         "currency": "USD",
-                        "quantity": Offer.amount
+                        "quantity": 1
                     }]
                 },
                 "payee":{"email": devPayPalAcc},
