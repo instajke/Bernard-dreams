@@ -26,12 +26,16 @@
     vm.selectedMode       = "md-fling md-fab-top-right";
     vm.status = '';
     vm.$mdDialog          = $mdDialog;
-      
+
     //FAB Log In
     vm.fabHidden = false;
     vm.fabOpen = false;
     vm.hover = false;
-    
+    vm.facebookTooltip = false;
+    vm.twitterTooltip = false;
+    vm.googleTooltip = false;
+    vm.loginTooltip = false;
+
     $scope.$watch('mainVm.fabOpen', function(isOpen) {
         if (isOpen) {
             $timeout(function() {
@@ -41,8 +45,8 @@
             $scope.tooltipVisible = vm.fabOpen;
         }
     })
-      
-    
+
+
 
     vm.showAlert = function(res) {
         alert = $mdDialog.alert({
