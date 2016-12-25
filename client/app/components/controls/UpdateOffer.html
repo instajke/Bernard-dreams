@@ -1,30 +1,33 @@
-<md-dialog>
-    <md-toolbar>
-        Update offer:
+<md-dialog layout-xs>
+    <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="defaul center">
+        <span flex="5"></span>
+        <md-card-title-text>Update offer</md-card-title-text>
     </md-toolbar>
-    <md-input-container>
-      <label>Select offer's currency type: </label>
-      <md-select ng-model="currentOffer.currencyType">
-        <md-option><em>None</em></md-option>
-        <md-option ng-repeat="curr in currencies" ng-value="curr.name">{{curr.name}}</md-option>
-      </md-select>
-    </md-input-container>
-    <md-input-container name="amount" class="md-icon-float md-block">
-        <md-icon class="md-default-theme" class="material-icons">&#xE8D1;</md-icon>
-        <label>Enter offer's amount</label>
-        <input ng-model="currentOffer.amount" ng-required="true">
-    </md-input-container>
-    <md-input-container name="price" class="md-icon-float md-block">
-        <md-icon class="md-default-theme" class="material-icons">&#xE227;</md-icon>
-        <label>Define offer's price</label>
-        <input ng-model="currentOffer.price" ng-required="true">
-    </md-input-container>
-    <md-input-container name="discount" class="md-icon-float md-block">
-        <md-icon class="md-default-theme" class="material-icons">&#xE25C;</md-icon>
-        <label>Offer's discount</label>
-        <input ng-model="currentOffer.discount">
-    </md-input-container>
-    <md-button class="md-warn md-raised md-hue-2" ng-click="updateOffer()">
-        Update offer
-    </md-button>
+    <md-content>
+        <md-input-container>
+          <label>Select offer's currency type: </label>
+          <md-select ng-model="currentOffer.currencyType">
+            <md-option><em>None</em></md-option>
+            <md-option ng-repeat="curr in currencies" ng-value="curr.name">{{curr.name}}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container name="amount" class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">&#xE8D1;</md-icon>
+            <label>Enter offer's amount</label>
+            <input ng-model="currentOffer.amount" ng-required="true">
+        </md-input-container>
+        <md-input-container name="price" class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">&#xE227;</md-icon>
+            <label>Define offer's price</label>
+            <input ng-model="currentOffer.price" ng-required="true">
+        </md-input-container>
+        <md-input-container name="discount" class="md-icon-float md-block">
+            <md-icon class="md-default-theme" class="material-icons">&#xE25C;</md-icon>
+            <label>Offer's discount</label>
+            <input ng-model="currentOffer.discount">
+        </md-input-container>
+        <md-button class="md-warn md-raised md-hue-2" ng-click="updateOffer()">
+            Update offer
+        </md-button>
+    </md-content>
 </md-dialog>
