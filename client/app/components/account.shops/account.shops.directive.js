@@ -62,8 +62,9 @@
       };
 
       ctrl.initMarkets = function() {
-          shopService.getMarkets(localStorageService.get("user").username)
+          shopService.getMarkets(localStorageService.get("user")._id)
             .then( function(promise) {
+                console.log("Silvername playing guitar")
                 ctrl.markets = promise.markets;
             })
       };
