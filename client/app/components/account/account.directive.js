@@ -116,7 +116,7 @@
                     tooltip: "Open shop"
                 }, {
                     name: "Buy (Market)",
-                    url: "market",
+                    url: "buy",
                     tooltip: "Open market"
                 }, {
                     name: "Sell (Market)",
@@ -163,10 +163,17 @@
         ctrl.checkLoggedIn = function() {
             $http.get('api/getAuthUser')
                 .success(function(user){
-                    console.log("check log in");
-                    console.log(user);
-                    localStorageService.set("user", user);
-                    fillSidenav();
+                    if (user != 0) {
+                        console.log("check log in");
+                        console.log(user);
+                        localStorageService.set("user", user);
+                        fillSidenav();
+                        $state.transitionTo('account.home')
+                    }
+                    else {
+                        console.log("user not logged in");
+                        $state.transitionTo('home');
+                    }
                 });
         };
 

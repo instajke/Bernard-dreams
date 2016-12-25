@@ -4,8 +4,30 @@
           <md-card-title-text>{{market.marketName}}</md-card-title-text>
         </md-toolbar>
         <md-card-content>
-            <p>content</p>
+            <md-list>
+                <md-toolbar class="md-secondary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+                    <md-card-title-text>Market offers</md-card-title-text>
+                </md-toolbar>
+                <md-list-item class="md-3-line" layout-align="end center" ng-show="!market.offers.length">
+                    <div class="md-list-item-text">
+                        No offers
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="offer in market.offers">
+                    <div class="md-list-item-text">
+                        {{offer.amount}} - {{offer.price}}
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
         </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="showTransDialog($event, lastTrans)">
+                <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
+                <md-tooltip>Add offer!</md-tooltip>
+            </md-button>
+        </md-card-actions>
     </md-card>
 </md-content>
 <p>hai</p>
