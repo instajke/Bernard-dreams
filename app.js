@@ -96,7 +96,7 @@ app.use(passport.session()); // persistent login sessions
 // Static files
 app.use(express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/bower_components'));
-app.use('/vendors', express.static(__dirname + '/bower_components'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use(routes);
 
 

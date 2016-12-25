@@ -4,14 +4,14 @@ var nodemon = require('gulp-nodemon');
 var mocha = require('gulp-spawn-mocha');
 
 gulp.task('server:lint', function() {
-  return gulp.src(['server/app.js', 'server/src/**/*.js'])
+  return gulp.src(['app.js', 'server/src/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
 });
 
 gulp.task('server:lint-dev', function() {
-  return gulp.src(['server/app.js', 'server/src/**/*.js'])
+  return gulp.src(['app.js', 'server/src/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
 });
@@ -26,7 +26,7 @@ gulp.task('server:build', function() {
 gulp.task('server:serve', function(cb) {
   var called = false;
   return nodemon({
-      script: 'server/app.js',
+      script: 'app.js',
       nodeArgs: ['--debug'],
       watch: ['server/'],
       ext: 'js'
