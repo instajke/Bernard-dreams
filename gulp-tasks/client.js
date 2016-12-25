@@ -57,7 +57,7 @@ gulp.task('client:serve', function(cb) {
 
   // Proxy Middleware to Express app
   var proxyServer = proxy('/api', {
-    target: 'localhost:3002'
+    target: 'http://localhost:3002'
   });
 
   browserSync.instance = browserSync.init({
