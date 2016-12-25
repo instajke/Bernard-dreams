@@ -123,34 +123,38 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
             response.send(500, {error: err});
         } else {
             var found = false;
-            for(var i = 0; i < res.offers.length; i++) {
-                if(res.offers[i].Price == price) {
-                    for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
-                        if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
-                            console.log("found offer");
-                            found = true;
-                            res.offers[i].offersInPrice[j].amount += amount;
-                            res.offers[i].Amount += amount;
-                            break;
+            if(res.marketType == "Real Market") {
+                for (var i = 0; i < res.offers.length; i++) {
+                    if (res.offers[i].Price == price) {
+                        for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
+                            if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
+                                console.log("found offer");
+                                found = true;
+                                res.offers[i].offersInPrice[j].amount += amount;
+                                res.offers[i].Amount += amount;
+                                break;
+                            }
                         }
                     }
+                    break;
                 }
-                break;
+                if (!found) {
+                    var offers = {};
+                    offers.Price = price;
+                    offers.Amount = amount;
+                    offers.offersInPrice = [];
+                    var offer = {};
+                    offer.amount = amount;
+                    offer.userID = userId;
+                    offers.offersInPrice.push(offer);
+                    res.offers.push(offers);
+                    console.log("create offer");
+                }
+                res.save();
+                response.json({success: true});
+            } else {
+                response.send({"result": "Wrong market"});
             }
-            if(!found) {
-                var offers = {};
-                offers.Price = price;
-                offers.Amount = amount;
-                offers.offersInPrice = [];
-                var offer = {};
-                offer.amount = amount;
-                offer.userID = userId;
-                offers.offersInPrice.push(offer);
-                res.offers.push(offers);
-                console.log("create offer");
-            }
-            res.save();
-            response.json({success: true});
         }
     });
 };
