@@ -528,8 +528,8 @@ router.post('/api/register', function(req, res) {
         var userID = request.body.gamerID;
         // a bit dangerous here without parsing...
         var price = Offer.price - (parseFloat(Offer.price) * Offer.discount / 100);
-        var total = price * Offer.amount;
-        myPayPal.createPayment(marketID, Offer, devPayPalAcc, price, total, userID, response);
+        var total = (price * Offer.amount).toFixed(2);
+        myPayPal.createPayment(marketID, Offer, devPayPalAcc, total, userID, response);
     });
 
     router.get('/api/paypal/complete', function (request, response) {

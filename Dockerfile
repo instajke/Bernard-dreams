@@ -19,4 +19,4 @@ EXPOSE 3002
 ENV NODE_ENV='production'
 
 # Run app
-CMD ["node", "server/app.js"]
+CMD ["node", "app.js"]

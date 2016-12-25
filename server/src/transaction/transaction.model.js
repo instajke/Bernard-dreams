@@ -3,27 +3,27 @@
  */
 var buy = require('../marketSell/marketSell.model');
 var sell = require('../marketBuy/marketBuy.model');
-var gamer = require('../gamer/gamer.model');
+var user = require('../user/user.controller');
 
 module.exports = {
 
     // gamer: { userID, DesirePrice, wallet: [{ curType, amount, marketID }] }
 
-    MakeTransactionBuy: function(mygamer, response) {
-        buy.checkPriceSell(mygamer, response, gamer.checkPayingCapacity, buy.UpdateMarket);
+    MakeTransactionBuy: function(mygamer, desirePrice, response) {
+        buy.checkPriceSell(mygamer, desirePrice, response, user.checkPayingCapacity, buy.UpdateMarket);
 
     },
 
-    MakeTransactionSell: function(mygamer, response) {
-        sell.checkPriceBuy(mygamer, response, gamer.checkPayingCapacity, sell.UpdateMarket);
+    MakeTransactionSell: function(mygamer, desirePrice, response) {
+        sell.checkPriceBuy(mygamer, desirePrice, response, user.checkPayingCapacity, sell.UpdateMarket);
     },
 
     MakeOfferBuy: function(userId, cost, currencyType, price, amount, marketID, response) {
-        gamer.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, sell.findOrCreateOffer);
+        user.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, sell.findOrCreateOffer);
     },
 
     MakeOfferSell: function(userId, cost, currencyType, price, amount, marketID, response) {
-        gamer.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, buy.findOrCreateOffer);
+        user.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, buy.findOrCreateOffer);
     }
 
     // shop transaction will be added soon

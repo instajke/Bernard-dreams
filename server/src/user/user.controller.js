@@ -120,7 +120,7 @@ exports.updateWallet = function (User, response) {
 };
 exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID, price, amount, response, callback) {
     user.findOne({
-        userID: userId
+        _id: userId
     }).exec(function (err, res) {
         if (err) {
             response.send(500, {
@@ -130,7 +130,7 @@ exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID
         else {
             // func1
             for (var i = 0; i < res.wallet.length; i++) {
-                if (res.wallet[i].marketID == marketID) {
+                if (res.wallet[i].marketID.toString() == marketID.toString()) {
                     if (res.wallet[i].currencyType == currencyType) {
                         if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
@@ -140,7 +140,7 @@ exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID
                             var myWallet = res.wallet[i];
                             myWallet.amount = cost;
                             var myHistory = historyHelper(myWallet);
-                            res.history.push(myHistory);
+                            res.transactions.push(myHistory);
                             res.save();
                             callback(marketID, userId, price, amount, response);
                             break;
@@ -153,7 +153,7 @@ exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID
 };
 exports.checkPayingCapacity = function (userId, transaction, cost, currencyType, amount, currencyType2, marketID, indexOffer, response, callback) {
     user.findOne({
-        userID: userId
+        _id: userId
     }).exec(function (err, res) {
         if (err) {
             response.send(500, {
@@ -165,7 +165,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             var success = false;
             var index = -1;
             for (var i = 0; i < res.wallet.length; i++) {
-                if (res.wallet[i].marketID == marketID) {
+                if (res.wallet[i].marketID.toString() == marketID.toString()) {
                     if (index == -1) index = i;
                     if (index == -1)
                         index = i;
@@ -179,14 +179,14 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                             var myWallet = res.wallet[i];
                             myWallet.amount = cost;
                             var myHistory = historyHelper(myWallet);
-                            res.history.push(myHistory);
+                            res.transactions.push(myHistory);
                             if (i != index) {
                                 if (res.wallet[index].currencyType == currencyType2) {
                                     // update history
                                     myWallet = res.wallet[index];
                                     myWallet.amount = amount;
                                     myHistory = historyHelper(myWallet);
-                                    res.history.push(myHistory);
+                                    res.transactions.push(myHistory);
                                     res.wallet[index].amount += amount;
                                 }
                             }
@@ -199,7 +199,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         myWallet = res.wallet[i];
                                         myWallet.amount = amount;
                                         myHistory = historyHelper(myWallet);
-                                        res.history.push(myHistory);
+                                        res.transactions.push(myHistory);
                                         res.wallet[index].amount += amount;
                                         notfound = false;
                                         break;
@@ -211,7 +211,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     newWallet.amount = amount;
                                     newWallet.marketID = marketID;
                                     myHistory = historyHelper(myWallet);
-                                    res.history.push(myHistory);
+                                    res.transactions.push(myHistory);
                                     res.wallet.push(newWallet);
                                 }
                                 break;
