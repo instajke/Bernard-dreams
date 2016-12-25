@@ -176,11 +176,13 @@ module.exports = {
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
                         user.updateWallet(Gamer, response);
-                       
+
                         // update user wallet
                         // update shop history
                         console.log(payment);
+
                         response.redirect('http://kmpm.eu-gb.mybluemix.net/');
+
                     }
                 });
             }

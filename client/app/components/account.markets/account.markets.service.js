@@ -13,6 +13,8 @@
             $http.get('/api/markets')
                 .success(function(data, status) {
                     if (status === 200) {
+                        console.log("WE GOT FOLLOW MARKETS");
+                        console.log(data);
                         deferred.resolve(data);
                     }
                     else {

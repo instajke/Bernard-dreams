@@ -22,8 +22,14 @@
             $scope.availableMarkets = $scope.markets;
 
             var indexes = [];
+
+            console.log("SHOW ALL AVAIL MARKETS");
+            console.log($scope.availableMarkets);
+            console.log("LOCAL STOR WALLET LENGTH");
+            console.log(localStorageService.get("user").wallet.length);
+
             for (var index = 0; index < $scope.availableMarkets.length; index++) {
-                for (var jndex = 0; jndex < $scope.currentUser.wallet.length; jndex++) {
+                for (var jndex = 0; jndex < localStorageService.get("user").wallet.length; jndex++) {
 
                     if ($scope.availableMarkets[index]._id === $scope.currentUser.wallet[jndex].marketID)
                         {
@@ -45,8 +51,7 @@
 
             console.log("we are inside get shops by market id");
 
-                $scope.currentUser = localStorageService.get("user");
-                $scope.currentUser.wallet.forEach(function(item) {
+                localStorageService.get("user").wallet.forEach(function(item) {
                     userMarkets.push(item.marketID);
                     console.log("array of marketID");
                     console.log(userMarkets);
@@ -175,12 +180,13 @@
             console.log("CURRENT USER");
             console.log(user);
             user.wallet.push(wallet);
+            console.log("CURRENT USER WITH UPDATED WALLET");
             console.log(user);
             accountService.postUser(user)
                 .then( function(promise) {
-                    $scope.initMarkets();
                     ctrl.connectShopDlg.hide();
                     localStorageService.set("user", user);
+                    $scope.initMarkets();
                 });
         };
 
