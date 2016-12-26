@@ -3,3 +3,9 @@
 /.tmp
 npm-debug.log
 npm-debug.log
+*.iml
+.idea/jsLibraryMappings.xml
+.idea/modules.xml
+.idea/libraries/Bernard_dreams_node_modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
