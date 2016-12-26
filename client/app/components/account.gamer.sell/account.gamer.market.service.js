@@ -11,7 +11,7 @@
           createSellOffer : function(userID, price, amount, marketID, currencyType) {
               var deferred = $q.defer();
 
-                $http.post('/transaction/offer/sell/',
+                $http.post('/api/transaction/offer/sell',
                     { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
                         .success(function() {
                                 console.log("create offer success");
@@ -24,11 +24,11 @@
 
                 return deferred.promise;
           },
-          createBuyOffer : function(market, userID, price, amount) {
+          createBuyOffer : function(userID, price, amount, marketID, currencyType) {
               var deferred = $q.defer();
 
-                $http.post('/api/marketBuy/' + userID,
-                    { marketBuy : market, price : price, amount : amount })
+                $http.post('/api/transaction/offer/buy',
+                    { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
                         .success(function() {
                                 console.log("create offer success");
                                 deferred.resolve();

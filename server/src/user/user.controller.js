@@ -226,6 +226,9 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                 res.save();
                 callback(marketID, transaction, indexOffer, amount, response);
             }
+            else {
+                console.log("something is wrong");
+            }
         }
     })
 };

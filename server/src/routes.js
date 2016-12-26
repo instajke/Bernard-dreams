@@ -479,17 +479,18 @@ router.post('/api/register', function(req, res) {
 ///TRANSACTION
     var transaction = require('./transaction/transaction.model');
 // transaction ressourses
-    router.post('/transaction/buy', function (request, response) {
+    router.post('/api/transaction/buy', function (request, response) {
         var Gamer = request.body.gamer;
         transaction.MakeTransactionBuy(Gamer, response);
     });
 
-    router.post('/transaction/sell', function (request, response) {
+    router.post('/api/transaction/sell', function (request, response) {
         var Gamer = request.body.gamer;
         transaction.MakeTransactionSell(Gamer, response);
     });
 
-    router.post('/transaction/offer/buy', function (request, response) {
+    router.post('/api/transaction/offer/buy', function (request, response) {
+        console.log("WE ARE CREATING BUY OFFER");
         var userID = request.body.userID;
         var currencyType = request.body.currencyType;
         var price =  parseFloat(request.body.price);
@@ -498,7 +499,8 @@ router.post('/api/register', function(req, res) {
         transaction.MakeOfferBuy(userID, currencyType, price, amount, marketID, response);
     });
 
-    router.post('/transaction/offer/sell', function (request, response) {
+    router.post('/api/transaction/offer/sell', function (request, response) {
+        console.log(request);
         var userID = request.body.userID;
         var currencyType = request.body.currencyType;
         var price = parseFloat(request.body.price);
