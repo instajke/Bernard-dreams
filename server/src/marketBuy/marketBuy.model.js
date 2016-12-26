@@ -140,7 +140,7 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             myOffer.amount = amount;
                             myOffer.userID = userId;
                             res.offers[i].offersInPrice.push(myOffer);
-                            res.offers[i].Amount += amount;
+                            res.offers[i].Amount += +amount;
                             found = true;
                         }
 
