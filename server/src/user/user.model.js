@@ -22,6 +22,7 @@ var User = new Schema({
     surname: String,
     description: String,
     password: String,
+    picture: String,
     facebookToken: String,
     googleToken: String,
     twitterToken: String,

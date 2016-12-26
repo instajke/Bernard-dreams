@@ -19,7 +19,8 @@ module.exports = function(passport) {
             // pull in our app id and secret from our auth.js file
             clientID        : configAuth.facebookAuth.clientID,
             clientSecret    : configAuth.facebookAuth.clientSecret,
-            callbackURL     : configAuth.facebookAuth.callbackURL
+            callbackURL     : configAuth.facebookAuth.callbackURL,
+            profileFields   : ['id', 'displayName', 'name', 'gender', 'photos']
 
         },
 
@@ -48,6 +49,7 @@ module.exports = function(passport) {
                         newUser.googleToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
                         newUser.isDev = false;
+                        newUser.picture = profile.photos ? profile.photos[0].value : 'someface.jpg';
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
@@ -101,6 +103,7 @@ module.exports = function(passport) {
                         newUser.facebookToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
                         newUser.isDev = false;
+                        newUser.picture = profile._json['picture'];
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
@@ -154,6 +157,7 @@ module.exports = function(passport) {
                         newUser.twitterToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
                         newUser.isDev = false;
+                        newUser.picture = profile.photos ? profile.photos[0].value : 'someface.jpg';
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
