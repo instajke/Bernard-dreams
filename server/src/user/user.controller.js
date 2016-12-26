@@ -97,9 +97,7 @@ exports.updateWallet = function (User, response) {
         _id: User._id
     }).exec(function (err, res) {
         if (err) {
-            response.send(500, {
-                error: err
-            });
+            response.status(500).send(err);
         }
         else {
             var newCurrency = true;
@@ -171,7 +169,11 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                     if (index == -1) index = i;
                     if (index == -1)
                         index = i;
+                    console.log(res.wallet[i].currencyType);
+                    console.log(currencyType);
                     if (res.wallet[i].currencyType == currencyType) {
+                        console.log(res.wallet[i].amount);
+                        console.log(cost);
                         if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
                             success = true;
@@ -224,6 +226,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
             if (success) {
                 res.save();
+                console.log('hello bullshit');
                 callback(marketID, transaction, indexOffer, amount, response);
             }
             else {

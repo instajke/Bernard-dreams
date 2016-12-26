@@ -20,6 +20,7 @@
 
       ctrl.user = localStorageService.get("user");
       ctrl.createOfferDialog = $mdDialog;
+      ctrl.buyDialog = $mdDialog;
 
       $scope.offerPrice = 0;
       $scope.offerAmount = 0;
@@ -74,14 +75,29 @@
           console.log($scope.offerPrice);
           console.log($scope.offerAmount);
           console.log($scope.currentMarket.marketID);
-          console.log($scope.currentMarket.currencyTypeAnother);
-          gamerMarketService.createBuyOffer(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyAnother)
+          console.log($scope.currentMarket.currencyTypeBuy);
+          gamerMarketService.createBuyOffer(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeBuy)
             .then( function() {
                 $scope.initMarkets();
                 ctrl.createOfferDialog.hide();
                 $scope.showSimpleToast("offer created");
             })
 
+      };
+
+      $scope.buyStuff = function() {
+          console.log("buy stuff");
+          console.log(localStorageService.get("user")._id);
+          console.log($scope.offerPrice);
+          console.log($scope.offerAmount);
+          console.log($scope.currentMarket.marketID);
+          console.log($scope.currentMarket.currencyTypeBuy);
+          gamerMarketService.buyStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeBuy)
+              .then( function() {
+                  $scope.initMarkets();
+                  ctrl.createOfferDialog.hide();
+                  $scope.showSimpleToast("buy succeseded");
+              })
       };
 
       $scope.showSimpleToast = function(msg) {
@@ -98,6 +114,20 @@
           ctrl.createOfferDialog.show({
               controller: GamerBuyController
               , templateUrl: 'app/components/controls/CreateOffer.html'
+              , parent: angular.element(document.body)
+              , targetEvent: ev
+              , scope: $scope
+              , preserveScope: true
+              , clickOutsideToClose: true
+          });
+      };
+
+      ctrl.showBuyDialog = function (market, ev) {
+          $scope.currentMarket = market;
+
+          ctrl.buyDialog.show({
+              controller: GamerBuyController
+              , templateUrl: 'app/components/controls/Buy.html'
               , parent: angular.element(document.body)
               , targetEvent: ev
               , scope: $scope

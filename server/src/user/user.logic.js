@@ -1,6 +1,6 @@
 'use strict'
 
-var User = require('./user.model');
+var User = require('./user.controller');
 
 exports.UpdateWallets = function (user, offers, response) {
 
@@ -14,3 +14,4 @@ exports.UpdateWallets = function (user, offers, response) {
 exports.UpdateWallet = function(user, response) {
         User.updateWallet(user, response);
     };
+

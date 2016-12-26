@@ -480,8 +480,12 @@ router.post('/api/register', function(req, res) {
     var transaction = require('./transaction/transaction.model');
 // transaction ressourses
     router.post('/api/transaction/buy', function (request, response) {
-        var Gamer = request.body.gamer;
-        transaction.MakeTransactionBuy(Gamer, response);
+        var Gamer = {   userID : request.body.userID,
+                        wallet: {  curType  : request.body.currencyType,
+                                    amount   : request.body.amount,
+                                    marketID : request.body.marketID} };
+        var desiredPrice = parseFloat(request.body.price);
+        transaction.MakeTransactionBuy(Gamer, desiredPrice, response);
     });
 
     router.post('/api/transaction/sell', function (request, response) {

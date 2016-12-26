@@ -39,6 +39,22 @@
                         });
 
                 return deferred.promise;
+          },
+          buyStuff : function(userID, price, amount, marketID, currencyType) {
+              var deferred = $q.defer();
+
+              $http.post('/api/transaction/buy',
+                  { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
+                  .success(function() {
+                      console.log("create offer success");
+                      deferred.resolve();
+                  })
+                  .error (function() {
+                      console.log("create offer error");
+                      deferred.reject();
+                  });
+
+              return deferred.promise;
           }
       };
     }

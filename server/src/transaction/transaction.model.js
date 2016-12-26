@@ -10,6 +10,8 @@ module.exports = {
     // gamer: { userID, DesirePrice, wallet: [{ curType, amount, marketID }] }
 
     MakeTransactionBuy: function(mygamer, desirePrice, response) {
+        console.log(mygamer);
+        console.log("^gamer");
         buy.checkPriceSell(mygamer, desirePrice, response, user.checkPayingCapacity, buy.UpdateMarket);
 
     },

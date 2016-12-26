@@ -228,6 +228,7 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
             response.send(500, {error: err});
         } else {
             var transaction = false;
+            console.log(res);
             for(var i = 0; i < res.offers.length; i++)
             {
                 if(res.offers[i].price == desirePrice)
@@ -236,30 +237,31 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
                     console.log("Cool! Transaction is possible! price is found");
                     if(res.offers[i].amount > gamer.wallet.amount) {
                         // calculate cost
-                        var cost = gamer.wallet.amount * gamer.wallet.price;
+                        var cost = gamer.wallet.amount * desirePrice;
+                        console.log(cost + 'this is cost');
                         // calculate final purchase (with taxes)
                         gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * gamer.wallet.amount);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
-                        callbackGamer(gamer._id, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
+                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyTypeAnother, gamer.wallet.amount,
                             res.currencyTypeSell, res.marketID, i, response, callbackMarketUpdate);
                     } else {
                         // calculate cost
                         var isPartial = true;
                         if(res.offers[i].amount == gamer.wallet.amount)
                             isPartial = false;
-                        cost = res.offers[i].amount * gamer.wallet.price;
+                        cost = res.offers[i].amount * desirePrice;
                         // calculate final purchase (with taxes)
                         gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * res.offers[i].amount);
                         //res.offers.remove(i);
                         if(res.offers[i].amount == gamer.wallet.amount)
                         if(isPartial) {
                             console.log("Not Cool! It will pe partial transaction!");
-                            callbackGamer(gamer._id, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
+                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
                                 res.currencyTypeSell, res.marketID, i, response, callbackMarketUpdate);
                         } else {
                             console.log("Cool! It will be full transaction, but it needs updates!");
-                            callbackGamer(gamer._id, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
+                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
                                 res.currencyTypeSell, res.marketID, i, response, callbackMarketUpdate);
                         }
                     }
@@ -311,7 +313,9 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 wallet.currencyType = res.currencyTypeSell;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
+                console.log('this is');
                 userLogic.UpdateWallets(myGamer, myOffers, response);
+                console.log('bullshit');
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
