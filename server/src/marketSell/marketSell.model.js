@@ -127,14 +127,14 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
             if(res.marketType == myConst.RealMarket) {
                 var found = false;
                 for (var i = 0; i < res.offers.length; i++) {
-                    if (res.offers[i].Price == price) {
+                    if (res.offers[i].price == price) {
                         console.log("found offer with price");
                         for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
                             if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                                 console.log("found offer");
                                 found = true;
                                 res.offers[i].offersInPrice[j].amount += +amount;
-                                res.offers[i].Amount += +amount;
+                                res.offers[i].amount += +amount;
                                 break;
                             }
                         }
