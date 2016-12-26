@@ -7,8 +7,8 @@
     </md-toolbar>
     <md-content layout="column" style="background: none; min-height: calc(100vh - 128px)">
         <div class="background-image"></div>
-            <div class="content" layout="column" layout-align="center center">
-                <div>
+            <div class="content" layout="column" layout-xs="row" layout-align="center center">
+                <div layout-xs="column">
                     <md-input-container>
                         <label>Nickname</label>
                         <input ng-model="mainVm.user.nickname" type="nickname"> </md-input-container>
@@ -16,7 +16,7 @@
                         <label>Password</label>
                         <input ng-model="mainVm.user.password" type="password"> </md-input-container>
                 </div>
-                <div layout="row" layout-align="center top">
+                <div layout="row" layout-xs="column" layout-align="center top">
                     <md-fab-speed-dial
                        ng-hide="mainVm.fabHidden"
                        md-open="mainVm.fabOpen"

@@ -13,26 +13,15 @@
         <md-card-title-text>{{shop.name}}</md-card-title-text>
       </md-toolbar>
         <md-card-content>
-            <md-list>
-                <md-toolbar class="md-secondary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
-                    <md-card-title-text>Shop offers</md-card-title-text>
-                </md-toolbar>
-                <md-list-item class="md-3-line" layout-align="end center" ng-show="!shop.offers.length">
-                    <div class="md-list-item-text">
-                        No offers
-                    </div>
-                    <md-divider></md-divider>
-                </md-list-item>
-                <md-list-item class="md-3-line" ng-repeat="offer in shop.offers">
-                    <div class="md-list-item-text">
-                        <h3>{{offer.price}}</h3>
-                        <h4>{{offer.amount}}</h4>
-                        <p>{{offer.currencyType}}</p>
-                    </div>
-                    <md-button class="md-raised md-secondary" ng-click="transaction(shop, offer, currentUser)">Buy!</md-button>
-                    <md-divider></md-divider>
-                </md-list-item>
-            </md-list>
+            <md-card ng-repeat="offer in shop.offers">
+             <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
+                <md-card-title-text>
+                  <span class="md-headline">{{offer.amount}}, {{offer.price}} each</span>
+                  <span class="md-subhead description">Currency: {{offer.currencyType}}</span>
+                </md-card-title-text>
+                <md-button class="md-raised md-secondary" ng-click="transaction(shop, offer, currentUser)">Buy!</md-button>
+              </md-card-title>
+            </md-card>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
             <md-button class="md-icon-button" aria-label="Favorite">

@@ -122,8 +122,8 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
         if(err){
             response.send(500, {error: err});
         } else {
-            var found = false;
             if(res.marketType == myConst.RealMarket) {
+                var found = false;
                 for (var i = 0; i < res.offers.length; i++) {
                     if (res.offers[i].price == price) {
                         for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {

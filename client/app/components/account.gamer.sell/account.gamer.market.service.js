@@ -8,11 +8,11 @@
     function gamerMarketService($q, $http, $timeout, $rootScope) {
 
       return {
-          createSellOffer : function(market, userID, price, amount) {
+          createSellOffer : function(userID, price, amount, marketID, currencyType) {
               var deferred = $q.defer();
 
-                $http.post('/api/marketSell/' + userID,
-                    { marketSell : market, price : price, amount : amount })
+                $http.post('/transaction/offer/sell/',
+                    { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
                         .success(function() {
                                 console.log("create offer success");
                                 deferred.resolve();
