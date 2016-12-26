@@ -127,14 +127,15 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
             if(res.marketType === myConst.RealMarket) {
                 var found = false;
                 for (var i = 0; i < res.offers.length; i++) {
-                    if (res.offers[i].price === price) {
+                    console.log(res.offers[i].price);
+                    if (res.offers[i].price == price) {
                         console.log("found offer with price");
                         for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
                             if (res.offers[i].offersInPrice[j].userID.toString() === userId.toString()) {
                                 console.log("found offer");
                                 found = true;
-                                res.offers[i].offersInPrice[j].amount += amount;
-                                res.offers[i].amount += amount;
+                                res.offers[i].offersInPrice[j].amount += +amount;
+                                res.offers[i].amount += +amount;
                                 break;
                             }
                             else {
@@ -142,12 +143,11 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                                 found = true;
                                 var offerInPrice = { amount : amount, userID : userId };
                                 res.offers[i].offersInPrice.push(offerInPrice);
-                                res.offers[i].amount += amount;
+                                res.offers[i].amount += +amount;
                                 break;
                             }
                         }
                     }
-                    break;
                 }
                 if (!found) {
                     var offers = {};
