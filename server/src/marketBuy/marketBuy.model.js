@@ -143,7 +143,6 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             res.offers[i].amount += +amount;
                             found = true;
                         }
-                        break;
                     }
                 }
                 if (!found) {
