@@ -275,7 +275,7 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
     });
 };
 
-exports.UpdateMarket = function(MarketID, transaction, index, amount, response) {
+exports.UpdateMarket = function(MarketID, transaction, index, newAmount, response) {
     marketSell.findOne({marketID: MarketID}).exec(function (err,res) {
         if(err){
             response.send(500, {error: err});
@@ -283,7 +283,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
             if(res.marketType == myConst.RealMarket)
             {
                 // update offers
-                var amount = amount;
+                var amount = newAmount;
                 var myOffers = [];
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
