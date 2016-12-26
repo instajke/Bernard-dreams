@@ -118,7 +118,7 @@ exports.updateWallet = function (User, response) {
         }
     });
 };
-exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID, price, amount, response, callback) {
+exports.justCheckPayingCapacity = function (userId, currencyType, marketID, price, amount, response, callback) {
     user.findOne({
         _id: userId
     }).exec(function (err, res) {
@@ -135,10 +135,10 @@ exports.justCheckPayingCapacity = function (userId, cost, currencyType, marketID
                         if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
                             // make pay
-                            res.wallet[i].amount -= cost;
+                            res.wallet[i].amount -= amount;
                             // update history
                             var myWallet = res.wallet[i];
-                            myWallet.amount = cost;
+                            myWallet.amount = amount;
                             var myHistory = historyHelper(myWallet);
                             res.transactions.push(myHistory);
                             res.save();

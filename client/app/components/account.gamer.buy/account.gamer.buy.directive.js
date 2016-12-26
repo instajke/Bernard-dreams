@@ -69,12 +69,16 @@
       };
 
       $scope.createOffer = function() {
+          console.log("create buy offer params");
+          console.log($scope.currentMarket);
+          console.log(localStorageService.get("user")._id);
+          console.log($scope.offerPrice);
+          console.log($scope.offerAmount);
           gamerMarketService.createBuyOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
-            .then( function(promise) {
+            .then( function() {
                 $scope.initMarkets();
                 ctrl.createOfferDialog.hide();
                 $scope.showSimpleToast("offer created");
-                console.log(promise);
             })
 
       };
