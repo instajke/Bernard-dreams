@@ -132,12 +132,14 @@ exports.justCheckPayingCapacity = function (userId, currencyType, marketID, pric
             for (var i = 0; i < res.wallet.length; i++) {
                 if (res.wallet[i].marketID.toString() == marketID.toString()) {
                     if (res.wallet[i].currencyType == currencyType) {
-                        if (res.wallet[i].amount >= cost) {
+                        if (res.wallet[i].amount >= amount) {
                             console.log("Cool! Gamer is able to pay");
                             // make pay
                             res.wallet[i].amount -= amount;
                             // update history
-                            var myWallet = res.wallet[i];
+                            var myWallet = {}
+                            myWallet.currencyType = res.wallet[i].currencyType;
+                            myWallet.marketID = res.wallet[i].marketID;
                             myWallet.amount = amount;
                             var myHistory = historyHelper(myWallet);
                             res.transactions.push(myHistory);
