@@ -23,6 +23,22 @@
                         });
 
                 return deferred.promise;
+          },
+          createBuyOffer : function(market, userID, price, amount) {
+              var deferred = $q.defer();
+
+                $http.post('/api/marketBuy/' + userID,
+                    { marketBuy : market, price : price, amount : amount })
+                        .success(function() {
+                                console.log("create offer success");
+                                deferred.resolve();
+                        })
+                        .error (function() {
+                            console.log("create offer error");
+                            deferred.reject();
+                        });
+
+                return deferred.promise;
           }
       };
     }

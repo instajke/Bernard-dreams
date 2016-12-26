@@ -19,6 +19,11 @@
       var ctrl = this;
 
       ctrl.user = localStorageService.get("user");
+      ctrl.createOfferDialog = $mdDialog;
+
+      $scope.offerPrice = 0;
+      $scope.offerAmount = 0;
+
 
       $scope.showMarkets = function() {
           $scope.availableMarkets = $scope.markets;
@@ -37,7 +42,7 @@
               $scope.availableMarkets.splice(indexes[0], 1);
               indexes.splice(0, 1);
           }
-          console.log("excluding markets - done");
+          console.log("excluding buy markets - done");
 
       };
 
@@ -54,40 +59,42 @@
 
               marketService.getBuyMarketsBuysByMarketIds(userMarkets).then
               (function (promise) {
-                  console.log("initializing markets");
+                  console.log("initializing buy markets");
                   console.log(promise);
                   $scope.markets = promise.markets;
                   //$scope.showMarkets();
-                  console.log("so we have following markets: ")
+                  console.log("so we have following buy markets: ")
                   console.log($scope.markets);
                   //console.log($scope.availableMarkets);
               })
       };
 
-      $scope.createOffer = function() {
-          gamerMarketService.createSellOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
-            .then( function(promise) {
-                console.log(promise);
-            })
-
-      };
-
       $scope.showSimpleToast = function(msg) {
-          var pinTo = $scope.getToastPosition();
 
         $mdToast.show(
           $mdToast.simple()
             .textContent(msg)
-            .position( 'top right' )
             .hideDelay(2000)
         );
+      };
+
+      $scope.createOffer = function() {
+          console.log("Current buy market");
+          console.log($scope.currentMarket);
+          gamerMarketService.createBuyOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
+            .then( function(promise) {
+                $scope.initMarkets();
+                ctrl.createOfferDialog.hide();
+                $scope.showSimpleToast("offer created");
+                console.log(promise);
+            });
       };
 
       ctrl.showCreateOfferDialog = function (market, ev) {
           $scope.currentMarket = market;
 
           ctrl.createOfferDialog.show({
-              controller: GamerSellController
+              controller: GamerBuyController
               , templateUrl: 'app/components/controls/CreateOffer.html'
               , parent: angular.element(document.body)
               , targetEvent: ev
