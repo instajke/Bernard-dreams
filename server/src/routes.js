@@ -378,7 +378,7 @@ router.post('/api/register', function(req, res) {
     });
 
     router.post('/api/marketSell/:userID', function (request, response) {
-        var MarketID = request.body.marketSell._id;
+        var MarketID = request.body.marketSell.marketID;
         var userID = request.params.userID;
         var price = request.body.price;
         var amount = request.body.amount;
@@ -386,6 +386,7 @@ router.post('/api/register', function(req, res) {
     });
 
     router.delete('/api/marketSell/:userID', function (request, response) {
+        console.log(request);
         var MarketSell = request.body.marketSell;
         var userID = request.params.userID;
         var price = request.body.price;

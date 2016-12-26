@@ -14,16 +14,21 @@
                     </div>
                     <md-divider></md-divider>
                 </md-list-item>
-                <md-list-item ng-repeat="offer in market.offers">
+                <md-list-item ng-repeat="offer in market.offers" layout="column">
                     <div class="md-list-item-text">
                         {{offer.amount}} - {{offer.price}}
                     </div>
+                    <md-list>
+                        <md-list-item ng-repeat="offerDet in offer.offersInPrice">
+                            {{offerDet.amount}} - {{offerDet.price}} - {{offerDet.userID}}
+                        </md-list-item>
+                    </md-list>
                     <md-divider></md-divider>
                 </md-list-item>
             </md-list>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button class="md-icon-button" aria-label="Settings" ng-click="showTransDialog($event, lastTrans)">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="gamerSellCtrl.showCreateOfferDialog(market)">
                 <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
                 <md-tooltip>Add offer!</md-tooltip>
             </md-button>

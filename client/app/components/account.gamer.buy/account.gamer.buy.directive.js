@@ -13,9 +13,9 @@
       };
     });
 
-  GamerBuyController.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', 'localStorageService'];
+  GamerBuyController.$inject = ['accountService', 'marketService', 'gamerMarketService', '$http', '$scope', '$rootScope', '$mdDialog', 'localStorageService'];
 
-  function GamerBuyController(accountService, marketService, $http, $scope, $rootScope, $mdDialog, localStorageService) {
+  function GamerBuyController(accountService, marketService, gamerMarketService, $http, $scope, $rootScope, $mdDialog, localStorageService) {
       var ctrl = this;
 
       ctrl.user = localStorageService.get("user");
@@ -62,6 +62,39 @@
                   console.log($scope.markets);
                   //console.log($scope.availableMarkets);
               })
+      };
+
+      $scope.createOffer = function() {
+          gamerMarketService.createSellOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
+            .then( function(promise) {
+                console.log(promise);
+            })
+
+      };
+
+      $scope.showSimpleToast = function(msg) {
+          var pinTo = $scope.getToastPosition();
+
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(msg)
+            .position( 'top right' )
+            .hideDelay(2000)
+        );
+      };
+
+      ctrl.showCreateOfferDialog = function (market, ev) {
+          $scope.currentMarket = market;
+
+          ctrl.createOfferDialog.show({
+              controller: GamerSellController
+              , templateUrl: 'app/components/controls/CreateOffer.html'
+              , parent: angular.element(document.body)
+              , targetEvent: ev
+              , scope: $scope
+              , preserveScope: true
+              , clickOutsideToClose: true
+          });
       };
 
       $scope.initMarkets();

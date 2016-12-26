@@ -13,12 +13,16 @@
       };
     });
 
-  GamerSellController.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', 'localStorageService'];
+  GamerSellController.$inject = ['accountService', 'marketService', 'gamerMarketService', '$http', '$scope', '$rootScope', '$mdDialog', '$mdToast', 'localStorageService'];
 
-  function GamerSellController(accountService, marketService, $http, $scope, $rootScope, $mdDialog, localStorageService) {
+  function GamerSellController(accountService, marketService, gamerMarketService, $http, $scope, $rootScope, $mdDialog, $mdToast, localStorageService) {
       var ctrl = this;
 
       ctrl.user = localStorageService.get("user");
+      ctrl.createOfferDialog = $mdDialog;
+
+      $scope.offerPrice = 0;
+      $scope.offerAmount = 0;
 
       $scope.showMarkets = function() {
           $scope.availableMarkets = $scope.markets;
@@ -40,6 +44,40 @@
           console.log("excluding markets - done");
 
       };
+
+      $scope.createOffer = function() {
+          gamerMarketService.createSellOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
+            .then( function(promise) {
+                $scope.initMarkets();
+                ctrl.createOfferDialog.hide();
+                $scope.showSimpleToast("offer created");
+                console.log(promise);
+            })
+
+      };
+
+      $scope.showSimpleToast = function(msg) {
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(msg)
+            .hideDelay(2000)
+        );
+      };
+
+      ctrl.showCreateOfferDialog = function (market, ev) {
+          $scope.currentMarket = market;
+
+          ctrl.createOfferDialog.show({
+              controller: GamerSellController
+              , templateUrl: 'app/components/controls/CreateOffer.html'
+              , parent: angular.element(document.body)
+              , targetEvent: ev
+              , scope: $scope
+              , preserveScope: true
+              , clickOutsideToClose: true
+          });
+      };
+
 
       $scope.initMarkets = function () {
           var userMarkets = [];
