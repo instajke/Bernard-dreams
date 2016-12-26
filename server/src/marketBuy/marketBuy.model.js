@@ -19,7 +19,7 @@ var marketBuySchema = new Schema ({
     bestPrice: Number,
     curBuyings: Number, // if(curBuyings > newPrice) -> price changes in illusive markets
     newPrice: Number, // for illusive markets
-    offers: [ { Price: Number, Amount: Number, offersInPrice: [ { amount: Number, userID: Schema.Types.ObjectId }] }],
+    offers: [ { price: Number, amount: Number, offersInPrice: [ { amount: Number, userID: Schema.Types.ObjectId }] }],
     graphicBuy: [{ price: Number, date: { type: Date, default: Date.now() }}]  // price changing in a market
 });
 
@@ -104,7 +104,7 @@ exports.findUserOffer = function(Market, userId, response) {
                         found = true;
                         console.log("found offer");
                         var userOffer = res.offers[i].offersInPrice[j];
-                        userOffer.price = res.offers[i].Price;
+                        userOffer.price = res.offers[i].price;
                         offers.push(userOffer);
                     }
                 }
@@ -125,13 +125,13 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
             var found = false;
             if(res.marketType == myConst.RealMarket) {
                 for (var i = 0; i < res.offers.length; i++) {
-                    if (res.offers[i].Price == price) {
+                    if (res.offers[i].price == price) {
                         for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
                             if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                                 console.log("found offer");
                                 found = true;
                                 res.offers[i].offersInPrice[j].amount += +amount;
-                                res.offers[i].Amount += +amount;
+                                res.offers[i].amount += +amount;
                                 break;
                             }
                         }
@@ -140,7 +140,7 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             myOffer.amount = amount;
                             myOffer.userID = userId;
                             res.offers[i].offersInPrice.push(myOffer);
-                            res.offers[i].Amount += +amount;
+                            res.offers[i].amount += +amount;
                             found = true;
                         }
                         break;
@@ -148,8 +148,8 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                 }
                 if (!found) {
                     var offers = {};
-                    offers.Price = price;
-                    offers.Amount = amount;
+                    offers.price = price;
+                    offers.amount = amount;
                     offers.offersInPrice = [];
                     var offer = {};
                     offer.amount = amount;
@@ -174,7 +174,7 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
         } else {
             var found = false;
             for(var i = 0; i < res.offers.length; i++) {
-                if (res.offers[i].Price == price) {
+                if (res.offers[i].price == price) {
                     for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
                         if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                             console.log("found offer");
@@ -208,8 +208,8 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            var price = res.offers[0].Price * (1 + parseFloat(percent) / 100);
-            res.offers[0].Price = price;
+            var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
+            res.offers[0].price = price;
             res.bestPrice = price;
             var point = {};
             point.price = price;
@@ -229,11 +229,11 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
             var transaction = false;
             for(var i = 0; i < res.offers.length; i++)
             {
-                if(res.offers[i].Price == desirePrice)
+                if(res.offers[i].price == desirePrice)
                 {
                     var index = i;
-                    console.log("Cool! Transaction is possible! Price is found");
-                    if(res.offers[i].Amount > gamer.wallet.amount) {
+                    console.log("Cool! Transaction is possible! price is found");
+                    if(res.offers[i].amount > gamer.wallet.amount) {
                         // calculate cost
                         var cost = gamer.wallet.amount * gamer.wallet.price;
                         // calculate final purchase (with taxes)
@@ -245,13 +245,13 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                     } else {
                         // calculate cost
                         var isPartial = true;
-                        if(res.offers[i].Amount == gamer.wallet.amount)
+                        if(res.offers[i].amount == gamer.wallet.amount)
                             isPartial = false;
-                        cost = res.offers[i].Amount * gamer.wallet.price;
+                        cost = res.offers[i].amount * gamer.wallet.price;
                         // calculate final purchase (with taxes)
-                        gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * res.offers[i].Amount);
+                        gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * res.offers[i].amount);
                         //res.offers.remove(i);
-                        if(res.offers[i].Amount == gamer.wallet.amount)
+                        if(res.offers[i].amount == gamer.wallet.amount)
                             if(isPartial) {
                                 console.log("Not Cool! It will pe partial transaction!");
                                 callbackGamer(gamer._id, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
@@ -284,7 +284,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
             {
                 // update offers
                 var myOffers = [];
-                var Amount = amount;
+                var amount = amount;
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
                     if(res.offers[index].offersInPrice[i].amount < amount)
@@ -319,9 +319,9 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
                     var newPrice = Infinity;
                     for(i = 0; i < res.offers.length; i++)
                     {
-                        if(newPrice > res.offers[i].Price)
+                        if(newPrice > res.offers[i].price)
                         {
-                            newPrice = res.offers[i].Price;
+                            newPrice = res.offers[i].price;
                         }
                     }
                     res.bestPrice = newPrice;
@@ -331,7 +331,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
                     point.date = Date.now();
                     res.graphicBuy.push(point);
                 } else {
-                    res.offers.Amount -= Amount;
+                    res.offers.amount -= amount;
                 }
 
             }
@@ -346,8 +346,8 @@ exports.UpdateMarket = function(MarketID, transaction, index, amount, response) 
                     percent++;
                 }
                 if(percent != 0) {
-                    var price = res.offers[0].Price * (1 - parseFloat(percent) / 100);
-                    res.offers[0].Price = price;
+                    var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
+                    res.offers[0].price = price;
                     res.bestPrice = price;
                     point = {};
                     point.price = price;
