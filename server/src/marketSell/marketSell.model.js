@@ -21,7 +21,7 @@ var marketSellSchema = new Schema ({
     bestPrice: Number,
     curBuyings: Number, // if(curBuyings > newPrice) -> price changes in illusive markets
     newPrice: Number, // for illusive markets
-    offers: [ { price: Number, amount: Number, offersInPrice: [ { amount: Number, userID: Schema.Types.ObjectId }] }],
+    offers: [ { Price: Number, Amount: Number, offersInPrice: [ { amount: Number, userID: Schema.Types.ObjectId }] }],
     graphicSell: [{ price: Number, date: { type: Date, default: Date.now() }}] // price changing in a market
 });
 
@@ -145,6 +145,14 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                                 res.offers[i].amount += amount;
                                 break;
                             }
+                        }
+                        if(!found) {
+                            var myOffer = {};
+                            myOffer.amount = amount;
+                            myOffer.userID = userId;
+                            res.offers[i].offersInPrice.push(myOffer);
+                            res.offers[i].Amount += amount;
+                            found = true;
                         }
                     }
                     break;
