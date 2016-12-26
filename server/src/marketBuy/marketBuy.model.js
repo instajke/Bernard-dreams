@@ -143,9 +143,8 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             res.offers[i].Amount += amount;
                             found = true;
                         }
-
+                        break;
                     }
-                    break;
                 }
                 if (!found) {
                     var offers = {};
