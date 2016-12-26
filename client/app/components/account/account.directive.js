@@ -168,11 +168,11 @@
                         console.log(user);
                         localStorageService.set("user", user);
                         fillSidenav();
-                        $state.transitionTo('account.home')
+                        $state.go('account.home');
                     }
                     else {
                         console.log("user not logged in");
-                        $state.transitionTo('home');
+                        $state.go('home');
                     }
                 });
         };
@@ -200,15 +200,15 @@
 
       $scope.confirm = function () {
             var user = localStorageService.get("user");
-            console.log("we are confirmin")
+            console.log("we are confirmin");
             console.log(user);
             user.isDev = true;
             localStorageService.set("user", user);
             accountService.postUser(user)
             .then( function (promise) {
                 $rootScope.showAlert("U r dev now");
-            })
-            $state.go('account');
+                $state.reload();
+            });
       }
     }
 

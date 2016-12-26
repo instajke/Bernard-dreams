@@ -96,6 +96,21 @@
         return deferred.promise;
     };
 
+      vm.checkLoggedIn = function() {
+          $http.get('api/getAuthUser')
+              .success(function(user){
+                  if (user != 0) {
+                      console.log("check log in");
+                      console.log(user);
+                      $state.go('account.home');
+                  }
+                  else {
+                      console.log("user not logged in");
+                      $state.go('home');
+                  }
+              });
+      };
+
     vm.showRegistrationDialog = function(ev) {
         vm.$mdDialog.show({
             controller: UserRegistrationController
@@ -106,6 +121,8 @@
             , clickOutsideToClose: true
         });
     };
+
+    vm.checkLoggedIn();
   }
 
   UserRegistrationController.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q']

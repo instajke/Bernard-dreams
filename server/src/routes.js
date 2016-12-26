@@ -27,7 +27,7 @@ var path = require('path');
 
 router.post('/api/register', function(req, res) {
         User.register(new User({ username: req.body.user.nickname, email: req.body.user.email, name: req.body.user.name,
-        surname: req.body.user.surname, description : req.body.user.bio, wallet : []}),
+        surname: req.body.user.surname, description : req.body.user.bio, wallet : [], isDev : false}),
             req.body.user.password, function(err, account) {
                 if (err) {
                     return res.status(500).json({

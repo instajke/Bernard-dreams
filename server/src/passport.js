@@ -47,6 +47,7 @@ module.exports = function(passport) {
                         newUser.username    = profile.id; // set the users facebook id
                         newUser.googleToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
+                        newUser.isDev = false;
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
@@ -99,6 +100,7 @@ module.exports = function(passport) {
                         newUser.username    = profile.id; // set the users google id
                         newUser.facebookToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
+                        newUser.isDev = false;
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
@@ -151,6 +153,7 @@ module.exports = function(passport) {
                         newUser.username    = profile.id; // set the users twitter id
                         newUser.twitterToken = token; // we will save the token that facebook provides to the user
                         newUser.name  = profile.displayName; // look at the passport user profile to see how names are returne
+                        newUser.isDev = false;
                         //newUser.surname = profile.name.familyName;
                         //newUser.email = (profile.emails[0].value || '').toLowerCase();
 
