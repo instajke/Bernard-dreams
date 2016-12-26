@@ -133,8 +133,8 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                                 console.log("found offer");
                                 found = true;
-                                res.offers[i].offersInPrice[j].amount += +amount;
-                                res.offers[i].amount += +amount;
+                                res.offers[i].offersInPrice[j].amount += amount;
+                                res.offers[i].amount += amount;
                                 break;
                             }
                         }
@@ -143,7 +143,7 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                             myOffer.amount = amount;
                             myOffer.userID = userId;
                             res.offers[i].offersInPrice.push(myOffer);
-                            res.offers[i].amount += +amount;
+                            res.offers[i].amount += amount;
                             found = true;
                         }
                         break;

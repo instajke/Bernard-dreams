@@ -329,8 +329,8 @@ router.post('/api/register', function(req, res) {
     router.post('/api/marketBuy/:userID', function (request, response) {
         var MarketID = request.body.marketBuy.marketID;
         var userID = request.params.userID;
-        var price = request.body.price;
-        var amount = request.body.amount;
+        var price = parseFloat(request.body.price);
+        var amount = parseInt(request.body.amount);
         marketBuy.findOrCreateOffer(MarketID, userID, price, amount, response);
     });
 
@@ -380,8 +380,8 @@ router.post('/api/register', function(req, res) {
     router.post('/api/marketSell/:userID', function (request, response) {
         var MarketID = request.body.marketSell.marketID;
         var userID = request.params.userID;
-        var price = request.body.price;
-        var amount = request.body.amount;
+        var price = parseFloat(request.body.price);
+        var amount = parseInt(request.body.amount);
         marketSell.findOrCreateOffer(MarketID, userID, price, amount, response);
     });
 
@@ -491,22 +491,20 @@ router.post('/api/register', function(req, res) {
 
     router.post('/transaction/offer/buy', function (request, response) {
         var userID = request.body.userID;
-        var cost = request.body.cost;
         var currencyType = request.body.currencyType;
-        var price = request.body.price;
-        var amount = request.body.amount;
+        var price =  parseFloat(request.body.price);
+        var amount = parseInt(request.body.amount);
         var marketID = request.body.marketID;
-        transaction.MakeOfferBuy(userID, cost, currencyType, price, amount, marketID, response);
+        transaction.MakeOfferBuy(userID, currencyType, price, amount, marketID, response);
     });
 
     router.post('/transaction/offer/sell', function (request, response) {
         var userID = request.body.userID;
-        var cost = request.body.cost;
         var currencyType = request.body.currencyType;
-        var price = request.body.price;
-        var amount = request.body.amount;
+        var price = parseFloat(request.body.price);
+        var amount = parseInt(request.body.amount);
         var marketID = request.body.marketID;
-        transaction.MakeOfferSell(userID, cost, currencyType, price, amount, marketID, response);
+        transaction.MakeOfferSell(userID, currencyType, price, amount, marketID, response);
     });
 
     var myPayPal = require('./paypal/paypal.model');

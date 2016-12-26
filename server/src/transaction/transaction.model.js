@@ -18,12 +18,12 @@ module.exports = {
         sell.checkPriceBuy(mygamer, desirePrice, response, user.checkPayingCapacity, sell.UpdateMarket);
     },
 
-    MakeOfferBuy: function(userId, cost, currencyType, price, amount, marketID, response) {
-        user.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, sell.findOrCreateOffer);
+    MakeOfferBuy: function(userId, currencyType, price, amount, marketID, response) {
+        user.justCheckPayingCapacity(userId, currencyType, marketID, price, amount, response, sell.findOrCreateOffer);
     },
 
-    MakeOfferSell: function(userId, cost, currencyType, price, amount, marketID, response) {
-        user.justCheckPayingCapacity(userId, cost, currencyType, marketID, price, amount, response, buy.findOrCreateOffer);
+    MakeOfferSell: function(userId, currencyType, price, amount, marketID, response) {
+        user.justCheckPayingCapacity(userId, currencyType, marketID, price, amount, response, buy.findOrCreateOffer);
     }
 
     // shop transaction will be added soon
