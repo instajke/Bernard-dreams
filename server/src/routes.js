@@ -327,7 +327,7 @@ router.post('/api/register', function(req, res) {
     });
 
     router.post('/api/marketBuy/:userID', function (request, response) {
-        var MarketID = request.body.marketBuy._id;
+        var MarketID = request.body.marketBuy.marketID;
         var userID = request.params.userID;
         var price = request.body.price;
         var amount = request.body.amount;

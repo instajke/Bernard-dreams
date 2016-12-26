@@ -45,6 +45,29 @@
 
       };
 
+      $scope.initMarkets = function () {
+          var userMarkets = [];
+              $scope.currentUser = localStorageService.get("user");
+
+              $scope.currentUser.wallet.forEach(function(item) {
+                  userMarkets.push(item.marketID);
+              })
+
+              console.log("array of marketID");
+              console.log(userMarkets);
+
+              marketService.getBuyMarketSellsByMarketIds(userMarkets).then
+              (function (promise) {
+                  console.log("initializing markets");
+                  console.log(promise);
+                  $scope.markets = promise.markets;
+                  //$scope.showMarkets();
+                  console.log("so we have following markets: ")
+                  console.log($scope.markets);
+                  //console.log($scope.availableMarkets);
+              })
+      };
+
       $scope.createOffer = function() {
           gamerMarketService.createSellOffer($scope.currentMarket, localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount)
             .then( function(promise) {
@@ -76,30 +99,6 @@
               , preserveScope: true
               , clickOutsideToClose: true
           });
-      };
-
-
-      $scope.initMarkets = function () {
-          var userMarkets = [];
-              $scope.currentUser = localStorageService.get("user");
-
-              $scope.currentUser.wallet.forEach(function(item) {
-                  userMarkets.push(item.marketID);
-              })
-
-              console.log("array of marketID");
-              console.log(userMarkets);
-
-              marketService.getBuyMarketSellsByMarketIds(userMarkets).then
-              (function (promise) {
-                  console.log("initializing markets");
-                  console.log(promise);
-                  $scope.markets = promise.markets;
-                  //$scope.showMarkets();
-                  console.log("so we have following markets: ")
-                  console.log($scope.markets);
-                  //console.log($scope.availableMarkets);
-              })
       };
 
       $scope.initMarkets();
