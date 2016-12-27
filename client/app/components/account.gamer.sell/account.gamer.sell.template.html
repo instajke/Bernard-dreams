@@ -7,7 +7,7 @@
             <md-card ng-repeat="offer in market.offers">
              <md-card-title md-colors="::{backgroundColor: '{{theme}}-primary-200'}">
                 <md-card-title-text>
-                  <span class="md-headline">{{offer.amount}}, {{offer.price}} each</span>
+                  <span class="md-headline">{{offer.amount}} {{market.currencyTypeSell}}, {{offer.price}} {{market.currencyTypeAnother}} each</span>
                   <span class="md-subhead description">Blah-blah-blah-blah</span>
                 </md-card-title-text>
               </md-card-title>

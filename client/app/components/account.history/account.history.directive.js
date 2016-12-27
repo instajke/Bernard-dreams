@@ -18,11 +18,18 @@
   function AccountHistoryController(accountService, historyService, $http, $rootScope, $mdDialog, localStorageService) {
         var ctrl = this;
 
+        accountService.checkLoggedIn();
+
         ctrl.user = localStorageService.get("user");
 
         ctrl.transactions = localStorageService.get("user").transactions;
 
+        console.log("we got transes");
+        console.log(ctrl.transactions);
+
         ctrl.processedTransactions = historyService.processTransactions(ctrl.transactions);
+        console.log("processed transes are");
+        console.log(ctrl.processedTransactions)
 
   }
 

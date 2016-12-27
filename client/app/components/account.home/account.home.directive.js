@@ -18,6 +18,8 @@
   function AccountHomeController(accountService, historyService, $http, $scope, $rootScope, $mdDialog, $state, localStorageService) {
       var ctrl = this;
 
+      accountService.checkLoggedIn();
+
       ctrl.newUser = localStorageService.get("user");
 
       if (ctrl.newUser.transactions.length > 0) {

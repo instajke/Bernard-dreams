@@ -51,15 +51,21 @@
                 return [item.date];
               });
 
+              console.log("result of grouping");
+              console.log(result);
+
               result.forEach(function(item) {
                       var finalTrans = {};
-                      if (item.length == 2) {
+                      if (item.length > 1) {
                           finalTrans.outcomingAmount = item[0].amount;
                           finalTrans.outcomingCurrency = item[0].currencyType;
                           finalTrans.incomingAmount = item[1].amount;
                           finalTrans.incomingCurrency = item[1].currencyType;
                           finalTrans.marketID = item[0].marketID;
                           finalTrans.date = item[0].date;
+                          //if (item[2].transactionType) {
+                        //      finalTrans.transDescr = item[2].transactionType;
+                          //}
                       }
                       else {
                           finalTrans.amount = item[0].amount;
@@ -70,8 +76,10 @@
                       finalTranses.push(finalTrans);
               });
 
-              return finalTranses;
+              console.log("result of merging");
+              console.log(finalTranses);
 
+              return finalTranses;
           }
       };
     }

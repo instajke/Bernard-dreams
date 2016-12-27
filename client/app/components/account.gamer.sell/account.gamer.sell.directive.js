@@ -73,6 +73,7 @@
           gamerMarketService.createSellOffer(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeSell)
             .then( function() {
                 $scope.initMarkets();
+                accountService.checkLoggedIn();
                 ctrl.createOfferDialog.hide();
                 $scope.showSimpleToast("offer created");
                 console.log();
@@ -90,6 +91,7 @@
           gamerMarketService.sellStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeAnother)
               .then( function() {
                   $scope.initMarkets();
+                  accountService.checkLoggedIn();
                   ctrl.createOfferDialog.hide();
                   $scope.showSimpleToast("buy succeseded");
               })

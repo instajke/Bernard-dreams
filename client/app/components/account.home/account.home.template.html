@@ -11,7 +11,7 @@
             <md-card-content>
                 <div class="md-3-line">
                     <div flex layout="column" ng-hide="accHomeCtrl.lastTrans.incomingAmount" class="md-list-item-text">
-                         <span flex-offset="5" flex="28" class="md-title">+{{accHomeCtrl.lastTrans.amount}} {{accHomeCtrl.lastTrans.currencyType}}</span>
+                         <span flex-offset="5" flex="28" class="md-title">{{accHomeCtrl.lastTrans.amount}} {{accHomeCtrl.lastTrans.currencyType}}</span>
                          <span layout-align="end center" flex-offset="5">{{accHomeCtrl.lastTrans.date | date:'dd-MM-yyyy HH:mm:ss '}}</span>
                     </div>
                     <div flex layout="column" ng-hide="accHomeCtrl.lastTrans.amount" class="md-list-item-text">

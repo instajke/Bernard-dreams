@@ -3,9 +3,9 @@
 
   angular
     .module('app')
-    .service('accountService', ['$q', '$http','$timeout', '$rootScope', accountService]);
+    .service('accountService', ['$q', '$http','$timeout', '$rootScope', 'localStorageService', accountService]);
 
-    function accountService($q, $http, $timeout, $rootScope) {
+    function accountService($q, $http, $timeout, $rootScope, localStorageService) {
       var user = null;
       var currentUser = null;
 
@@ -122,6 +122,20 @@
           // return promise object
           return deferred.promise;
 
+        },
+        checkLoggedIn : function() {
+            $http.get('api/getAuthUser')
+                .success(function(user){
+                    if (user != 0) {
+                        console.log("check log in");
+                        console.log(user);
+                        localStorageService.set("user", user);
+                    }
+                    else {
+                        console.log("user not logged in");
+                        $state.go('home');
+                    }
+                });
         },
         getUser: function(nickname) {
             var deferred = $q.defer();
