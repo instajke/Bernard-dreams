@@ -22,7 +22,7 @@
     $translateProvider.useLocalStorage();
 
     $mdThemingProvider.theme('default')
-        .primaryPalette('pink');
+        .primaryPalette('blue');
 
     $mdThemingProvider.theme('altTheme')
         .dark();

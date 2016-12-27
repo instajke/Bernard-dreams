@@ -99,7 +99,7 @@
         };
 
         ctrl.showConnectShopDialog = function (ev) {
-            $scope.initMarkets();
+            //$scope.initMarkets();
             ctrl.connectShopDlg.show({
                 controller: gamerShopCtrl
                 , templateUrl: 'app/components/controls/ConnectShop.html'

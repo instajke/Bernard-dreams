@@ -111,32 +111,33 @@
 
         function fillSidenav() {
             var user = localStorageService.get("user");
+            var menuItems = [{
+                name: "My account",
+                url: "home",
+                tooltip: "Open home page"
+            }, {
+                name: "History",
+                url: "history",
+                tooltip: "Open transactions history"
+            }, {
+                name: "Buy (Shop)",
+                url: "shop",
+                tooltip: "Open shop"
+            }];
             if (!user.isDev) {
-                $rootScope.sidenavMenuItems = [{
-                    name: "My account",
-                    url: "home",
-                    tooltip: "Open home page"
-                }, {
-                    name: "History",
-                    url: "history",
-                    tooltip: "Open transactions history"
-                }, {
-                    name: "Buy (Shop)",
-                    url: "shop",
-                    tooltip: "Open shop"
-                }, {
-                    name: "Buy (Market)",
-                    url: "buy",
-                    tooltip: "Open market"
-                }, {
-                    name: "Sell (Market)",
-                    url: "sell",
-                    tooltip: "Open market"
-                }, {
-                    name: "Connect!",
-                    url: "connect",
-                    tooltip: "Connect new game account"
-                }]
+                if (user.wallet.length > 0) {
+                    menuItems.push({
+                        name: "Buy (Market)",
+                        url: "buy",
+                        tooltip: "Open market"
+                    }, {
+                        name: "Sell (Market)",
+                        url: "sell",
+                        tooltip: "Open market"
+                    });
+                }
+                console.log(menuItems);
+                $rootScope.sidenavMenuItems = menuItems;
               }
               else {
                 $rootScope.sidenavMenuItems = [{
