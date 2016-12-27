@@ -9,7 +9,7 @@
             <md-tooltip>Switch theme</md-tooltip>
         </md-switch>
         <md-button class="md-icon-button" ng-hide="accPageCtrl.userIsDev()" ng-click="showUpgradeDialog($event)">
-            <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
+            <md-icon class="md-default-theme" class="material-icons">&#xE1B0;</md-icon>
             <md-tooltip>Upgrade your account!</md-tooltip>
         </md-button>
         <md-button class="md-icon-button" ng-click="accPageCtrl.logout()">
@@ -25,7 +25,8 @@
           flex="20">
           <md-toolbar class="md-primary md-hue-4">
               <div class="md-toolbar-tools">
-                  <h2><span>KMPM - the future is now</span></h2><span flex></span>
+                  <md-icon class="md-default-theme" class="material-icons">&#xE338;</md-icon>
+                  <h2><span flex-offset="15">KMPM</span></h2><span flex></span>
               </div>
           </md-toolbar>
           <md-list flex>
@@ -37,5 +38,6 @@
               </md-list-item>
           </md-list>
     </md-sidenav>
+
     <div flex-offset-gt-md="20" flex ui-view></div>
 </div>
