@@ -262,7 +262,7 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         cost += ((parseFloat(res.taxes) / 100) * cost);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
-                        callbackGamer(gamer._id, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
+                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
                             res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                     } else {
                         // calculate cost
@@ -275,11 +275,11 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         if(res.offers[i].amount == gamer.wallet.amount)
                             if(isPartial) {
                                 console.log("Not Cool! It will pe partial transaction!");
-                                callbackGamer(gamer._id, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
+                                callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
                                     res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                             } else {
                                 console.log("Cool! It will be full transaction, but it needs updates!");
-                                callbackGamer(gamer._id, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
+                                callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
                                     res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                             }
                     }

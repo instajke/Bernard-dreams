@@ -37,6 +37,8 @@
                         }
                 }
             }
+            var indexesSet = new Set(indexes);
+            var indexes = new Array(indexesSet);
             while (indexes.length > 0) {
                 $scope.availableMarkets.splice(indexes[0], 1);
                 indexes.splice(0, 1);

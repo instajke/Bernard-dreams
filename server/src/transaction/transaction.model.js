@@ -17,6 +17,8 @@ module.exports = {
     },
 
     MakeTransactionSell: function(mygamer, desirePrice, response) {
+        console.log(mygamer);
+        console.log("^gamer");
         sell.checkPriceBuy(mygamer, desirePrice, response, user.checkPayingCapacity, sell.UpdateMarket);
     },
 

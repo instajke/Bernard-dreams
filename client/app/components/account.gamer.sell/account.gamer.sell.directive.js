@@ -20,6 +20,7 @@
 
       ctrl.user = localStorageService.get("user");
       ctrl.createOfferDialog = $mdDialog;
+      ctrl.sellDialog = $mdDialog;
 
       $scope.offerPrice = 0;
       $scope.offerAmount = 0;
@@ -79,6 +80,22 @@
 
       };
 
+      $scope.sellStuff = function() {
+          console.log("sell stuff");
+          console.log(localStorageService.get("user")._id);
+          console.log($scope.offerPrice);
+          console.log($scope.offerAmount);
+          console.log($scope.currentMarket.marketID);
+          console.log($scope.currentMarket.currencyTypeAnother);
+          gamerMarketService.sellStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeAnother)
+              .then( function() {
+                  $scope.initMarkets();
+                  ctrl.createOfferDialog.hide();
+                  $scope.showSimpleToast("buy succeseded");
+              })
+      };
+
+
       $scope.showSimpleToast = function(msg) {
         $mdToast.show(
           $mdToast.simple()
@@ -100,6 +117,21 @@
               , clickOutsideToClose: true
           });
       };
+
+      ctrl.showSellDialog = function (market, ev) {
+          $scope.currentMarket = market;
+
+          ctrl.sellDialog.show({
+              controller: GamerSellController
+              , templateUrl: 'app/components/controls/Sell.html'
+              , parent: angular.element(document.getElementById("theme-div"))
+              , targetEvent: ev
+              , scope: $scope
+              , preserveScope: true
+              , clickOutsideToClose: true
+          });
+      };
+
 
       $scope.initMarkets();
   }

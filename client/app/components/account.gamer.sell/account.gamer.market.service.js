@@ -46,11 +46,27 @@
               $http.post('/api/transaction/buy',
                   { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
                   .success(function() {
-                      console.log("create offer success");
+                      console.log("buy success");
                       deferred.resolve();
                   })
                   .error (function() {
-                      console.log("create offer error");
+                      console.log("buy error");
+                      deferred.reject();
+                  });
+
+              return deferred.promise;
+          },
+          sellStuff : function(userID, price, amount, marketID, currencyType) {
+              var deferred = $q.defer();
+
+              $http.post('/api/transaction/sell',
+                  { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
+                  .success(function() {
+                      console.log("buy success");
+                      deferred.resolve();
+                  })
+                  .error (function() {
+                      console.log("buy error");
                       deferred.reject();
                   });
 

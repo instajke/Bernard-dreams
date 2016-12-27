@@ -1,6 +1,6 @@
 <md-dialog flex>
     <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="defaul center"><span flex="5"></span>
-        <md-card-title-text>Buy some {{currentMarket.currencyAnother}}: </md-card-title-text>
+        <md-card-title-text>Buy some {{currentMarket.currencyTypeAnother}}: </md-card-title-text>
     </md-toolbar>
     <md-content>
         <md-input-container name="amount" class="md-icon-float md-block">
@@ -13,7 +13,7 @@
             <label>Define desired price</label>
             <input ng-model="offerPrice" ng-required="true">
         </md-input-container>
-        <md-button class="md-warn md-raised md-hue-2" ng-click="buyStuff()">
+        <md-button class="md-warn md-raised md-hue-2" ng-click="sellStuff()">
             Buy some
         </md-button>
     </md-content>
