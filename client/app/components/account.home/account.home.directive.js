@@ -13,9 +13,9 @@
       };
     });
 
-  AccountHomeController.$inject = ['accountService','$http', '$rootScope', '$mdDialog', '$state', 'localStorageService'];
+  AccountHomeController.$inject = ['accountService','$http', '$scope','$rootScope', '$mdDialog', '$state', 'localStorageService'];
 
-  function AccountHomeController(accountService, $http, $rootScope, $mdDialog, $state, localStorageService) {
+  function AccountHomeController(accountService, $http, $scope, $rootScope, $mdDialog, $state, localStorageService) {
       var ctrl = this;
 
       ctrl.newUser = localStorageService.get("user");

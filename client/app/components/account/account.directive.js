@@ -33,6 +33,14 @@
         //}
         //ctrl.user = localStorageService.get("user");
 
+        $rootScope.theme = 'default';
+
+        $rootScope.changeTheme = function() {
+          $rootScope.theme = $rootScope.theme === 'alternative' ? 'default' : 'alternative';
+          console.log($rootScope.theme);
+        };
+
+
 
         $rootScope.showAlert = function(text) {
             alert = $mdDialog.alert({

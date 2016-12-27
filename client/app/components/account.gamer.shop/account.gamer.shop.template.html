@@ -1,7 +1,8 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
-    <md-toolbar class="md-secondary md-hue-1" layout="row" layout-align="default center">
+    <md-toolbar class="md-secondary md-hue-2" layout="row" layout-align="default center">
+        <span flex="5"></span>
+        <md-card-title-text> Connect new shop </md-card-title-text>
         <md-toolbar-tools>
-            <span flex="5"></span>
             <md-button class="md-icon-button" aria-label="Settings" ng-click="shopCtrl.showConnectShopDialog()">
                 <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
                 <md-tooltip>Connect new shop</md-tooltip>
@@ -9,12 +10,12 @@
         </md-toolbar-tools>
     </md-toolbar>
     <md-card ng-repeat="shop in shops">
-      <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+      <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
         <md-card-title-text>{{shop.name}}</md-card-title-text>
       </md-toolbar>
         <md-card-content>
             <md-card ng-repeat="offer in shop.offers">
-             <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
+             <md-card-title md-colors="::{backgroundColor: 'default-primary-200'}">
                 <md-card-title-text>
                   <span class="md-headline">{{offer.amount}}, {{offer.price}} each</span>
                   <span class="md-subhead description">Currency: {{offer.currencyType}}</span>

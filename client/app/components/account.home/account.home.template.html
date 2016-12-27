@@ -1,7 +1,7 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
     <div layout="column"> <span flex="5"></span>
         <md-card>
-            <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
                 <md-card-title-text>Last transaction</md-card-title-text>
             </md-toolbar>
             <md-card-title>
@@ -30,7 +30,7 @@
     </div>
     <div layout="column"> <span flex="5"></span>
         <md-card>
-            <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
                 <md-card-title-text>Account information</md-card-title-text>
             </md-toolbar>
             <div layout="column">
@@ -50,6 +50,11 @@
                     <input ng-model="accHomeCtrl.newUser.description" placeholder="Enter your new descriptions">
                 </md-input-container>
             </div>
-            <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.updateUserAccount()">Update your account</md-button>
-        </md-card> <span flex="5"></span> </div>
+            <md-button class="md-primary md-raised md-hue-1" ng-click="accHomeCtrl.updateUserAccount()">Update your account</md-button>
+        </md-card> <span flex="5"></span>
+    </div>
+    <div layout="column">
+        <span flex="5"></span>
+        <md-button class="md-primary md-raised md-hue-2" ng-click="changeTheme()"></md-button>
+    </div>
 </md-content>
