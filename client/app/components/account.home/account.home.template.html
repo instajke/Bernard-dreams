@@ -1,26 +1,27 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
     <div layout="column"> <span flex="5"></span>
-        <md-card>
-            <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+        <md-card ng-hide="!accHomeCtrl.newUser.transactions.length">
+            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
                 <md-card-title-text>Last transaction</md-card-title-text>
             </md-toolbar>
             <md-card-title>
                 <md-card-title-text> <span class="md-headline"></span> </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <p> {{lastTrans.name}} </p>
-                <p> {{lastTrans.description}} </p>
+                <p> {{accHomeCtrl.newUser.transactions[accHomeCtrl.newUser.transactions.length - 1].amount}} </p>
+                <p> {{accHomeCtrl.newUser.transactions[accHomeCtrl.newUser.transactions.length - 1].currencyType}}  </p>
+                <p> {{accHomeCtrl.newUser.transactions[accHomeCtrl.newUser.transactions.length - 1].data | date:'dd-MM-yyyy HH:mm:ss '}} </p>
             </md-card-content>
             <md-card-actions layout="row" layout-align="end center">
-                <md-button class="md-icon-button" aria-label="Favorite">
+                <md-button class="md-icon-button">
                     <md-icon class="material-icons">&#xE87D;</md-icon>
                     <md-tooltip>Like</md-tooltip>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Settings" ng-click="showTransDialog($event, lastTrans)">
+                <md-button class="md-icon-button" ng-click="showTransDialog($event, lastTrans)">
                     <md-icon class="material-icons">&#xE8EE;</md-icon>
                     <md-tooltip>View detailed information</md-tooltip>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Share">
+                <md-button class="md-icon-button">
                     <md-icon class="material-icons">&#xE854;</md-icon>
                     <md-tooltip>Share</md-tooltip>
                 </md-button>
@@ -28,9 +29,30 @@
         </md-card>
         <span flex="5"></span>
     </div>
+    <div>
+        <md-card>
+            <md-toolbar layout="row" layout-align="default center" class="md-secondary md-hue-1">
+                <span flex="5"></span>
+                <md-card-title-text>Wallets</md-card-title-text>
+            </md-toolbar>
+            <md-list>
+                <md-list-item class="md-3-line" layout-align="end center" ng-show="!accHomeCtrl.newUser.wallet.length">
+                    <div class="md-list-item-text">
+                        U have no money yet. Get some! Click "Buy (SHOP)" and connect your first game!
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-list-item ng-repeat="w in accHomeCtrl.newUser.wallet">
+                    <md-icon class="material-icons">payment</md-icon>
+                    <span>{{w.amount}} {{w.currencyType}}</span><br>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </md-card>
+    </div>
     <div layout="column"> <span flex="5"></span>
         <md-card>
-            <md-toolbar class="md-primary md-hue-4" layout="row" layout-align="default center"> <span flex="5"></span>
+            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
                 <md-card-title-text>Account information</md-card-title-text>
             </md-toolbar>
             <div layout="column">
@@ -50,6 +72,7 @@
                     <input ng-model="accHomeCtrl.newUser.description" placeholder="Enter your new descriptions">
                 </md-input-container>
             </div>
-            <md-button class="md-warn md-raised md-hue-2" ng-click="accHomeCtrl.updateUserAccount()">Update your account</md-button>
-        </md-card> <span flex="5"></span> </div>
+            <md-button class="md-primary md-raised md-hue-1" ng-click="accHomeCtrl.updateUserAccount()">Update your account</md-button>
+        </md-card> <span flex="5"></span>
+    </div>
 </md-content>

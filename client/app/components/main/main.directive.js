@@ -13,9 +13,9 @@
       };
     });
 
-  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q', '$timeout'];
+  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$mdToast', '$state', '$q', '$timeout'];
 
-  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q, $timeout) {
+  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $mdToast, $state, $q, $timeout) {
 
     var vm = this;
     var alert;
@@ -62,13 +62,22 @@
             });
     };
 
+    vm.showToast = function(msg) {
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(msg)
+          .hideDelay(2000)
+      );
+    };
+
     vm.login = function() {
 
       // call login from service
       accountService.login(vm.user.nickname, vm.user.password)
         // handle success
         .then(function () {
-          vm.showAlert("Success!");
+          //$rootScope.showToast("Success!");
+          vm.showToast("U've logged in");
           $state.go('account', { nickname : vm.user.nickname });
         })
         // handle error
@@ -116,7 +125,7 @@
             controller: UserRegistrationController
             , controllerAs: 'userRegCtrl'
             , templateUrl: 'app/components/controls/RegistrationSheet.html'
-            , parent: angular.element(document.body)
+            , parent: angular.element(document.getElementById("theme-div"))
             , targetEvent: ev
             , clickOutsideToClose: true
         });

@@ -22,10 +22,18 @@
     $translateProvider.useLocalStorage();
 
     $mdThemingProvider.theme('default')
-        .primaryPalette('pink');
+        .primaryPalette('blue')
+        .accentPalette('pink');
 
-    $mdThemingProvider.theme('altTheme')
+    $mdThemingProvider.theme('alternative')
+        .primaryPalette('orange')
+        .accentPalette('cyan')
+        .backgroundPalette('grey',{
+            'default':'900',
+        })
         .dark();
+
+    $mdThemingProvider.alwaysWatchTheme(true);
 
     // i18n angular-dynamic-locale
     tmhDynamicLocaleProvider.localeLocationPattern('/i18n/angular/angular-locale_{{locale}}.js');

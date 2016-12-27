@@ -26,15 +26,11 @@
       ctrl.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
       ctrl.marketTypes = [{name: "Real Market"}, {name: "Simulated Market"}];
 
-      ctrl.showCurrentMarket = function() {
-          $rootScope.showAlert(ctrl.currentMarket);
-      };
-
       ctrl.showManageMarketDialog = function(ev, currentMarket) {
           ctrl.mgmtMarket.show({
               controller: manageMarketCtrl,
               templateUrl: 'app/components/controls/ManageMarket.html',
-              parent: angular.element(document.body),
+              parent: angular.element(document.getElementById("theme-div")),
               targetEvent: ev,
               locals: {
                   currentMarket : currentMarket
@@ -47,7 +43,7 @@
           ctrl.mgmtMarket.show({
               controller: manageMarketBuyCtrl,
               templateUrl: 'app/components/controls/ManageMarketBuy.html',
-              parent: angular.element(document.body),
+              parent: angular.element(document.getElementById("theme-div")),
               targetEvent: ev,
               locals: {
                   currentMarket : currentMarket
@@ -60,7 +56,7 @@
           ctrl.mgmtMarket.show({
               controller: manageMarketSellCtrl,
               templateUrl: 'app/components/controls/ManageMarketSell.html',
-              parent: angular.element(document.body),
+              parent: angular.element(document.getElementById("theme-div")),
               targetEvent: ev,
               locals: {
                   currentMarket : currentMarket

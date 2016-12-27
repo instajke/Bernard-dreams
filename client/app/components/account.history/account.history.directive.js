@@ -20,9 +20,12 @@
 
       ctrl.user = localStorageService.get("user");
 
-      ctrl.transactions = ctrl.user.transactions;
+      //ctrl.user.transactions.forEach(function(item) {
+      //var tmp = item;
+      //    tmp.date.
+      //})
 
-      $rootScope.pageClass = "page-history";
+      ctrl.transactions = ctrl.user.transactions;
 
   }
 

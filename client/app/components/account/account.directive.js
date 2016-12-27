@@ -13,9 +13,9 @@
             };
         });
 
-    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams', 'localStorageService'];
+    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$mdToast', '$timeout', '$log', '$stateParams', 'localStorageService'];
 
-    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams ,localStorageService) {
+    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $mdToast, $timeout, $log, $stateParams ,localStorageService) {
 
         var ctrl = this;
 
@@ -33,6 +33,14 @@
         //}
         //ctrl.user = localStorageService.get("user");
 
+        $rootScope.theme = 'default';
+
+        $rootScope.changeTheme = function() {
+          $rootScope.theme = $rootScope.theme === 'alternative' ? 'default' : 'alternative';
+          console.log($rootScope.theme);
+        };
+
+
 
         $rootScope.showAlert = function(text) {
             alert = $mdDialog.alert({
@@ -48,6 +56,14 @@
                 });
         };
 
+        $rootScope.showToast = function(msg) {
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(msg)
+              .hideDelay(2000)
+          );
+        };
+
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
@@ -57,7 +73,7 @@
             $rootScope.historyDialog.show({
                 controller: HistoryDialogController,
                 templateUrl: 'app/components/controls/HistorySheet.html',
-                parent: angular.element(document.body),
+                parent: angular.element(document.getElementById("theme-div")),
                 targetEvent: ev,
                 clickOutsideToClose: true
             });
@@ -67,7 +83,7 @@
             $rootScope.upgradeDialog.show({
                 controller: UpgradeDialogController,
                 templateUrl: 'app/components/controls/ConfirmUpgrade.html',
-                parent: angular.element(document.body),
+                parent: angular.element(document.getElementById("theme-div")),
                 targetEvent: ev,
                 clickOutsideToClose: true
             });
@@ -101,32 +117,33 @@
 
         function fillSidenav() {
             var user = localStorageService.get("user");
+            var menuItems = [{
+                name: "My account",
+                url: "home",
+                tooltip: "Open home page"
+            }, {
+                name: "History",
+                url: "history",
+                tooltip: "Open transactions history"
+            }, {
+                name: "Buy (Shop)",
+                url: "shop",
+                tooltip: "Open shop"
+            }];
             if (!user.isDev) {
-                $rootScope.sidenavMenuItems = [{
-                    name: "My account",
-                    url: "home",
-                    tooltip: "Open home page"
-                }, {
-                    name: "History",
-                    url: "history",
-                    tooltip: "Open transactions history"
-                }, {
-                    name: "Buy (Shop)",
-                    url: "shop",
-                    tooltip: "Open shop"
-                }, {
-                    name: "Buy (Market)",
-                    url: "buy",
-                    tooltip: "Open market"
-                }, {
-                    name: "Sell (Market)",
-                    url: "sell",
-                    tooltip: "Open market"
-                }, {
-                    name: "Connect!",
-                    url: "connect",
-                    tooltip: "Connect new game account"
-                }]
+                if (user.wallet.length > 0) {
+                    menuItems.push({
+                        name: "Buy (Market)",
+                        url: "buy",
+                        tooltip: "Open market"
+                    }, {
+                        name: "Sell (Market)",
+                        url: "sell",
+                        tooltip: "Open market"
+                    });
+                }
+                console.log(menuItems);
+                $rootScope.sidenavMenuItems = menuItems;
               }
               else {
                 $rootScope.sidenavMenuItems = [{
@@ -177,6 +194,10 @@
                 });
         };
 
+        ctrl.userIsDev = function() {
+            return localStorageService.get("user").isDev;
+        }
+
         ctrl.checkLoggedIn();
         ctrl.user = localStorageService.get("user");
 
@@ -206,7 +227,7 @@
             localStorageService.set("user", user);
             accountService.postUser(user)
             .then( function (promise) {
-                $rootScope.showAlert("U r dev now");
+                $rootScope.showToast("U r dev now");
                 $state.reload();
             });
       }

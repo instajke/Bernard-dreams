@@ -1,0 +1,25 @@
+<md-card>
+    <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="defaul center">
+        <span flex="5"></span>
+        <md-card-title-text>Update shop {{currentShop.name}}:</md-card-title-text>
+    </md-toolbar>
+    <md-card-content layout="column">
+        <md-input-container>
+          <label>Shop name</label>
+          <input ng-model="currentShop.name">
+        </md-input-container>
+
+        <md-input-container>
+            <label>PayPal account</label>
+            <input ng-model="currentShop.payPalAcc">
+        </md-input-container>
+
+        <md-checkbox ng-model="currentShop.publicHistory">
+            Allow public history: {{ shopsCtrl.currentShop.publicHistory }}
+        </md-checkbox>
+
+        <md-button class="md-raised md-primary md-hue-1" ng-click="updateShop()">
+            <label>Update shop</label>
+        </md-button>
+    </md-card-content>
+</md-card>

@@ -278,7 +278,10 @@ body {
       background-image: url('http://euw.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/lol_promoart_14_1_0.jpg?itok=-hi3Ugy7');
       width: 100%;
       height: calc(100vh - 128px);
-
+  -moz-background-size: 100%;
+  -webkit-background-size: 100%;
+  -o-background-size: 100%;
+  background-image-size: 100%;
   -webkit-filter: blur(5px);
   -moz-filter: blur(5px);
   -o-filter: blur(5px);

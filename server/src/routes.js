@@ -57,6 +57,10 @@ router.post('/api/register', function(req, res) {
         console.log(res);
     });
 
+    router.get('/api/user/wallet/:userID', function (req, res) {
+        UserControl.getWallet(req.params.userID, res);
+    });
+
     router.post('/api/user', function (request, response) {
         var NewUser = request.body.user;
         console.log(NewUser);
@@ -433,6 +437,8 @@ router.post('/api/register', function(req, res) {
             devID: request.body.shop.devID,
             name: request.body.shop.name,
             marketID: request.body.shop.marketID,
+            internalCurrency: request.body.shop.internalCurrency,
+            externalCurrency: request.body.shop.externalCurrency,
             offers: [],
             payPalAcc: request.body.shop.payPalAcc,
             publicHistory: request.body.shop.publicHistory,
@@ -451,6 +457,11 @@ router.post('/api/register', function(req, res) {
         shop.clearShopHistory(ShopID, response);
     });
 
+    router.put('/api/shop', function(request, response) {
+        var Shop = request.body.shop;
+        shop.updateShop(Shop, response);
+    })
+
     router.put('/api/shop/PayPal', function (request, response) {
         var Shop = request.body.shop;
         shop.updateShopPayPalAcc(Shop, response);
@@ -458,7 +469,8 @@ router.post('/api/register', function(req, res) {
 
     router.post('/api/shop/offer', function (request, response) {
         var Shop = request.body.shop;
-        shop.addShopOffer(Shop, response);
+        var Offer = request.body.offer;
+        shop.addShopOffer(Shop, Offer, response);
     });
 
     router.put('/api/shop/offer', function (request, response) {
@@ -482,15 +494,19 @@ router.post('/api/register', function(req, res) {
     router.post('/api/transaction/buy', function (request, response) {
         var Gamer = {   userID : request.body.userID,
                         wallet: {  curType  : request.body.currencyType,
-                                    amount   : request.body.amount,
+                                    amount   : parseInt(request.body.amount),
                                     marketID : request.body.marketID} };
         var desiredPrice = parseFloat(request.body.price);
         transaction.MakeTransactionBuy(Gamer, desiredPrice, response);
     });
 
     router.post('/api/transaction/sell', function (request, response) {
-        var Gamer = request.body.gamer;
-        transaction.MakeTransactionSell(Gamer, response);
+        var Gamer = {   userID : request.body.userID,
+            wallet: {  curType  : request.body.currencyType,
+                amount   : parseInt(request.body.amount),
+                marketID : request.body.marketID} };
+        var desiredPrice = parseFloat(request.body.price);
+        transaction.MakeTransactionSell(Gamer, desiredPrice, response);
     });
 
     router.post('/api/transaction/offer/buy', function (request, response) {
