@@ -1,7 +1,7 @@
 <md-content style="height: calc(100vh - 64px); overflow-y: scroll;">
-    <div layout="column"> <span flex="5"></span>
-        <md-card ng-hide="!accHomeCtrl.newUser.transactions.length">
-            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center"> <span flex="5"></span>
+    <div layout="row">
+        <md-card flex ng-hide="!accHomeCtrl.newUser.transactions.length">
+            <md-toolbar class="md-primary md-hue-1" layout="row" layout-align="default center">
                 <md-card-title-text>Last transaction</md-card-title-text>
             </md-toolbar>
             <md-card-title>
@@ -27,10 +27,7 @@
                 </md-button>
             </md-card-actions>
         </md-card>
-        <span flex="5"></span>
-    </div>
-    <div>
-        <md-card>
+        <md-card flex>
             <md-toolbar layout="row" layout-align="default center" class="md-secondary md-hue-1">
                 <span flex="5"></span>
                 <md-card-title-text>Wallets</md-card-title-text>
