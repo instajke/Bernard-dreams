@@ -124,46 +124,47 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
         } else {
             if(res.marketType == myConst.RealMarket) {
                 var found = false;
-                if (price < res.bestPrice) {
+                if(res.bestPrice == null) {
                     res.bestPrice = price;
-                } else {
-                    for (var i = 0; i < res.offers.length; i++) {
-                        if (res.offers[i].price == price) {
-                            for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
-                                if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
-                                    console.log("found offer");
-                                    found = true;
-                                    res.offers[i].offersInPrice[j].amount += amount;
-                                    res.offers[i].amount += amount;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                var myOffer = {};
-                                myOffer.amount = amount;
-                                myOffer.userID = userId;
-                                res.offers[i].offersInPrice.push(myOffer);
-                                res.offers[i].amount += amount;
-                                found = true;
-                            }
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        var offers = {};
-                        offers.price = price;
-                        offers.amount = amount;
-                        offers.offersInPrice = [];
-                        var offer = {};
-                        offer.amount = amount;
-                        offer.userID = userId;
-                        offers.offersInPrice.push(offer);
-                        res.offers.push(offers);
-                        console.log("create offer");
-                    }
-                    res.save();
-                    response.json({success: true});
+                } else if (price < res.bestPrice) {
+                    res.bestPrice = price;
                 }
+                for (var i = 0; i < res.offers.length; i++) {
+                    if (res.offers[i].price == price) {
+                        for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
+                            if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
+                                console.log("found offer");
+                                found = true;
+                                res.offers[i].offersInPrice[j].amount += amount;
+                                res.offers[i].amount += amount;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            var myOffer = {};
+                            myOffer.amount = amount;
+                            myOffer.userID = userId;
+                            res.offers[i].offersInPrice.push(myOffer);
+                            res.offers[i].amount += amount;
+                            found = true;
+                        }
+                        break;
+                    }
+                }
+                if (!found) {
+                    var offers = {};
+                    offers.price = price;
+                    offers.amount = amount;
+                    offers.offersInPrice = [];
+                    var offer = {};
+                    offer.amount = amount;
+                    offer.userID = userId;
+                    offers.offersInPrice.push(offer);
+                    res.offers.push(offers);
+                    console.log("create offer");
+                }
+                res.save();
+                response.json({success: true});
             } else {
                 response.send({"result": "Wrong market"});
             }
@@ -253,12 +254,12 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                 if(res.offers[i].price == desirePrice)
                 {
                     var index = i;
+                    var cost = 0;
                     console.log("Cool! Transaction is possible! price is found");
                     if(res.offers[i].amount > gamer.wallet.amount) {
                         // calculate cost
-                        var cost = gamer.wallet.amount * gamer.wallet.price;
-                        // calculate final purchase (with taxes)
-                        gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * gamer.wallet.amount);
+                        cost = gamer.wallet.amount * desirePrice;
+                        cost += ((parseFloat(res.taxes) / 100) * cost);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
                         callbackGamer(gamer._id, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
@@ -268,9 +269,8 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         var isPartial = true;
                         if(res.offers[i].amount == gamer.wallet.amount)
                             isPartial = false;
-                        cost = res.offers[i].amount * gamer.wallet.price;
-                        // calculate final purchase (with taxes)
-                        gamer.wallet.amount -= ((parseFloat(res.taxes) / 100) * res.offers[i].amount);
+                        cost = res.offers[i].amount * desirePrice;
+                        cost += ((parseFloat(res.taxes) / 100) * cost);
                         //res.offers.remove(i);
                         if(res.offers[i].amount == gamer.wallet.amount)
                             if(isPartial) {
@@ -308,16 +308,19 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 var amount = newAmount;
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
+                    console.log("Kotletka");
                     if(res.offers[index].offersInPrice[i].amount < amount)
                     {
                         amount -= res.offers[index].offersInPrice[i].amount;
                         myOffers.push(res.offers[index].offersInPrice[i]);
                         res.offers[index].offersInPrice.splice(i, 1);
+                        console.log("Kotletka is here!");
                     } else {
                         var myOffer = {};
                         myOffer.amount = amount;
                         myOffer.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer);
+                        console.log("Kotletka is here too!");
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             res.offers[index].offersInPrice.splice(i, 1);
                         else
@@ -328,13 +331,15 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 // update wallets
                 var myGamer = {};
                 var wallet = {};
-                wallet.currencyType = res.currencyTypeBuy;
+                wallet.currencyType = res.currencyAnother;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
-                userLogic.UpdateWallets(myGamer, myOffers, response);
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
+                    console.log("not succes");
+                    console.log(transaction);
+                    console.log(myConst.TransactionSucces);
                     res.offers.splice(index);
                     // findnewprice
                     var newPrice = Infinity;
@@ -352,8 +357,10 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     point.date = Date.now();
                     res.graphicBuy.push(point);
                 } else {
-                    res.offers.amount -= amount;
+                    console.log("success");
+                    res.offers[index].amount -= amount;
                 }
+                userLogic.UpdateWallets(myGamer, myOffers, response);
 
             }
             if(res.marketType == myConst.SimulatedMarket)
