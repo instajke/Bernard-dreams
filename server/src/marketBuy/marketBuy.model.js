@@ -190,7 +190,7 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
                             mygamer.wallet.amount = res.offers[i].offersInPrice[j].amount;
                             mygamer.wallet.marketID = Market._id;
                             mygamer.wallet.currencyType = res.currencyTypeBuy;
-                            userLogic.UpdateWallet(mygamer);
+                            userLogic.UpdateWallet(mygamer, response, myConst.CancelOffer);
                             if(res.offers[i].offersInPrice[j].amount == res.offers[i].amount){
                                 if(res.bestPrice == res.offers[i].price) {
                                     res.offers.splice(i, 1);
@@ -363,7 +363,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     console.log("success");
                     res.offers[index].amount -= amount;
                 }
-                userLogic.UpdateWallets(myGamer, myOffers, response);
+                userLogic.UpdateWallets(myGamer, myOffers, response, myConst.ExecuteOffer);
 
             }
             if(res.marketType == myConst.SimulatedMarket)
