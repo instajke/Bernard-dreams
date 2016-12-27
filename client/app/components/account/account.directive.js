@@ -20,18 +20,6 @@
         var ctrl = this;
 
         $rootScope.rootParam = $stateParams;
-        //
-        //if (localStorageService.get("user") === '') {
-        //    accountService.getUser($rootScope.rootParam.nickname)
-        //        .then( function (promise) {
-        //            console.log("we are inside bullshit if");
-        //            console.log($rootScope.rootParam.nickname);
-        //            console.log(promise);
-        //            localStorageService.set("user", promise);
-        //            ctrl.user = localStorageService.get("user");
-        //        })
-        //}
-        //ctrl.user = localStorageService.get("user");
 
         $rootScope.theme = 'default';
 
