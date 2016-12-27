@@ -13,63 +13,52 @@
       };
     });
 
-  AccountHistoryController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', 'localStorageService'];
+  AccountHistoryController.$inject = ['accountService', 'historyService', '$http', '$rootScope', '$mdDialog', 'localStorageService'];
 
-  function AccountHistoryController(accountService, $http, $rootScope, $mdDialog, localStorageService) {
+  function AccountHistoryController(accountService, historyService, $http, $rootScope, $mdDialog, localStorageService) {
         var ctrl = this;
 
         ctrl.user = localStorageService.get("user");
 
-        ctrl.transactions = localStorageService.get("user").transactions;
+        //ctrl.transactions = localStorageService.get("user").transactions;
 
-        ctrl.processTransactions = function() {
-
-            var finalTranses = [];
-
-            function groupBy( array , f )
+        ctrl.transactions = [{
+            "currencyType" : "Gems",
+            "amount" : -1680,
+            "marketID" : "58627e10cd41d9001d3d3ddf",
+            "_id" : "586294ab9ec75e001dc3d3a9",
+            "date" : "2016-12-27T16:19:55.070Z"
+            },
             {
-              var groups = {};
-              array.forEach( function( o )
-              {
-                var group = JSON.stringify( f(o) );
-                groups[group] = groups[group] || [];
-                groups[group].push( o );
-              });
-              return Object.keys(groups).map( function( group )
-              {
-                return groups[group];
-              })
-            }
-
-            var result = groupBy(ctrl.transactions, function(item)
+            "currencyType" : "Gold",
+            "amount" : 400,
+            "marketID" : "58627e10cd41d9001d3d3ddf",
+            "_id" : "586294ab9ec75e001dc3d3aa",
+            "date" : "2016-12-27T16:19:55.070Z"
+            },
             {
-              return [item.date];
-            });
+            "currencyType" : "Gold",
+            "amount" : 200,
+            "marketID" : "58627e10cd41d9001d3d3ddf",
+            "_id" : "586297e39ec75e001dc3d3ae",
+            "date" : "2016-12-27T16:33:39.667Z"
+            },
+            {
+            "currencyType" : "Gems",
+            "amount" : -2100,
+            "marketID" : "58627e10cd41d9001d3d3ddf",
+            "_id" : "5862a1ab29dcd3001d479047",
+            "date" : "2016-12-27T17:15:23.610Z"
+            },
+            {
+            "currencyType" : "Gold",
+            "amount" : 400,
+            "marketID" : "58627e10cd41d9001d3d3ddf",
+            "_id" : "5862a1ab29dcd3001d479048",
+            "date" : "2016-12-27T17:15:23.614Z"
+        }];
 
-            result.forEach(function(item) {
-                    var finalTrans = {};
-                    if (item.length == 2) {
-                        finalTrans.outcomingAmount = item[0].amount;
-                        finalTrans.outcomingCurrency = item[0].currencyType;
-                        finalTrans.incomingAmount = item[1].amount;
-                        finalTrans.incomingCurrency = item[1].currencyType;
-                        finalTrans.marketID = item[0].marketID;
-                        finalTrans.date = item[0].date;
-                    }
-                    else {
-                        finalTrans.amount = item[0].amount;
-                        finalTrans.currencyType = item[0].currencyType;
-                        finalTrans.marketID = item[0].marketID;
-                        finalTrans.date = item[0].date;
-                    }
-                    finalTranses.push(finalTrans);
-            });
-
-            return finalTranses;
-
-        };
-
-        ctrl.processedTransactions = ctrl.processTransactions();
+        ctrl.processedTransactions = historyService.processTransactions(ctrl.transactions);
 
   }
 

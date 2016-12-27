@@ -13,12 +13,38 @@
       };
     });
 
-  AccountHomeController.$inject = ['accountService','$http', '$scope','$rootScope', '$mdDialog', '$state', 'localStorageService'];
+  AccountHomeController.$inject = ['accountService', 'historyService','$http', '$scope','$rootScope', '$mdDialog', '$state', 'localStorageService'];
 
-  function AccountHomeController(accountService, $http, $scope, $rootScope, $mdDialog, $state, localStorageService) {
+  function AccountHomeController(accountService, historyService, $http, $scope, $rootScope, $mdDialog, $state, localStorageService) {
       var ctrl = this;
 
       ctrl.newUser = localStorageService.get("user");
+
+      var transes = historyService.processTransactions(ctrl.newUser.transactions);
+
+      var wallets = historyService.groupBy(ctrl.newUser.wallet, function(item)
+      {
+        return [item.marketID];
+      });
+
+      ctrl.processedWallets = [];
+
+      wallets.forEach(function(item) {
+          var tmp = {};
+
+          tmp.internalCurrency = item[0].currencyType;
+          tmp.internalAmount = item[0].amount;
+          tmp.externalCurrency = item[1].currencyType;
+          tmp.externalAmount = item[1].amount;
+          tmp.marketID = item[0].marketID;
+
+          ctrl.processedWallets.push(tmp);
+      })
+
+      console.log("PROCESSED WALLETS");
+      console.log(ctrl.processedWallets);
+
+      ctrl.lastTrans = transes[transes.length - 1];
 
       ctrl.showAlert = function(res) {
             alert = $mdDialog.alert({
@@ -53,8 +79,6 @@
           $rootScope.showToast("U r dev now");
           $state.go('account', $stateParams);
       };
-
-      $rootScope.pageClass = "page-home";
 
   }
 
