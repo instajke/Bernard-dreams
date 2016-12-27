@@ -13,9 +13,9 @@
       };
     });
 
-  AccountHomeController.$inject = ['accountService','$http', '$rootScope', '$mdDialog', '$state', 'localStorageService'];
+  AccountHomeController.$inject = ['accountService','$http', '$scope','$rootScope', '$mdDialog', '$state', 'localStorageService'];
 
-  function AccountHomeController(accountService, $http, $rootScope, $mdDialog, $state, localStorageService) {
+  function AccountHomeController(accountService, $http, $scope, $rootScope, $mdDialog, $state, localStorageService) {
       var ctrl = this;
 
       ctrl.newUser = localStorageService.get("user");
@@ -50,7 +50,7 @@
 
       ctrl.confirm = function () {
           accountService.upgradeToDev(ctrl.user);
-          ctrl.showAlert("U r dev now");
+          $rootScope.showToast("U r dev now");
           $state.go('account', $stateParams);
       };
 

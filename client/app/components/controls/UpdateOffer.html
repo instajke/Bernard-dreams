@@ -8,7 +8,8 @@
           <label>Select offer's currency type: </label>
           <md-select ng-model="currentOffer.currencyType">
             <md-option><em>None</em></md-option>
-            <md-option ng-repeat="curr in currencies" ng-value="curr.name">{{curr.name}}</md-option>
+            <md-option ng-value="currentShop.internalCurrency">{{currentShop.internalCurrency}}</md-option>
+            <md-option ng-value="currentShop.externalCurrency">{{currentShop.externalCurrency}}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container name="amount" class="md-icon-float md-block">

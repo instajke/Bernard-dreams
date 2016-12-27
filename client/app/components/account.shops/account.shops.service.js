@@ -93,6 +93,19 @@
                 });
 
             return deferred.promise;
+        },
+        addOffer : function(currShop, currOffer) {
+            var deferred = $q.defer();
+
+            $http.post('/api/shop/offer', {shop : currShop, offer : currOffer})
+              .success(function() {
+                  deferred.resolve();
+              })
+              .error(function() {
+                  deferred.reject();
+              });
+
+            return deferred.promise;
         }
       };
     }

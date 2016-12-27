@@ -433,6 +433,8 @@ router.post('/api/register', function(req, res) {
             devID: request.body.shop.devID,
             name: request.body.shop.name,
             marketID: request.body.shop.marketID,
+            internalCurrency: request.body.shop.internalCurrency,
+            externalCurrency: request.body.shop.externalCurrency,
             offers: [],
             payPalAcc: request.body.shop.payPalAcc,
             publicHistory: request.body.shop.publicHistory,
@@ -458,7 +460,8 @@ router.post('/api/register', function(req, res) {
 
     router.post('/api/shop/offer', function (request, response) {
         var Shop = request.body.shop;
-        shop.addShopOffer(Shop, response);
+        var Offer = request.body.offer;
+        shop.addShopOffer(Shop, Offer, response);
     });
 
     router.put('/api/shop/offer', function (request, response) {

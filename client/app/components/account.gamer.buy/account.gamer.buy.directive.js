@@ -114,7 +114,7 @@
           ctrl.createOfferDialog.show({
               controller: GamerBuyController
               , templateUrl: 'app/components/controls/CreateOffer.html'
-              , parent: angular.element(document.body)
+              , parent: angular.element(document.getElementById("theme-div"))
               , targetEvent: ev
               , scope: $scope
               , preserveScope: true
@@ -128,7 +128,7 @@
           ctrl.buyDialog.show({
               controller: GamerBuyController
               , templateUrl: 'app/components/controls/Buy.html'
-              , parent: angular.element(document.body)
+              , parent: angular.element(document.getElementById("theme-div"))
               , targetEvent: ev
               , scope: $scope
               , preserveScope: true

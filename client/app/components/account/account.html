@@ -1,11 +1,14 @@
 <md-toolbar layout-align="end center" class="md-primary md-hue-4" id="top" style="z-index: 12">
     <div class="md-toolbar-tools">
-      <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+      <md-button class="md-icon-button" ng-click="toggleLeft()">
           <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
           <md-tooltip>Open side panel</md-tooltip>
       </md-button><span>KleManProMos</span>
         <span flex=""></span>
-        <md-button class="md-icon-button" ng-click="showUpgradeDialog($event)">
+        <md-switch ng-model="theme" ng-true-value="'default'" ng-false-value="'alternative'">
+            <md-tooltip>Switch theme</md-tooltip>
+        </md-switch>
+        <md-button class="md-icon-button" ng-hide="accPageCtrl.userIsDev()" ng-click="showUpgradeDialog($event)">
             <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
             <md-tooltip>Upgrade your account!</md-tooltip>
         </md-button>
@@ -18,10 +21,11 @@
     <md-sidenav class="md-sidenav-left"
           md-component-id="left"
           md-is-locked-open="$mdMedia('gt-md')"
-          md-whiteframe="4">
+          md-whiteframe="4"
+          flex="20">
           <md-toolbar class="md-primary md-hue-4">
               <div class="md-toolbar-tools">
-                  <h2><span>{{rootParam}}</span></h2><span flex></span>
+                  <h2><span>KMPM - the future is now</span></h2><span flex></span>
               </div>
           </md-toolbar>
           <md-list flex>
@@ -33,6 +37,5 @@
               </md-list-item>
           </md-list>
     </md-sidenav>
-    <span hide show-gt-md flex="25"></span>
-    <div flex ui-view></div>
+    <div flex-offset-gt-md="20" flex ui-view></div>
 </div>
