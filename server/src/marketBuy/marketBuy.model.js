@@ -312,14 +312,17 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     if(res.offers[index].offersInPrice[i].amount < amount)
                     {
                         amount -= res.offers[index].offersInPrice[i].amount;
-                        myOffers.push(res.offers[index].offersInPrice[i]);
+                        var myOffer1 = {};
+                        myOffer1.amount = res.offers[index].offersInPrice[i].amount * res.offers[index].price;
+                        myOffer1.userID = res.offers[index].offersInPrice[i].userID;
+                        myOffers.push(myOffer1);
                         res.offers[index].offersInPrice.splice(i, 1);
                         console.log("Kotletka is here!");
                     } else {
-                        var myOffer = {};
-                        myOffer.amount = amount;
-                        myOffer.userID = res.offers[index].offersInPrice[i].userID;
-                        myOffers.push(myOffer);
+                        var myOffer2 = {};
+                        myOffer2.amount = amount * res.offers[index].price;
+                        myOffer2.userID = res.offers[index].offersInPrice[i].userID;
+                        myOffers.push(myOffer2);
                         console.log("Kotletka is here too!");
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             res.offers[index].offersInPrice.splice(i, 1);
