@@ -57,6 +57,10 @@ router.post('/api/register', function(req, res) {
         console.log(res);
     });
 
+    router.get('/api/user/wallet/:userID', function (req, res) {
+        UserControl.getWallet(req.params.userID, res);
+    });
+
     router.post('/api/user', function (request, response) {
         var NewUser = request.body.user;
         console.log(NewUser);

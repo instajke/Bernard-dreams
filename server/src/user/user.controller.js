@@ -92,6 +92,20 @@ exports.updateUserIsDev = function (User, response) {
         }
     });
 };
+
+exports.getWallet = function (id, response) {
+    user.findById({
+        _id: id
+    }).exec(function (err, res) {
+        if (err) {
+            response.status(500).send(err);
+        }
+        else {
+            response.send({"wallet": res.wallet });
+        }
+    });
+};
+
 exports.updateWallet = function (User, response) {
     user.findById({
         _id: User._id
