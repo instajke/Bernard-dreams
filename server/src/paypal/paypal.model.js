@@ -1,6 +1,7 @@
 var paypal = require('paypal-rest-sdk');
 var shop = require('../shopHelper');
 var user = require('../user/user.controller');
+var ProjectConst = require('../consts');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
@@ -175,7 +176,7 @@ module.exports = {
                         Gamer.wallet.amount = res.amount;
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
-                        user.updateWallet(Gamer, response);
+                        user.updateWallet(Gamer, response, ProjectConst.ShopBuy);
 
                         // update user wallet
                         // update shop history

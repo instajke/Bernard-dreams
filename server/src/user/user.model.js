@@ -6,6 +6,7 @@ var Transactions = new Schema({
     date: { type: Date, default: Date.now },
     currencyType: String,
     amount: Number,
+    transactionType: String,
     marketID: Schema.Types.ObjectId
 });
 

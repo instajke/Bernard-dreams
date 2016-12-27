@@ -190,7 +190,7 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
                             mygamer.wallet.amount = res.offers[i].offersInPrice[j].amount;
                             mygamer.wallet.marketID = Market._id;
                             mygamer.wallet.currencyType = res.currencyTypeBuy;
-                            userLogic.UpdateWallet(mygamer);
+                            userLogic.UpdateWallet(mygamer, response, myConst.CancelOffer);
                             if(res.offers[i].offersInPrice[j].amount == res.offers[i].amount){
                                 if(res.bestPrice == res.offers[i].price) {
                                     res.offers.splice(i, 1);
@@ -262,8 +262,8 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         cost += ((parseFloat(res.taxes) / 100) * cost);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
-                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
-                            res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
+                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyTypeBuy, gamer.wallet.amount,
+                            res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
                     } else {
                         // calculate cost
                         var isPartial = true;
@@ -275,12 +275,12 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         if(res.offers[i].amount == gamer.wallet.amount)
                             if(isPartial) {
                                 console.log("Not Cool! It will pe partial transaction!");
-                                callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
-                                    res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
+                                callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyTypeBuy, gamer.wallet.amount,
+                                    res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
                             } else {
                                 console.log("Cool! It will be full transaction, but it needs updates!");
-                                callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
-                                    res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
+                                callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyTypeBuy, gamer.wallet.amount,
+                                    res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
                             }
                     }
                     transaction = true;
@@ -363,7 +363,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     console.log("success");
                     res.offers[index].amount -= amount;
                 }
-                userLogic.UpdateWallets(myGamer, myOffers, response);
+                userLogic.UpdateWallets(myGamer, myOffers, response, myConst.ExecuteOffer);
 
             }
             if(res.marketType == myConst.SimulatedMarket)

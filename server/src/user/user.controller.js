@@ -1,14 +1,17 @@
 'use strict';
 var user = require('./user.model.js');
+var ProjectConst = require('../consts');
 
-function historyHelper(wallet) {
+function historyHelper(wallet, newTransactionType) {
     var myHistory = {};
     myHistory.date = Date.now();
     myHistory.currencyType = wallet.currencyType;
     myHistory.amount = wallet.amount;
     myHistory.marketID = wallet.marketID;
+    myHistory.transactionType = newTransactionType;
     return myHistory;
 };
+
 exports.find = function (req, res, next) {
     user.find(function (err, users) {
         if (err) {
@@ -106,7 +109,7 @@ exports.getWallet = function (id, response) {
     });
 };
 
-exports.updateWallet = function (User, response) {
+exports.updateWallet = function (User, response, newTransactionType) {
     user.findById({
         _id: User._id
     }).exec(function (err, res) {
@@ -124,7 +127,7 @@ exports.updateWallet = function (User, response) {
                     }
             }
             if (newCurrency) res.wallet.push(User.wallet);
-            var myHistory = historyHelper(User.wallet);
+            var myHistory = historyHelper(User.wallet, newTransactionType);
             res.transactions.push(myHistory);
             res.save();
         }
@@ -153,7 +156,7 @@ exports.justCheckPayingCapacity = function (userId, currencyType, marketID, pric
                             myWallet.currencyType = res.wallet[i].currencyType;
                             myWallet.marketID = res.wallet[i].marketID;
                             myWallet.amount = amount * (-1);
-                            var myHistory = historyHelper(myWallet);
+                            var myHistory = historyHelper(myWallet, ProjectConst.CreateOffer);
                             res.transactions.push(myHistory);
                             res.save();
                             callback(marketID, userId, price, amount, response);
@@ -197,7 +200,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                             myWallet.currencyType = res.wallet[i].currencyType;
                             myWallet.marketID = res.wallet[i].marketID;
                             myWallet.amount = cost * (-1);
-                            var myHistory = historyHelper(myWallet);
+                            var myHistory = historyHelper(myWallet, ProjectConst.TransactionPay);
                             res.transactions.push(myHistory);
                             if (i != index) {
                                 if (res.wallet[index].currencyType == currencyType2) {
@@ -206,7 +209,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     myWallet2.currencyType = res.wallet[index].currencyType;
                                     myWallet2.marketID = res.wallet[index].marketID;
                                     myWallet2.amount = amount;
-                                    myHistory = historyHelper(myWallet2);
+                                    myHistory = historyHelper(myWallet2, ProjectConst.TransactionTake);
                                     res.transactions.push(myHistory);
                                     res.wallet[index].amount += amount;
                                 }
@@ -221,7 +224,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         myWallet3.currencyType = res.wallet[i].currencyType;
                                         myWallet3.marketID = res.wallet[i].marketID;
                                         myWallet3.amount = amount;
-                                        myHistory = historyHelper(myWallet3);
+                                        myHistory = historyHelper(myWallet3, ProjectConst.TransactionTake);
                                         res.transactions.push(myHistory);
                                         res.wallet[index].amount += amount;
                                         notfound = false;
@@ -233,7 +236,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     newWallet.currencyType = currencyType2;
                                     newWallet.amount = amount;
                                     newWallet.marketID = marketID;
-                                    myHistory = historyHelper(newWallet);
+                                    myHistory = historyHelper(newWallet, ProjectConst.TransactionTake);
                                     res.transactions.push(myHistory);
                                     res.wallet.push(newWallet);
                                 }
