@@ -13,9 +13,9 @@
       };
     });
 
-  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$state', '$q', '$timeout'];
+  MainCtrl.$inject = ['accountService', '$http', '$scope', '$rootScope', '$mdDialog', '$mdToast', '$state', '$q', '$timeout'];
 
-  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $state, $q, $timeout) {
+  function MainCtrl(accountService, $http, $scope, $rootScope, $mdDialog, $mdToast, $state, $q, $timeout) {
 
     var vm = this;
     var alert;
@@ -62,13 +62,22 @@
             });
     };
 
+    vm.showToast = function(msg) {
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(msg)
+          .hideDelay(2000)
+      );
+    };
+
     vm.login = function() {
 
       // call login from service
       accountService.login(vm.user.nickname, vm.user.password)
         // handle success
         .then(function () {
-          $rootScope.showToast("Success!");
+          //$rootScope.showToast("Success!");
+          vm.showToast("U've logged in");
           $state.go('account', { nickname : vm.user.nickname });
         })
         // handle error
