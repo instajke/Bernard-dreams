@@ -497,8 +497,12 @@ router.post('/api/register', function(req, res) {
     });
 
     router.post('/api/transaction/sell', function (request, response) {
-        var Gamer = request.body.gamer;
-        transaction.MakeTransactionSell(Gamer, response);
+        var Gamer = {   userID : request.body.userID,
+            wallet: {  curType  : request.body.currencyType,
+                amount   : parseInt(request.body.amount),
+                marketID : request.body.marketID} };
+        var desiredPrice = parseFloat(request.body.price);
+        transaction.MakeTransactionSell(Gamer, desiredPrice, response);
     });
 
     router.post('/api/transaction/offer/buy', function (request, response) {
