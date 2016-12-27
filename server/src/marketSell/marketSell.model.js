@@ -275,7 +275,6 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
                         cost = res.offers[i].amount * desirePrice;
                         cost += ((parseFloat(res.taxes) / 100) * cost);
                         //res.offers.remove(i);
-                        if(res.offers[i].amount == gamer.wallet.amount)
                         if(isPartial) {
                             console.log("Not Cool! It will pe partial transaction!");
                             callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,

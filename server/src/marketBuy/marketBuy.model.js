@@ -272,16 +272,15 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         cost = res.offers[i].amount * desirePrice;
                         cost += ((parseFloat(res.taxes) / 100) * cost);
                         //res.offers.remove(i);
-                        if(res.offers[i].amount == gamer.wallet.amount)
-                            if(isPartial) {
-                                console.log("Not Cool! It will pe partial transaction!");
-                                callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyTypeBuy, gamer.wallet.amount,
-                                    res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
-                            } else {
-                                console.log("Cool! It will be full transaction, but it needs updates!");
-                                callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyTypeBuy, gamer.wallet.amount,
-                                    res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
-                            }
+                        if(isPartial) {
+                            console.log("Not Cool! It will pe partial transaction!");
+                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyTypeBuy, gamer.wallet.amount,
+                                res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
+                        } else {
+                            console.log("Cool! It will be full transaction, but it needs updates!");
+                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyTypeBuy, gamer.wallet.amount,
+                                res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
+                        }
                     }
                     transaction = true;
                     break;
