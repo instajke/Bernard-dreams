@@ -262,8 +262,8 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         cost += ((parseFloat(res.taxes) / 100) * cost);
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
-                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyTypeBuy, gamer.wallet.amount,
-                            res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
+                        callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyAnother, gamer.wallet.amount,
+                            res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                     } else {
                         // calculate cost
                         var isPartial = true;
@@ -274,12 +274,12 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                         //res.offers.remove(i);
                         if(isPartial) {
                             console.log("Not Cool! It will pe partial transaction!");
-                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyTypeBuy, gamer.wallet.amount,
-                                res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
+                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
+                                res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                         } else {
                             console.log("Cool! It will be full transaction, but it needs updates!");
-                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyTypeBuy, gamer.wallet.amount,
-                                res.currencyAnother, res.marketID, i, response, callbackMarketUpdate);
+                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
+                                res.currencyTypeBuy, res.marketID, i, response, callbackMarketUpdate);
                         }
                     }
                     transaction = true;
