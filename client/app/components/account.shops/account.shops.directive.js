@@ -23,6 +23,7 @@
 
       ctrl.shopDialog = $mdDialog;
       ctrl.offerDialog = $mdDialog;
+      ctrl.updateShopDlg = $mdDialog;
 
       ctrl.postShop = function() {
           var index = 0;
@@ -101,6 +102,21 @@
          });
      };
 
+     ctrl.showUpdateShopDialog = function(ev, currentShop) {
+
+         $scope.currentShop = currentShop;
+        ctrl.updateShopDlg.show({
+            controller: updateShopController,
+            templateUrl: 'app/components/controls/UpdateShop.html',
+            parent: angular.element(document.getElementById("theme-div")),
+            targetEvent: ev,
+            locals: {
+                shop : currentShop
+            },
+            clickOutsideToClose: true
+        });
+    };
+
      ctrl.removeOffer = function(shop, offer) {
          console.log(ctrl.shops);
          var index = ctrl.shops.indexOf(shop);
@@ -113,6 +129,34 @@
 
       ctrl.initMarkets();
       $scope.initShops();
+  }
+
+  updateShopController.$inject = ['$http', '$scope', '$mdDialog', 'shop'];
+
+  function updateShopController($http, $scope, $mdDialog, shop) {
+      var ctrl = this;
+
+      $scope.currentShop = shop;
+
+      ctrl.hide = function() {
+          $mdDialog.hide();
+      };
+      ctrl.cancel = function() {
+          $mdDialog.cancel();
+      };
+      ctrl.answer = function(answer) {
+          $mdDialog.hide(answer);
+      };
+
+      $scope.updateShop = function() {
+          console.log("we are about to update shop");
+          console.log($scope.currentShop);
+          $http.put('/api/shop', {shop : $scope.currentShop })
+            .then( function(response) {
+
+            });
+            ctrl.hide();
+      }
   }
 
   updateOfferController.$inject = ['$http', '$scope', '$mdDialog', 'shop', 'offer'];

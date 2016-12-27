@@ -453,6 +453,11 @@ router.post('/api/register', function(req, res) {
         shop.clearShopHistory(ShopID, response);
     });
 
+    router.put('/api/shop', function(request, response) {
+        var Shop = request.body.shop;
+        shop.updateShop(Shop, response);
+    })
+
     router.put('/api/shop/PayPal', function (request, response) {
         var Shop = request.body.shop;
         shop.updateShopPayPalAcc(Shop, response);

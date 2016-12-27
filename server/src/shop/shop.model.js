@@ -98,6 +98,16 @@ module.exports = {
         });
     },
 
+    updateShop: function(Shop, response) {
+        shop.update({ _id : Shop._id }, Shop, function(err, res) {
+            if (err) {
+                response.status(500).send(err);
+            } else {
+                response.status(200).send(res);
+            }
+        });
+    },
+
     updateShopHistory: function (Shop, response) {
         shop.findOne({_id: Shop._id}).exec(function (err,res) {
             if(err) {

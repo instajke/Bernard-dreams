@@ -26,6 +26,10 @@
             </md-list>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-icon-button" ng-click="shopsCtrl.showUpdateShopDialog($event, shop)">
+                <md-icon class="material-icons">&#xE254;</md-icon>
+                <md-tooltip>Update shop</md-tooltip>
+            </md-button>
             <md-button class="md-icon-button" ng-click="shopsCtrl.showAddOfferDialog($event, shop)">
                 <md-icon class="material-icons">&#xE145;</md-icon>
                 <md-tooltip>Create new offer</md-tooltip>
