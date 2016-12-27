@@ -68,7 +68,7 @@
       accountService.login(vm.user.nickname, vm.user.password)
         // handle success
         .then(function () {
-          vm.showAlert("Success!");
+          $rootScope.showToast("Success!");
           $state.go('account', { nickname : vm.user.nickname });
         })
         // handle error

@@ -13,37 +13,34 @@
       };
     });
 
-  shopsController.$inject = ['shopService','$http', '$rootScope', '$mdDialog', '$stateParams', 'localStorageService'];
+  shopsController.$inject = ['shopService','$http', '$scope', '$rootScope', '$mdDialog', '$stateParams', 'localStorageService'];
 
-  function shopsController(shopService, $http, $rootScope, $mdDialog, $stateParams, localStorageService) {
+  function shopsController(shopService, $http, $scope, $rootScope, $mdDialog, $stateParams, localStorageService) {
       var ctrl = this;
 
       ctrl.shops = {};
       ctrl.markets = {};
-      ctrl.currentShop = {};
+
       ctrl.shopDialog = $mdDialog;
       ctrl.offerDialog = $mdDialog;
-      ctrl.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
-
-      ctrl.showCurrentShop = function() {
-          $rootScope.showAlert(ctrl.currentShop);
-      };
 
       ctrl.postShop = function() {
           var index = 0;
-          ctrl.currentShop.devID = localStorageService.get("user").username;
+          ctrl.currentShop.devID = localStorageService.get("user")._id;
           for (var i = 0; i < ctrl.markets.length; ++i)
           {
                 if (ctrl.markets[i]._id == ctrl.currentShop.marketID)
                 {
                     index = i;
                     ctrl.markets[i].shopBinded = true;
+                    ctrl.currentShop.internalCurrency = ctrl.markets[i].currencyType1;
+                    ctrl.currentShop.externalCurrency = ctrl.markets[i].currencyType2;
                 }
           }
           ctrl.updateMarket(ctrl.markets[index]);
           shopService.postShop(ctrl.currentShop)
             .then (function () {
-                ctrl.initShops();
+                $scope.initShops();
             })
       };
 
@@ -52,11 +49,13 @@
             .then( function () {
                 ctrl.initMarkets();
             })
-      }
+      };
 
-      ctrl.initShops = function() {
-          shopService.getShopsByDevId(localStorageService.get("user").username)
+      $scope.initShops = function() {
+          shopService.getShopsByDevId(localStorageService.get("user")._id)
             .then( function (promise) {
+                console.log("shops reinited");
+                console.log(promise);
                 ctrl.shops = promise.shops;
             })
       };
@@ -64,97 +63,65 @@
       ctrl.initMarkets = function() {
           shopService.getMarkets(localStorageService.get("user")._id)
             .then( function(promise) {
-                console.log("Silvername playing guitar")
                 ctrl.markets = promise.markets;
             })
       };
 
        ctrl.showAddOfferDialog = function(ev, currentShop) {
+
+          $scope.currentShop = currentShop;
           ctrl.shopDialog.show({
-              controller: addOfferToShopController,
+              scope: $scope,
+              preserveScope: true,
+              controller: addOfferController,
               templateUrl: 'app/components/controls/AddOffersToTheShop.html',
               parent: angular.element(document.body),
               targetEvent: ev,
               locals: {
-                  currentShop : currentShop
+                  shop : currentShop
               },
               clickOutsideToClose: true
           });
       };
 
       ctrl.showUpdateOfferDialog = function(ev, currentShop, currentOffer) {
+
+          $scope.currentShop = currentShop;
+          $scope.currentOffer = currentOffer;
          ctrl.offerDialog.show({
-             controller: updateOfferCtrl,
+             controller: updateOfferController,
              templateUrl: 'app/components/controls/UpdateOffer.html',
              parent: angular.element(document.body),
              targetEvent: ev,
              locals: {
-                 currentShop : currentShop,
-                 currentOffer : currentOffer
+                 shop : currentShop,
+                 offer : currentOffer
              },
              clickOutsideToClose: true
          });
      };
 
      ctrl.removeOffer = function(shop, offer) {
+         console.log(ctrl.shops);
          var index = ctrl.shops.indexOf(shop);
-         $http.delete('/api/shop/offer/' + shop._id + '/' + offer.ID)
+         $http.delete('/api/shop/offer/' + shop._id + '/' + offer._id)
             .then( function (response) {
-
-                for (var j = offer.ID; j < ctrl.shops[index].offers.length; ++index) {
-                    ctrl.shops[index].offers[j].ID--;
-                }
-                ctrl.shops[index].offers.splice(offer.ID - 1, 1);
-                $rootScope.showAlert("Offer removed");
-                ctrl.initShops();
+                $rootScope.showToast("Offer removed");
+                $scope.initShops();
             });
      };
 
-
       ctrl.initMarkets();
-      ctrl.initShops();
+      $scope.initShops();
   }
 
-  addOfferToShopController.$inject = ['$http', '$scope', '$mdDialog', 'currentShop'];
+  updateOfferController.$inject = ['$http', '$scope', '$mdDialog', 'shop', 'offer'];
 
-  function addOfferToShopController($http, $scope, $mdDialog, currentShop) {
-
+  function updateOfferController($http, $scope, $mdDialog, shop, offer) {
       var ctrl = this;
 
-      $scope.currentOffer = {};
-
-      $scope.currentShop = currentShop;
-
-      ctrl.hide = function() {
-          $mdDialog.hide();
-      };
-      ctrl.cancel = function() {
-          $mdDialog.cancel();
-      };
-      ctrl.answer = function(answer) {
-          $mdDialog.hide(answer);
-      };
-
-      $scope.addOffer = function() {
-          $scope.currentShop.offers.push($scope.currentOffer);
-          $http.post('/api/shop/offer', {shop : $scope.currentShop})
-            .then(function (response) {
-
-            });
-            ctrl.hide();
-      };
-  }
-
-  updateOfferCtrl.$inject = ['$http', '$scope', '$mdDialog', 'currentShop', 'currentOffer'];
-
-  function updateOfferCtrl($http, $scope, $mdDialog, currentShop, currentOffer) {
-      var ctrl = this;
-
-      $scope.currentOffer = currentOffer;
-
-      $scope.currentShop = currentShop;
-
-      $scope.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
+      $scope.currentShop = shop;
+      $scope.currentOffer = offer;
 
       ctrl.hide = function() {
           $mdDialog.hide();
@@ -169,10 +136,39 @@
       $scope.updateOffer = function() {
           $http.put('/api/shop/offer', {shop : $scope.currentShop, offer : $scope.currentOffer})
             .then(function (response) {
-
+                console.log("update offer response");
+                console.log(response);
             });
             ctrl.hide();
-      }
+      };
+
+  }
+
+  addOfferController.$inject = ['shopService','$http', '$scope', '$mdDialog', 'shop'];
+
+  function addOfferController(shopService, $http, $scope, $mdDialog, shop) {
+      var ctrl = this;
+
+      $scope.currentShop = shop;
+      $scope.currentOffer = {};
+
+      ctrl.hide = function() {
+          $mdDialog.hide();
+      };
+      ctrl.cancel = function() {
+          $mdDialog.cancel();
+      };
+      ctrl.answer = function(answer) {
+          $mdDialog.hide(answer);
+      };
+
+      $scope.addOffer = function() {
+          shopService.addOffer($scope.currentShop, $scope.currentOffer)
+            .then(function (promise) {
+                $scope.initShops();
+            });
+            ctrl.hide();
+      };
   }
 
 })();

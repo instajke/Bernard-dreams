@@ -13,9 +13,9 @@
             };
         });
 
-    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$timeout', '$log', '$stateParams', 'localStorageService'];
+    AccountPageController.$inject = ['accountService', '$http', '$rootScope', '$mdDialog', '$state', '$mdSidenav', '$mdToast', '$timeout', '$log', '$stateParams', 'localStorageService'];
 
-    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $timeout, $log, $stateParams ,localStorageService) {
+    function AccountPageController(accountService, $http, $rootScope, $mdDialog, $state, $mdSidenav, $mdToast, $timeout, $log, $stateParams ,localStorageService) {
 
         var ctrl = this;
 
@@ -47,6 +47,16 @@
                     alert = undefined;
                 });
         };
+
+        $rootScope.showToast = function(msg) {
+          $mdToast.show(
+            $mdToast.simple()
+              .textContent(msg)
+              .hideDelay(2000)
+          );
+        };
+
+        $rootScope
 
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
@@ -206,7 +216,7 @@
             localStorageService.set("user", user);
             accountService.postUser(user)
             .then( function (promise) {
-                $rootScope.showAlert("U r dev now");
+                $rootScope.showToast("U r dev now");
                 $state.reload();
             });
       }

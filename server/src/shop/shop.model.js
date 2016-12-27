@@ -9,6 +9,8 @@ var Schema = mongoose.Schema,
 var shopSchema = new Schema ({
     devID: String,
     name: String,
+    internalCurrency: String,
+    externalCurrency: String,
     marketID: Schema.Types.ObjectId, // price per item ($)
     offers: [{ ID: Number, currencyType: String, amount: Number, price: Number, discount: Number }],
     payPalAcc: String,
@@ -132,60 +134,34 @@ module.exports = {
         });
     },
 
-    addShopOffer: function(Shop, response) {
-        shop.findOne({_id: Shop._id}).exec(function (err,res){
-            if(err){
-                console.log("ERROR");
-                response.send(500, {error: err});
+    addShopOffer: function(Shop, Offer, response) {
+
+        shop.update( {_id : Shop._id}, { $push: { offers : Offer }}, function(err, res) {
+            if (err) {
+                response.status(500).send(err);
             } else {
-                console.log("OKAY WE GOOD");
-                for (var index = 0; index < Shop.offers.length; ++index) {
-                    Shop.offers[index].ID = res.offers.length + index + 1;
-                    res.offers.push(Shop.offers[index]);
-                }
-                console.log(Shop.offers)
-                console.log(res);
-                res.save();
-                response.json({success: true});
+                response.status(200).send(res);
             }
-        });
+        })
     },
 
     updateShopOffer: function(Shop, Offer, response) {
-        shop.findOne({_id: Shop._id}).exec(function (err,res){
-            if(err){
-                response.send(500, {error: err});
-            } else {
 
-                for (var i=0; i < res.offers.length; i++) {
-                    if (res.offers[i].ID === Offer.ID) {
-                        res.offers[i] = Offer;
-                    }
-                }
-                //res.offers[Shop.offers.ID - 1] = Shop.offers;
-                res.save();
-                response.json({success: true});
+        shop.update( { _id : Shop._id, "offers._id" : Offer._id }, { $set: { "offers.$" : Offer }}, function(err, res) {
+            if (err) {
+                response.status(500).send(err);
+            } else {
+                response.status(200).send(res);
             }
-        });
+        })
     },
 
     removeShopOffer: function(ShopID, OfferID, response) {
-        shop.findOne({_id: ShopID}).exec(function (err,res){
-            if(err){
-                response.send(500, {error: err});
+        shop.update({_id: ShopID}, { $pull: { offers: { _id : OfferID } } }, function(err, res) {
+            if (err) {
+                response.status(500).send(err);
             } else {
-                console.log("REMOVE RESPONSE OFFERS BEFORE");
-                console.log(res.offers);
-                for (var index = OfferID; index < res.offers.length; ++index) {
-                    res.offers[index].ID--;
-                }
-                res.offers.splice(OfferID - 1, 1);
-                console.log("REMOVE ID")
-                console.log(OfferID)
-                console.log("REMOVE RESPONSE OFFERS AFTER");
-                console.log(res.offers);
-                res.save();
-                response.json({"result": "SUCCESS", "offers": res});
+                response.status(200).send(res);
             }
         });
     },

@@ -50,7 +50,7 @@
 
       ctrl.confirm = function () {
           accountService.upgradeToDev(ctrl.user);
-          ctrl.showAlert("U r dev now");
+          $rootScope.showToast("U r dev now");
           $state.go('account', $stateParams);
       };
 

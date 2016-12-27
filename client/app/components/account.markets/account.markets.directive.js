@@ -26,10 +26,6 @@
       ctrl.currencies = [{name: "Gold"}, {name: "Gems"}, {name: "Bucks"}, {name: "Whatever"}];
       ctrl.marketTypes = [{name: "Real Market"}, {name: "Simulated Market"}];
 
-      ctrl.showCurrentMarket = function() {
-          $rootScope.showAlert(ctrl.currentMarket);
-      };
-
       ctrl.showManageMarketDialog = function(ev, currentMarket) {
           ctrl.mgmtMarket.show({
               controller: manageMarketCtrl,
