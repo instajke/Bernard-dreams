@@ -38,10 +38,15 @@
                 }
             }
             var indexesSet = new Set(indexes);
-            var indexes = new Array(indexesSet);
+            console.log(indexesSet);
+            var indexes = Array.from(indexesSet);
+            console.log(indexes.length);
+            console.log(indexes);
             while (indexes.length > 0) {
-                $scope.availableMarkets.splice(indexes[0], 1);
-                indexes.splice(0, 1);
+                $scope.availableMarkets.splice(indexes[indexes.length - 1], 1);
+                indexes.splice(indexes.length - 1, 1);
+                console.log(indexes);
+                console.log($scope.availableMarkets);
             }
             console.log("excluding markets - done");
 
@@ -170,18 +175,25 @@
             console.log("current market: ");
             console.log(market);
 
-            var wallet = {
+            var wallet1 = {
                 currencyType: market.currencyType1
                 , amount: 0
                 , marketID: market._id
             };
+            var wallet2 = {
+                currencyType: market.currencyType2
+                , amount: 5000
+                , marketID: market._id
+            }
 
-            console.log(wallet);
+            console.log(wallet1);
+            console.log(wallet2);
 
             var user = localStorageService.get("user");
             console.log("CURRENT USER");
             console.log(user);
-            user.wallet.push(wallet);
+            user.wallet.push(wallet1);
+            user.wallet.push(wallet2);
             console.log("CURRENT USER WITH UPDATED WALLET");
             console.log(user);
             accountService.postUser(user)
