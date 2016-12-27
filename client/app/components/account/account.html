@@ -1,11 +1,14 @@
 <md-toolbar layout-align="end center" class="md-primary md-hue-4" id="top" style="z-index: 12">
     <div class="md-toolbar-tools">
-      <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+      <md-button class="md-icon-button" ng-click="toggleLeft()">
           <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
           <md-tooltip>Open side panel</md-tooltip>
       </md-button><span>KleManProMos</span>
         <span flex=""></span>
-        <md-button class="md-icon-button" ng-click="showUpgradeDialog($event)">
+        <md-switch ng-model="theme" ng-true-value="'default'" ng-false-value="'alternative'">
+            <md-tooltip>Switch theme</md-tooltip>
+        </md-switch>
+        <md-button class="md-icon-button" ng-hide="accPageCtrl.userIsDev()" ng-click="showUpgradeDialog($event)">
             <md-icon class="md-default-theme" class="material-icons">&#xE5D2;</md-icon>
             <md-tooltip>Upgrade your account!</md-tooltip>
         </md-button>

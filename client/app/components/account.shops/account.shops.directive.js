@@ -75,7 +75,7 @@
               preserveScope: true,
               controller: addOfferController,
               templateUrl: 'app/components/controls/AddOffersToTheShop.html',
-              parent: angular.element(document.body),
+              parent: angular.element(document.getElementById("theme-div")),
               targetEvent: ev,
               locals: {
                   shop : currentShop
@@ -91,7 +91,7 @@
          ctrl.offerDialog.show({
              controller: updateOfferController,
              templateUrl: 'app/components/controls/UpdateOffer.html',
-             parent: angular.element(document.body),
+             parent: angular.element(document.getElementById("theme-div")),
              targetEvent: ev,
              locals: {
                  shop : currentShop,

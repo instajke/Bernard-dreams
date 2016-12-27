@@ -31,7 +31,7 @@
         .dark();
 
     $mdThemingProvider.alwaysWatchTheme(true);
-
+    
     // i18n angular-dynamic-locale
     tmhDynamicLocaleProvider.localeLocationPattern('/i18n/angular/angular-locale_{{locale}}.js');
 

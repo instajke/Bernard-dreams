@@ -93,7 +93,7 @@
           ctrl.createOfferDialog.show({
               controller: GamerSellController
               , templateUrl: 'app/components/controls/CreateOffer.html'
-              , parent: angular.element(document.body)
+              , parent: angular.element(document.getElementById("theme-div"))
               , targetEvent: ev
               , scope: $scope
               , preserveScope: true

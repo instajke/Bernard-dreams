@@ -64,8 +64,6 @@
           );
         };
 
-        $rootScope
-
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
@@ -75,7 +73,7 @@
             $rootScope.historyDialog.show({
                 controller: HistoryDialogController,
                 templateUrl: 'app/components/controls/HistorySheet.html',
-                parent: angular.element(document.body),
+                parent: angular.element(document.getElementById("theme-div")),
                 targetEvent: ev,
                 clickOutsideToClose: true
             });
@@ -85,7 +83,7 @@
             $rootScope.upgradeDialog.show({
                 controller: UpgradeDialogController,
                 templateUrl: 'app/components/controls/ConfirmUpgrade.html',
-                parent: angular.element(document.body),
+                parent: angular.element(document.getElementById("theme-div")),
                 targetEvent: ev,
                 clickOutsideToClose: true
             });
@@ -195,6 +193,10 @@
                     }
                 });
         };
+
+        ctrl.userIsDev = function() {
+            return localStorageService.get("user").isDev;
+        }
 
         ctrl.checkLoggedIn();
         ctrl.user = localStorageService.get("user");

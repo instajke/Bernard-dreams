@@ -26,7 +26,7 @@
             </md-list>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button class="md-icon-button" aria-label="Settings" ng-click="shopsCtrl.showAddOfferDialog($event, shop)">
+            <md-button class="md-icon-button" ng-click="shopsCtrl.showAddOfferDialog($event, shop)">
                 <md-icon class="material-icons">&#xE145;</md-icon>
                 <md-tooltip>Create new offer</md-tooltip>
             </md-button>
@@ -56,7 +56,7 @@
                 <input ng-model="shopsCtrl.currentShop.payPalAcc">
             </md-input-container>
 
-            <md-checkbox ng-model="shopsCtrl.currentShop.publicHistory" aria-label="Public history">
+            <md-checkbox ng-model="shopsCtrl.currentShop.publicHistory">
                 Allow public history: {{ shopsCtrl.currentShop.publicHistory }}
             </md-checkbox>
 

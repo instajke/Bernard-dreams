@@ -31,7 +31,7 @@
     <!--[if lt IE 9]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
-  <div md-theme={{theme}} layout="column" ui-view></div>
+  <div md-theme={{theme}} md-theme-watch="true" id="theme-div" layout="column" ui-view></div>
 
     <!-- build:js scripts/vendor.js -->
     <script src="bower_components/angular/angular.js"></script>

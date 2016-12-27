@@ -125,7 +125,7 @@
             controller: UserRegistrationController
             , controllerAs: 'userRegCtrl'
             , templateUrl: 'app/components/controls/RegistrationSheet.html'
-            , parent: angular.element(document.body)
+            , parent: angular.element(document.getElementById("theme-div"))
             , targetEvent: ev
             , clickOutsideToClose: true
         });
