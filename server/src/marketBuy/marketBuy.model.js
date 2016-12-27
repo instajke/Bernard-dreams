@@ -334,7 +334,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 // update wallets
                 var myGamer = {};
                 var wallet = {};
-                wallet.currencyType = res.currencyAnother;
+                wallet.currencyType = res.currencyTypeBuy;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
                 // need to update price
