@@ -333,6 +333,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
                     console.log("Kotletka");
+                    console.log(amount);
                     if(res.offers[index].offersInPrice[i].amount < amount)
                     {
                         amount -= res.offers[index].offersInPrice[i].amount;
@@ -342,16 +343,19 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                         myOffers.push(myOffer1);
                         res.offers[index].offersInPrice.splice(i, 1);
                         console.log("Kotletka is here!");
+                        console.log(amount);
                     } else {
                         var myOffer2 = {};
                         myOffer2.amount = amount * res.offers[index].price;
                         myOffer2.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer2);
                         console.log("Kotletka is here too!");
+                        console.log(amount);
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             res.offers[index].offersInPrice.splice(i, 1);
                         else
                             res.offers[index].offersInPrice[i].amount -= amount;
+                        break;
                     }
                 }
                 console.log("offers are updated!");
@@ -390,7 +394,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     res.graphicBuy.push(point);
                 } else {
                     console.log("success");
-                    res.offers[index].amount -= amount;
+                    res.offers[index].amount -= newAmount;
                 }
                 userLogic.UpdateWallets(myGamer, myOffers, response, myConst.ExecuteOffer);
 
