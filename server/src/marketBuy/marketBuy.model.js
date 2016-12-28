@@ -336,6 +336,11 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 wallet.currencyType = res.currencyTypeBuy;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
+                console.log('this is');
+                console.log(myGamer);
+                console.log("Kotletka Offers");
+                console.log(myOffers);
+                console.log('bullshit');
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
