@@ -330,6 +330,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 // update offers
                 var myOffers = [];
                 var amount = newAmount;
+                var completedOfferCounter = 0;
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
                     console.log("Kotletka");
@@ -341,7 +342,8 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                         myOffer1.amount = res.offers[index].offersInPrice[i].amount * res.offers[index].price;
                         myOffer1.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer1);
-                        res.offers[index].offersInPrice.splice(i, 1);
+                        //res.offers[index].offersInPrice.splice(i, 1);
+                        completedOfferCounter++;
                         console.log("Kotletka is here!");
                         console.log(amount);
                     } else {
@@ -352,12 +354,14 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                         console.log("Kotletka is here too!");
                         console.log(amount);
                         if(res.offers[index].offersInPrice[i].amount == amount)
-                            res.offers[index].offersInPrice.splice(i, 1);
+                            completedOfferCounter++;  //res.offers[index].offersInPrice.splice(i, 1);
                         else
                             res.offers[index].offersInPrice[i].amount -= amount;
                         break;
                     }
                 }
+                if(completedOfferCounter != 0)
+                    res.offers[index].offersInPrice.splice(0, completedOfferCounter);
                 console.log("offers are updated!");
                 // update wallets
                 var myGamer = {};
