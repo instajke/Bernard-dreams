@@ -324,6 +324,12 @@ router.post('/api/register', function(req, res) {
         marketBuy.updateMarketType(MarketBuy, response);
     });
 
+    router.put('/api/marketBuy/devPrice', function (request, response) {
+        var marketID = request.body.marketID;
+        var price = request.body.price;
+        marketBuy.updatePriceInSimulatedMarket(marketID, price, response);
+    });
+
     router.put('/api/marketBuy/:userID', function (request, response) {
         var MarketBuy = request.body.marketBuy;
         var userID = request.params.userID;
@@ -373,6 +379,12 @@ router.post('/api/register', function(req, res) {
     router.put('/api/marketSell/marketType', function (request, response) {
         var MarketSell = request.body.marketSell;
         marketSell.updateMarketType(MarketSell, response);
+    });
+
+    router.put('/api/marketSell/devPrice', function (request, response) {
+        var marketID = request.body.marketID;
+        var price = request.body.price;
+        marketSell.updatePriceInSimulatedMarket(marketID, price, response);
     });
 
     router.put('/api/marketSell/:userID', function (request, response) {

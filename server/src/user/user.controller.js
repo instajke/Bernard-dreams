@@ -214,6 +214,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     res.wallet[index].amount += amount;
                                     console.log("we are added amount to walet!");
                                     console.log(res.wallet[index].amount);
+                                    break;
                                 }
                             }
                             else {
@@ -231,7 +232,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         res.wallet[i].amount += amount;
                                         console.log("we are added amount to walet 2");
                                         console.log(amount);
-                                        console.log(res.wallet[index].amount);
+                                        console.log(res.wallet[i].amount);
                                         notfound = false;
                                         break;
                                     }

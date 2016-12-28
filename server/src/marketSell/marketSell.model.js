@@ -49,11 +49,31 @@ exports.getMarketSellsByMarketIds = function (marketIdArray, response) {
 };
 
 exports.postMarketSell = function(MarketSell) {
+    if(MarketSell.marketType == myConst.SimulatedMarket) {
+        var devOffer = {};
+        devOffer.price = 1;
+        devOffer.amount = Infinity;
+        devOffer.offersInPrice = [];
+        MarketSell.offers.push(devOffer);
+    }
+
     marketSell.create(MarketSell, function (err, res){
         if(err) {
             console.warn(err);
         } else {
             console.warn("Success");
+        }
+    });
+};
+
+exports.updatePriceInSimulatedMarket = function (MarketID, price, response) {
+    marketSell.findOne({marketID: MarketID}).exec(function (err,res) {
+        if(err){
+            response.send(500, {error: err});
+        } else {
+            res.offers[0].price = price;
+            res.save();
+            response.send({"result": "changed"});
         }
     });
 };
@@ -231,7 +251,7 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
+            var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
             res.offers[0].price = price;
             res.bestPrice = price;
             var point = {};
@@ -382,7 +402,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     percent++;
                 }
                 if(percent != 0) {
-                    var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
+                    var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
                     res.offers[0].price = price;
                     res.bestPrice = price;
                     point = {};

@@ -47,11 +47,31 @@ exports.getMarketBuysByMarketIds = function (marketIdArray, response) {
 };
 
 exports.postMarketBuy = function(MarketBuy) {
+    if(MarketBuy.marketType == myConst.SimulatedMarket) {
+        var devOffer = {};
+        devOffer.price = 1;
+        devOffer.amount = Infinity;
+        devOffer.offersInPrice = [];
+        MarketBuy.offers.push(devOffer);
+    }
+    
     marketBuy.create(MarketBuy, function (err, res){
         if(err) {
             console.warn(err);
         } else {
             console.warn("Success");
+        }
+    });
+};
+
+exports.updatePriceInSimulatedMarket = function (MarketID, price, response) {
+    marketBuy.findOne({marketID: MarketID}).exec(function (err,res) {
+        if(err){
+            response.send(500, {error: err});
+        } else {
+            res.offers[0].price = price;
+            res.save();
+            response.send({"result": "changed"});
         }
     });
 };
@@ -230,7 +250,7 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
+            var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
             res.offers[0].price = price;
             res.bestPrice = price;
             var point = {};
@@ -352,7 +372,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     console.log("not succes");
                     console.log(transaction);
                     console.log(myConst.TransactionSucces);
-                    res.offers.splice(index);
+                    res.offers.splice(index, 1);
                     // findnewprice
                     var newPrice = Infinity;
                     for(i = 0; i < res.offers.length; i++)
@@ -386,7 +406,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     percent++;
                 }
                 if(percent != 0) {
-                    var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
+                    var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
                     res.offers[0].price = price;
                     res.bestPrice = price;
                     point = {};
