@@ -369,7 +369,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
-                    res.offers.splice(index);
+                    res.offers.splice(index, 1);
                     // findnewprice
                     var newPrice = Infinity;
                     for(i = 0; i < res.offers.length; i++)
