@@ -5,6 +5,13 @@
             <md-card-title-text>Transactions history</md-card-title-text>
         </md-toolbar>
         <md-list>
+            <md-list-item class="md-3-line" ng-show="!accHistCtrl.processedTransactions.length">
+                <div flex layout="column" class="md-list-item-text">
+                    <span flex-offset="5" class="md-headline">There are no transactions yet.</span>
+                    <br>
+                    <span flex-offset="5" class="md-regular">Please, connect your some shops/markets, buy some currency and check History again.</span>
+                </div>
+            </md-list-item>
             <md-list-item class="md-3-line" ng-repeat="trans in accHistCtrl.processedTransactions">
                 <div flex layout="row" ng-hide="trans.incomingAmount" class="md-list-item-text">
                      <span flex-offset="5" flex="28" class="md-title">{{trans.amount}} {{trans.currencyType}}</span>
