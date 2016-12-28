@@ -153,7 +153,6 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                 }
                 for (var i = 0; i < res.offers.length; i++) {
                     if (res.offers[i].price == price) {
-                        console.log("found offer with price");
                         for (var j = 0; j < res.offers[i].offersInPrice.length; j++) {
                             if (res.offers[i].offersInPrice[j].userID.toString() == userId.toString()) {
                                 console.log("found offer");
@@ -270,8 +269,6 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
             response.send(500, {error: err});
         } else {
             var transaction = false;
-            console.log("IT'S HERE SUKA");
-            console.log(res);
             for(var i = 0; i < res.offers.length; i++)
             {
                 if(res.offers[i].price == desirePrice)
@@ -283,7 +280,6 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
                         // calculate cost
                         cost = gamer.wallet.amount * desirePrice;
                         cost += ((parseFloat(res.taxes) / 100) * cost);
-                        console.log(cost + 'this is cost');
                         console.log("Cool! It will be full transaction!");
                         // checkPaying capacity
                         callbackGamer(gamer.userID, myConst.TransactionSucces, cost, res.currencyTypeAnother, gamer.wallet.amount,
@@ -332,8 +328,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 var completedOfferCounter = 0;
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
-                    console.log("Kotletka goes deeper");
-                    console.log(amount);
                     if(res.offers[index].offersInPrice[i].amount < amount)
                     {
                         amount -= res.offers[index].offersInPrice[i].amount;
@@ -343,15 +337,11 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                         myOffers.push(myOffer1);
                         //res.offers[index].offersInPrice.splice(i, 1);
                         completedOfferCounter++;
-                        console.log("Kotletka is here!");
-                        console.log(amount);
                     } else {
                         var myOffer2 = {};
                         myOffer2.amount = amount * res.offers[index].price;
                         myOffer2.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer2);
-                        console.log("Kotletka is here too!");
-                        console.log(amount);
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             completedOfferCounter++; //res.offers[index].offersInPrice.splice(i, 1);
                         else
@@ -368,11 +358,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 wallet.currencyType = res.currencyTypeAnother;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
-                console.log('this is');
-                console.log(myGamer);
-                console.log("Kotletka Offers");
-                console.log(myOffers);
-                console.log('bullshit');
 
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
@@ -417,7 +402,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     point.price = price;
                     point.date = Date.now();
                     res.graphicSell.push(point);
-                    console.log("graph and price are updated!");
                     buyHelper.updateIllusivePrice(MarketID, percent, response);
                 }
             }

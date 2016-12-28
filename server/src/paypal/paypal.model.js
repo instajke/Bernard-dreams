@@ -32,7 +32,6 @@ function postPayment(payment, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            console.log(payment.userID);
             console.log("Payment is created!")
         }
     });
@@ -108,6 +107,7 @@ module.exports = {
                 "description": "Buying game currency"
             }]
         };
+        console.log("Try to create paypal payment!");
         paypal.payment.create(create_payment_json, function (error, payment) {
             if (error) {
                 console.log(error.response);
@@ -120,7 +120,6 @@ module.exports = {
                         response.send(payment.links[index].href);
                     }
                 }
-                console.log(payment);
                 var myPayment = {};
                 myPayment.userID = mongoose.Types.ObjectId(userID);
                 myPayment.paymentID = payment.id;
@@ -131,7 +130,6 @@ module.exports = {
                 myPayment.amount = Offer.amount;
                 myPayment.marketID = mongoose.Types.ObjectId(marketID);
                 myPayment.payerID = "None";
-                console.log(myPayment);
                 postPayment(myPayment, response);
             }
         });
@@ -177,11 +175,6 @@ module.exports = {
                         Gamer.wallet.currencyType = res.currencyType;
                         Gamer.wallet.marketID = res.marketID;
                         user.updateWallet(Gamer, response, ProjectConst.ShopBuy);
-
-                        // update user wallet
-                        // update shop history
-                        console.log(payment);
-
                         response.redirect('http://kmpm.eu-gb.mybluemix.net/');
 
                     }

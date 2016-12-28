@@ -333,8 +333,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 var completedOfferCounter = 0;
                 for(var i = 0; i < res.offers[index].offersInPrice.length; i++)
                 {
-                    console.log("Kotletka");
-                    console.log(amount);
                     if(res.offers[index].offersInPrice[i].amount < amount)
                     {
                         amount -= res.offers[index].offersInPrice[i].amount;
@@ -344,15 +342,11 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                         myOffers.push(myOffer1);
                         //res.offers[index].offersInPrice.splice(i, 1);
                         completedOfferCounter++;
-                        console.log("Kotletka is here!");
-                        console.log(amount);
                     } else {
                         var myOffer2 = {};
                         myOffer2.amount = amount * res.offers[index].price;
                         myOffer2.userID = res.offers[index].offersInPrice[i].userID;
                         myOffers.push(myOffer2);
-                        console.log("Kotletka is here too!");
-                        console.log(amount);
                         if(res.offers[index].offersInPrice[i].amount == amount)
                             completedOfferCounter++;  //res.offers[index].offersInPrice.splice(i, 1);
                         else
@@ -369,17 +363,9 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 wallet.currencyType = res.currencyAnother;
                 wallet.marketID = MarketID;
                 myGamer.wallet = wallet;
-                console.log('this is');
-                console.log(myGamer);
-                console.log("Kotletka Offers");
-                console.log(myOffers);
-                console.log('bullshit');
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {
-                    console.log("not succes");
-                    console.log(transaction);
-                    console.log(myConst.TransactionSucces);
                     res.offers.splice(index, 1);
                     // findnewprice
                     var newPrice = Infinity;
@@ -397,7 +383,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     point.date = Date.now();
                     res.graphicBuy.push(point);
                 } else {
-                    console.log("success");
                     res.offers[index].amount -= newAmount;
                 }
                 userLogic.UpdateWallets(myGamer, myOffers, response, myConst.ExecuteOffer);
@@ -421,7 +406,6 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     point.price = price;
                     point.date = Date.now();
                     res.graphicBuy.push(point);
-                    console.log("graph and price are updated!");
                     sellHelper.updateIllusivePrice(MarketID, percent, response);
                 }
             }

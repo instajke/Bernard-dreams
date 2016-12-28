@@ -180,8 +180,6 @@ module.exports = {
         marketIdArray.forEach(function(item) {
             item = Schema.Types.ObjectId(item);
         });
-        console.log("converted array");
-        console.log(marketIdArray);
         shop.find({ marketID : { $in : marketIdArray }}, function ( err, docs ) {
                 response.json({"result" : "SUCCESS", "shops" : docs});
             })

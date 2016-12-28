@@ -212,8 +212,6 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     myHistory = historyHelper(myWallet2, ProjectConst.TransactionTake);
                                     res.transactions.push(myHistory);
                                     res.wallet[index].amount += amount;
-                                    console.log("we are added amount to walet!");
-                                    console.log(res.wallet[index].amount);
                                     break;
                                 }
                             }
@@ -230,9 +228,6 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         myHistory = historyHelper(myWallet3, ProjectConst.TransactionTake);
                                         res.transactions.push(myHistory);
                                         res.wallet[i].amount += amount;
-                                        console.log("we are added amount to walet 2");
-                                        console.log(amount);
-                                        console.log(res.wallet[i].amount);
                                         notfound = false;
                                         break;
                                     }
@@ -254,7 +249,6 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
             if (success) {
                 res.save();
-                console.log('hello bullshit');
                 callback(marketID, transaction, indexOffer, amount, response);
             }
             else {
@@ -265,8 +259,6 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
     })
 };
 exports.updateUser = function (User, response) {
-    console.log("UPDATE USER");
-    console.log(User);
     user.findById(User._id, function (err, user) {
         if (err) {
             console.log("ERROR");
@@ -284,8 +276,6 @@ exports.updateUser = function (User, response) {
             user.wallet = User.wallet;
             user.transactions = User.transactions;
             user.isDev = User.isDev;
-            console.log("USER");
-            console.log(user);
             user.save();
             response.json({
                 success: true,
@@ -296,8 +286,6 @@ exports.updateUser = function (User, response) {
 };
 
 exports.updateUser = function(User, response) {
-  console.log("UPDATE USER");
-  console.log(User);
   user.findById(User._id, function(err, user) {
     if (err) {
       response.send(500, {error: err});

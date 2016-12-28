@@ -29,8 +29,6 @@ module.exports = {
             if(err){
                 response.status(500).send(err);
             } else {
-                console.log("GOT MARKET");
-                console.log(res);
                 response.json({"result": "SUCCESS", "market": res});
             }
         });

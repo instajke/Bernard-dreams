@@ -11,8 +11,6 @@ exports.UpdateWallets = function (user, offers, response, newTransactionType) {
             myLittleFriend.wallet.amount = offers[i].amount;
             myLittleFriend.wallet.marketID = user.wallet.marketID;
             myLittleFriend.wallet.currencyType = user.wallet.currencyType;
-            console.log("myLittleFriend");
-            console.log(myLittleFriend);
             User.updateWallet(myLittleFriend, response, newTransactionType);
         }
     };
