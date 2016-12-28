@@ -258,6 +258,7 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             }
             else {
                 console.log("something is wrong");
+                response.status(500).send("not good");
             }
         }
     })

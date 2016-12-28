@@ -93,12 +93,21 @@
           console.log($scope.offerAmount);
           console.log($scope.currentMarket.marketID);
           console.log($scope.currentMarket.currencyTypeBuy);
+          if ($scope.offerAmount <= 0){
+              $scope.showSimpleToast("Amount should be a positive number!");
+              return;
+          }
           gamerMarketService.buyStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeBuy)
-              .then( function() {
+              .then( function(promise) {
+                  if (promise == "not good") {
+                      $scope.showSimpleToast("Invalid amount. Please check and try again");
+                  }
+                  else {
+                      $scope.showSimpleToast("buy succeseded");
+                  }
                   accountService.checkLoggedIn();
                   $scope.initMarkets();
-                  ctrl.createOfferDialog.hide();
-                  $scope.showSimpleToast("buy succeseded");
+                  ctrl.buyDialog.hide();
               })
       };
 

@@ -45,15 +45,15 @@
 
               $http.post('/api/transaction/buy',
                   { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
-                  .success(function() {
+                  .success(function(data) {
                       console.log("buy success");
-                      deferred.resolve();
+                      deferred.resolve(data);
                   })
-                  .error (function() {
+                  .error (function(error) {
                       console.log("buy error");
-                      deferred.reject();
+                      deferred.resolve(error);
                   });
-
+                  console.log(deferred.promise);
               return deferred.promise;
           },
           sellStuff : function(userID, price, amount, marketID, currencyType) {
@@ -61,13 +61,13 @@
 
               $http.post('/api/transaction/sell',
                   { userID : userID, price : price, amount : amount, marketID : marketID, currencyType : currencyType })
-                  .success(function() {
+                  .success(function(data) {
                       console.log("buy success");
-                      deferred.resolve();
+                      deferred.resolve(data);
                   })
-                  .error (function() {
+                  .error (function(error) {
                       console.log("buy error");
-                      deferred.reject();
+                      deferred.resolve(error);
                   });
 
               return deferred.promise;
