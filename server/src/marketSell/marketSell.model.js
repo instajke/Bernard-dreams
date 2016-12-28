@@ -298,11 +298,11 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
                         //res.offers.remove(i);
                         if(isPartial) {
                             console.log("Not Cool! It will pe partial transaction!");
-                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyAnother, gamer.wallet.amount,
+                            callbackGamer(gamer.userID, myConst.TransactionPartialSuccess, cost, res.currencyTypeAnother, gamer.wallet.amount,
                                 res.currencyTypeSell, res.marketID, i, response, callbackMarketUpdate);
                         } else {
                             console.log("Cool! It will be full transaction, but it needs updates!");
-                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyAnother, gamer.wallet.amount,
+                            callbackGamer(gamer.userID, myConst.TransactionSuccesWithUpdates, cost, res.currencyTypeAnother, gamer.wallet.amount,
                                 res.currencyTypeSell, res.marketID, i, response, callbackMarketUpdate);
                         }
                     }
