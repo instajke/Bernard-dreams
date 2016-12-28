@@ -99,7 +99,7 @@ router.post('/api/register', function(req, res) {
 
     router.get('/api/facebook/callback', function (req, res, next) {
         var authenticator = passport.authenticate ('facebook', {
-            successRedirect: '/#/account/home',
+            successRedirect: '/#/account',
             failureRedirect: '/'
         });
 
@@ -108,7 +108,7 @@ router.post('/api/register', function(req, res) {
     });
 
     router.get('/api/google', function authenticateGoogle (req, res, next) {
-            req.session.returnTo = '/#' + '/account/home';
+            req.session.returnTo = '/#' + '/account';
             next ();
         },
         passport.authenticate ('google', { scope : ['profile', 'email'] }));
@@ -124,7 +124,7 @@ router.post('/api/register', function(req, res) {
     });
 
     router.get('/api/twitter', function authenticateTwitter (req, res, next) {
-            req.session.returnTo = '/#' + '/account/home';
+            req.session.returnTo = '/#' + '/account';
             next ();
         },
         passport.authenticate ('twitter'));
