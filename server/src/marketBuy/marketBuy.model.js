@@ -244,6 +244,7 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
 };
 
 exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, callbackMarketUpdate) {
+    var message = '';
     marketBuy.findOne({marketID: gamer.wallet.marketID}).exec(function (err, res) {
         if(err){
             response.send(500, {error: err});
@@ -285,6 +286,10 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                     transaction = true;
                     break;
                 }
+                else {
+                    message = "There is no offer with desired price. Please, check existing offers";
+                }
+
             }
             res.save();
             if(!transaction) {

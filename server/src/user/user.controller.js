@@ -212,6 +212,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                     myHistory = historyHelper(myWallet2, ProjectConst.TransactionTake);
                                     res.transactions.push(myHistory);
                                     res.wallet[index].amount += amount;
+                                    console.log("we are added amount to walet!");
+                                    console.log(res.wallet[index].amount);
                                 }
                             }
                             else {
@@ -226,7 +228,10 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                                         myWallet3.amount = amount;
                                         myHistory = historyHelper(myWallet3, ProjectConst.TransactionTake);
                                         res.transactions.push(myHistory);
-                                        res.wallet[index].amount += amount;
+                                        res.wallet[i].amount += amount;
+                                        console.log("we are added amount to walet 2");
+                                        console.log(amount);
+                                        console.log(res.wallet[index].amount);
                                         notfound = false;
                                         break;
                                     }

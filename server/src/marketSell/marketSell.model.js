@@ -250,6 +250,7 @@ exports.checkPriceSell = function(gamer, desirePrice, response, callbackGamer, c
             response.send(500, {error: err});
         } else {
             var transaction = false;
+            console.log("IT'S HERE SUKA");
             console.log(res);
             for(var i = 0; i < res.offers.length; i++)
             {
@@ -344,7 +345,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                 console.log("Kotletka Offers");
                 console.log(myOffers);
                 console.log('bullshit');
-                
+
                 // need to update price
                 if(transaction != myConst.TransactionSucces)
                 {

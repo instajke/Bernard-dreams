@@ -139,15 +139,11 @@
                     url: "home",
                     tooltip: "Open home page"
                 }, {
-                    name: "History",
-                    url: "history",
-                    tooltip: "Open transactions history"
-                }, {
-                    name: "Markets",
+                    name: "Manage markets",
                     url: "markets",
                     tooltip: "Open markets admin page"
                 }, {
-                    name: "Shops",
+                    name: "Manage shops",
                     url: "shops",
                     tooltip: "Open controlled shops"
                 }]
