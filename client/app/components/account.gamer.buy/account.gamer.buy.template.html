@@ -8,7 +8,7 @@
              <md-card-title md-colors="::{backgroundColor: '{{theme}}-primary-200'}">
                 <md-card-title-text>
                   <span class="md-headline">{{offer.amount}} {{market.currencyTypeBuy}}, {{offer.price}} {{market.currencyAnother}} each</span>
-                  <span class="md-subhead description">Total price is {{offer.amount * offer.price}} </span>
+                  <span class="md-subhead description">Total price is {{offer.amount * offer.price}} {{market.currencyAnother}} </span>
                 </md-card-title-text>
               </md-card-title>
             </md-card>
@@ -18,7 +18,7 @@
                 <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
                 <md-tooltip>Add offer!</md-tooltip>
             </md-button>
-            <md-button class="md-raised md-secondary" ng-click="gamerBuyCtrl.showBuyDialog(market, $event)">Buy {{market.currencyAnother}}!</md-button>
+            <md-button class="md-raised md-secondary" ng-click="gamerBuyCtrl.showBuyDialog(market, $event)">Buy {{market.currencyTypeBuy}}!</md-button>
         </md-card-actions>
     </md-card>
 </md-content>

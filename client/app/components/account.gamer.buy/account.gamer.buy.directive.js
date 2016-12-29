@@ -97,7 +97,7 @@
               $scope.showSimpleToast("Amount should be a positive number!");
               return;
           }
-          gamerMarketService.buyStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeBuy)
+          gamerMarketService.sellStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeAnother)
               .then( function(promise) {
                   if (promise == "not good") {
                       $scope.showSimpleToast("Invalid amount. Please check and try again");
