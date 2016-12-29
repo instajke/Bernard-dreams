@@ -181,15 +181,15 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
             // func1
             var success = false;
             var index = -1;
+            // trying gain only 2 digits after the point
+            cost = cost.toFixed(2);
+            // coz toFixed return string hence back to float cost
+            cost = parseFloat(cost);
             for (var i = 0; i < res.wallet.length; i++) {
                 if (res.wallet[i].marketID.toString() == marketID.toString()) {
                     if (index == -1)
                         index = i;
-                    console.log(res.wallet[i].currencyType);
-                    console.log(currencyType);
                     if (res.wallet[i].currencyType == currencyType) {
-                        console.log(res.wallet[i].amount);
-                        console.log(cost);
                         if (res.wallet[i].amount >= cost) {
                             console.log("Cool! Gamer is able to pay");
                             success = true;
