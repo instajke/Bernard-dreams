@@ -388,7 +388,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
             {
                 if(transaction != myConst.TransactionSucces)
                     console.log("Wtf is happened!");
-                res.curBuyings += amount;
+                res.curBuyings += newAmount;
                 var percent = 0;
                 while(res.curBuyings > res.newPrice) {
                     res.curBuyings -= res.newPrice;
