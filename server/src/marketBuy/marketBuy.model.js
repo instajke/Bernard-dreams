@@ -146,8 +146,17 @@ exports.findOrCreateOffer = function(MarketID, userId, price, amount, response) 
                 var found = false;
                 if(res.bestPrice == null) {
                     res.bestPrice = price;
+                    var point = {};
+                    point.price = price;
+                    point.date = Date.now();
+                    res.graphicBuy.push(point);
+                    
                 } else if (price < res.bestPrice) {
                     res.bestPrice = price;
+                    var point = {};
+                    point.price = price;
+                    point.date = Date.now();
+                    res.graphicBuy.push(point);
                 }
                 for (var i = 0; i < res.offers.length; i++) {
                     if (res.offers[i].price == price) {
@@ -223,6 +232,10 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
                                         }
                                     }
                                     res.bestPrice = newPrice;
+                                    var point = {};
+                                    point.price = newPrice;
+                                    point.date = Date.now();
+                                    res.graphicBuy.push(point);
                                 } else {
                                     res.offers.splice(i, 1);
                                 }
@@ -251,6 +264,8 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
             response.send(500, {error: err});
         } else {
             var price = parseFloat((res.offers[0].price * (1 - parseFloat(percent) / 100)).toFixed(2));
+            if(price < myConst.BottomPrice)
+                price = myConst.BottomPrice;
             res.offers[0].price = price;
             res.bestPrice = price;
             var point = {};
@@ -306,10 +321,6 @@ exports.checkPriceBuy = function(gamer, desirePrice, response, callbackGamer, ca
                     transaction = true;
                     break;
                 }
-                else {
-                    message = "There is no offer with desired price. Please, check existing offers";
-                }
-
             }
             res.save();
             if(!transaction) {
@@ -402,7 +413,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     var price = parseFloat((res.offers[0].price * (1 + parseFloat(percent) / 100)).toFixed(2));
                     res.offers[0].price = price;
                     res.bestPrice = price;
-                    point = {};
+                    var point = {};
                     point.price = price;
                     point.date = Date.now();
                     res.graphicBuy.push(point);

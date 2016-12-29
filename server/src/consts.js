@@ -1,5 +1,7 @@
 module.exports = {
 
+    // Bottom price
+    BottomPrice: 0.01,
     // Market types
     RealMarket: "Real Market",
     SimulatedMarket: "Simulated Market",

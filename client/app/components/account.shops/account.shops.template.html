@@ -16,7 +16,7 @@
                 </md-list-item>
                 <md-list-item class="md-3-line" ng-repeat="offer in shop.offers">
                     <div class="md-list-item-text">
-                        <h3>{{offer.amount}}, each for {{offer.price}}</h3>
+                        <h3>{{offer.amount}}, for {{offer.price}}</h3>
                         <p>{{offer.currencyType}}</p>
                     </div>
                     <md-button class="md-raised md-secondary" ng-click="shopsCtrl.showUpdateOfferDialog($event, shop, offer)">Update</md-button>
