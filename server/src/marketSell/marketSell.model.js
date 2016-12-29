@@ -250,7 +250,7 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            var price = res.offers[0].price * (1 - parseFloat(percent) / 100);
+            var price = parseFloat((res.offers[0].price * (1 - parseFloat(percent) / 100)).toFixed(2));
             res.offers[0].price = price;
             res.bestPrice = price;
             var point = {};
@@ -395,7 +395,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     percent++;
                 }
                 if(percent != 0) {
-                    var price = res.offers[0].price * (1 + parseFloat(percent) / 100);
+                    var price = parseFloat((res.offers[0].price * (1 + parseFloat(percent) / 100)).toFixed(2));
                     res.offers[0].price = price;
                     res.bestPrice = price;
                     point = {};
