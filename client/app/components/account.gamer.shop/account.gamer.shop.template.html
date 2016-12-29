@@ -17,7 +17,7 @@
             <md-card ng-repeat="offer in shop.offers">
              <md-card-title md-colors="::{backgroundColor: '{{theme}}-primary-400'}">
                 <md-card-title-text>
-                  <span class="md-headline">{{offer.amount}}, ${{offer.price}} each</span>
+                  <span class="md-headline">{{offer.amount}}, ${{offer.price}}</span>
                   <span class="md-subhead description">Currency: {{offer.currencyType}}</span>
                 </md-card-title-text>
                 <md-button class="md-raised md-secondary" ng-click="transaction(shop, offer, currentUser)">Buy!</md-button>
