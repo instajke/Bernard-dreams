@@ -195,6 +195,8 @@ exports.checkPayingCapacity = function (userId, transaction, cost, currencyType,
                             success = true;
                             // make pay
                             res.wallet[i].amount -= cost;
+                            // okay, okay. Fix cost is not enough for wallet. This fucking float can still look retarded
+                            res.wallet[i].amount = parseFloat(res.wallet[i].amount.toFixed(2));
                             // update history
                             var myWallet = {};
                             myWallet.currencyType = res.wallet[i].currencyType;
