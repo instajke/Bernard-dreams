@@ -5,7 +5,7 @@
           <a href="#/"><span>KleManProMos</span></a><span flex=""></span>
         </div>
     </md-toolbar>
-    <md-content layout="column" style="background: none; min-height: calc(100vh - 128px)">
+    <md-content hide-xs hide-sm layout="column" style="background: none; min-height: calc(100vh - 128px)">
         <div class="background-image"></div>
             <div class="content" layout="column" layout-xs="row" layout-align="center center">
                 <div layout-xs="column">
@@ -53,6 +53,52 @@
                     </div>
                 </div>
             </div>
+    </md-content>
+    <md-content hide-gt-sm style="height: calc(100vh - 64px); overflow-y: scroll;">
+        <md-card>
+            <img src="http://euw.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/lol_promoart_14_1_0.jpg?itok=-hi3Ugy7"
+                    class="md-card-image" alt="Washed Out">
+            <md-card-title layout="column" layout-align="center center">
+                <span class="md-headline">
+                    Hi, it's KleManProMos!
+                </span>
+                <span layout-aling="end center" class="md-regular">
+                    Nice to see U there
+                </span>
+            </md-card-title>
+            <md-card-content>
+                <div layout="column" layout-align="default default">
+                    <md-input-container>
+                        <label>Nickname</label>
+                        <input ng-model="mainVm.user.nickname" type="nickname">
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input ng-model="mainVm.user.password" type="password">
+                    </md-input-container>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-icon-button md-accent md-mini" href="api/google">
+                            <md-tooltip md-direction="top">Sign in using Google account</md-tooltip>
+                            <md-icon md-svg-icon="google_plus"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button md-accent md-mini" href="api/twitter">
+                            <md-tooltip md-direction="bottom">Sign in using Twitter account</md-tooltip>
+                            <md-icon md-svg-icon="twitter"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button md-accent md-mini" href="api/facebook">
+                            <md-tooltip md-direction="top">Sign in using Facebook</md-tooltip>
+                            <md-icon md-svg-icon="facebook"></md-icon>
+                        </md-button>
+                        <md-button md-no-ink class="md-raised md-warn  md-mini" ng-click="mainVm.login()">
+                            <md-tooltip md-direction="bottom">Sign in with KleManProMos account</md-tooltip>
+                            Log in
+                        </md-button>
+                        <md-button class="md-warn md-raised md-hue-2" ng-click="mainVm.showRegistrationDialog($event)">
+                            <md-tooltip md-direction="top">Create new KleManProMos account</md-tooltip>Sign Up</md-button>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
     </md-content>
     <md-toolbar class="md-primary md-hue-4">
         <div class="md-toolbar-tools" layout="row" layout-align="end center" id="bottom" flex>
