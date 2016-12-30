@@ -50,7 +50,7 @@ exports.postMarketBuy = function(MarketBuy) {
     if(MarketBuy.marketType == myConst.SimulatedMarket) {
         var devOffer = {};
         devOffer.price = 1;
-        devOffer.amount = Infinity;
+        devOffer.amount = 1000000000;
         devOffer.offersInPrice = [];
         MarketBuy.offers.push(devOffer);
     }
@@ -263,7 +263,13 @@ exports.UpdatePriceIllusive = function(marketId, percent, response) {
         if(err){
             response.send(500, {error: err});
         } else {
-            var price = parseFloat((res.offers[0].price * (1 - parseFloat(percent) / 100)).toFixed(2));
+            var price = res.offers[0].price;
+            if (res.offers[0].price  > myConst.CrucialPoint)
+            {
+                price = parseFloat((res.offers[0].price * (1 - parseFloat(percent) / 100)).toFixed(myConst.MaxDigits));
+            } else if(res.offers[0].price > Math.random()) {
+                price = res.offers[0].price - myConst.MinPriceUp;
+            }
             if(price < myConst.BottomPrice)
                 price = myConst.BottomPrice;
             res.offers[0].price = price;
@@ -410,7 +416,15 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     percent++;
                 }
                 if(percent != 0) {
-                    var price = parseFloat((res.offers[0].price * (1 + parseFloat(percent) / 100)).toFixed(2));
+                    if(percent > myConst.MaxPercent)
+                        percent = myConst.MaxPercent;
+                    var price = res.offers[0].price;
+                    if (res.offers[0].price  >= myConst.CrucialPoint)
+                    {
+                        price = parseFloat((res.offers[0].price * (1 + parseFloat(percent) / 100)).toFixed(myConst.MaxDigits));
+                    } else if(res.offers[0].price > Math.random()) {
+                        price = res.offers[0].price + myConst.MinPriceUp;
+                    }
                     res.offers[0].price = price;
                     res.bestPrice = price;
                     var point = {};

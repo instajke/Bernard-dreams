@@ -1,7 +1,11 @@
 module.exports = {
-
-    // Bottom price
+    
+    // Illusive market stuff
     BottomPrice: 0.01,
+    MaxPercent: 10,
+    MaxDigits: 2,
+    MinPriceUp: 0.01,
+    CrucialPoint: 0.5,
     // Market types
     RealMarket: "Real Market",
     SimulatedMarket: "Simulated Market",
