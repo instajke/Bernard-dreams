@@ -9,9 +9,9 @@
             , bindToController: true
         };
     });
-    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$scope', '$rootScope', '$mdDialog', '$q', 'localStorageService', '$window'];
+    gamerShopCtrl.$inject = ['accountService', 'marketService', '$http', '$mdToast', '$scope', '$rootScope', '$mdDialog', '$q', 'localStorageService', '$window'];
 
-    function gamerShopCtrl(accountService, marketService, $http, $scope, $rootScope, $mdDialog, $q, localStorageService, $window) {
+    function gamerShopCtrl(accountService, marketService, $http,  $mdToast, $scope, $rootScope, $mdDialog, $q, localStorageService, $window) {
         var ctrl = this;
 
         ctrl.connectShopDlg = $mdDialog;
@@ -170,6 +170,14 @@
                 return deferred.promise;
         };
 
+        $scope.showSimpleToast = function(msg) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(msg)
+                    .hideDelay(2000)
+            );
+        };
+
         $scope.connect = function () {
             var market = $scope.availableMarkets[$scope.currentMarket.marketID];
             console.log("current market: ");
@@ -184,16 +192,24 @@
                 currencyType: market.currencyType2
                 , amount: 5000
                 , marketID: market._id
-            }
+            };
+            var transaction = {
+                currencyType : market.currencyType2,
+                amount : 5000,
+                marketID : market._id,
+                transactionType : "Gift for connecting shop"
+            };
 
             console.log(wallet1);
             console.log(wallet2);
+            console.log(transaction);
 
             var user = localStorageService.get("user");
             console.log("CURRENT USER");
             console.log(user);
             user.wallet.push(wallet1);
             user.wallet.push(wallet2);
+            user.transactions.push(transaction);
             console.log("CURRENT USER WITH UPDATED WALLET");
             console.log(user);
             accountService.postUser(user)
@@ -201,6 +217,7 @@
                     ctrl.connectShopDlg.hide();
                     localStorageService.set("user", user);
                     $scope.initMarkets();
+                    $scope.showSimpleToast("Shop connected. Check your transactions to see your gift.");
                 });
         };
 
