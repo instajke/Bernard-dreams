@@ -5,6 +5,10 @@
           <md-tooltip>Open side panel</md-tooltip>
       </md-button><span>KleManProMos</span>
         <span flex=""></span>
+        <md-button class="md-icon-button" ng-hide="accPageCtrl.userIsDev()" ng-click="showGuide($event)">
+            <md-icon class="md-default-theme" class="material-icons">assistant</md-icon>
+            <md-tooltip>Confused? Click here to find some help</md-tooltip>
+        </md-button>
         <md-switch ng-model="theme" ng-true-value="'default'" ng-false-value="'alternative'">
             <md-tooltip>Switch theme</md-tooltip>
         </md-switch>

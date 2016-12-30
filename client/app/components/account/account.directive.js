@@ -23,6 +23,8 @@
 
         $rootScope.theme = 'default';
 
+        $rootScope.guide = $mdDialog;
+
         $rootScope.changeTheme = function() {
           $rootScope.theme = $rootScope.theme === 'alternative' ? 'default' : 'alternative';
           console.log($rootScope.theme);
@@ -55,6 +57,17 @@
         $rootScope.historyDialog = $mdDialog;
         $rootScope.upgradeDialog = $mdDialog;
         $rootScope.shops = [];
+
+        $rootScope.showGuide = function(ev) {
+
+            $rootScope.guide.show({
+                templateUrl: 'app/components/controls/ShowGuide.html',
+                parent: angular.element(document.getElementById("theme-div")),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            });
+        };
+
 
         $rootScope.showHistoryDialog = function(ev, transactions) {
             $rootScope.transactions = transactions;

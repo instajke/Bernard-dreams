@@ -41,8 +41,9 @@
                     </div>
                     <md-divider></md-divider>
                 </md-list-item>
-                <md-list-item ng-repeat="w in accHomeCtrl.processedWallets">
-                    <h4> Market: {{w.marketName}} </h3>
+                <md-list-item layout-xs="column" ng-repeat="w in accHomeCtrl.processedWallets">
+                        <span class="md-regular">Market: </span>
+                        <span class="md-regular">{{w.marketName}}</span>
                         <md-icon class="material-icons">payment</md-icon>
                         <span>{{w.internalAmount}} {{w.internalCurrency}}</span><br>
                         <md-icon class="material-icons">payment</md-icon>
