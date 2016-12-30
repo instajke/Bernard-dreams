@@ -101,10 +101,13 @@
           gamerMarketService.sellStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeAnother)
               .then( function(promise) {
                   if (promise == "not good") {
-                      $scope.showSimpleToast("Invalid amount. Please check and try again");
+                      $scope.showSimpleToast("Invalid amount. You don't have enough money. Please check and try again");
                   }
                   else {
-                      $scope.showSimpleToast("buy succeseded");
+                      if(promise.result == "Failed") 
+                          $scope.showSimpleToast("Wrong price! Best price now: " + promise.PriceIsChanged);
+                      else 
+                        $scope.showSimpleToast("buy succeseded");
                   }
                   accountService.checkLoggedIn();
                   $scope.initMarkets();
