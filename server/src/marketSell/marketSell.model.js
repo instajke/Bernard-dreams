@@ -274,6 +274,7 @@ exports.UpdatePriceIllusive = function(marketId, newPercent, response) {
                     }
                     tempPercent--;
                 }
+                price = parseFloat(price.toFixed(myConst.MaxDigits));
             }
             if(price < myConst.BottomPrice)
                 price = myConst.BottomPrice;
@@ -435,6 +436,7 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                             }
                             tempPercent--;
                         }
+                        price = parseFloat(price.toFixed(myConst.MaxDigits));
                     }
                     res.offers[0].price = price;
                     res.bestPrice = price;
