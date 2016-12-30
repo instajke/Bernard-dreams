@@ -11,6 +11,7 @@
                     'tmh.dynamicLocale',
                     'ngMaterial',
                     'ui.validate',
-                    'LocalStorageModule']);
+                    'LocalStorageModule',
+                    'chart.js']);
 
 })();

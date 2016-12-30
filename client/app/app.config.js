@@ -5,9 +5,9 @@
     .module('app')
     .config(config);
 
-  config.$inject = ['$translateProvider', 'tmhDynamicLocaleProvider', '$httpProvider', '$compileProvider', '$mdIconProvider', '$mdThemingProvider'];
+  config.$inject = ['$translateProvider', 'tmhDynamicLocaleProvider', '$httpProvider', '$compileProvider', '$mdIconProvider', '$mdThemingProvider', 'ChartJsProvider'];
 
-  function config($translateProvider, tmhDynamicLocaleProvider, $httpProvider, $compileProvider, $mdIconProvider, $mdThemingProvider) {
+  function config($translateProvider, tmhDynamicLocaleProvider, $httpProvider, $compileProvider, $mdIconProvider, $mdThemingProvider, ChartJsProvider) {
 
     // Angular perfs best practices
     $httpProvider.useApplyAsync(true);
@@ -37,6 +37,8 @@
 
     // i18n angular-dynamic-locale
     tmhDynamicLocaleProvider.localeLocationPattern('/i18n/angular/angular-locale_{{locale}}.js');
+
+    ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 
     $mdIconProvider.icon("google_plus", "/styles/svg/google_plus.svg", 512).icon("twitter", "/styles/svg/twitter.svg", 512).icon("facebook", "/styles/svg/facebook.svg", 512).icon("vk", "./assests/svg/vk.svg", 512);
   }

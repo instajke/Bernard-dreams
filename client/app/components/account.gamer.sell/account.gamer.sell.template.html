@@ -14,7 +14,11 @@
             </md-card>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button class="md-icon-button" ng-click="gamerSellCtrl.showCreateOfferDialog(market, $event)">
+            <md-button class="md-icon-button" ng-click="gamerSellCtrl.showChartDialog(market, $event)">
+                <md-icon class="md-default-theme" class="material-icons">timeline</md-icon>
+                <md-tooltip>Display price chart</md-tooltip>
+            </md-button>
+            <md-button ng-hide="market.marketType == 'Simulated Market'" class="md-icon-button" ng-click="gamerSellCtrl.showCreateOfferDialog(market, $event)">
                 <md-icon class="md-default-theme" class="material-icons">&#xE146;</md-icon>
                 <md-tooltip>Add offer!</md-tooltip>
             </md-button>
@@ -22,4 +26,3 @@
         </md-card-actions>
     </md-card>
 </md-content>
-<p>hai</p>

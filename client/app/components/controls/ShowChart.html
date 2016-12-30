@@ -1,0 +1,13 @@
+<md-dialog layout="row" layout-margin layout-wrap layout-align="center center" flex="60">
+    <md-card flex>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{currentMarket.marketName}} price chart</h2> <span flex></span>
+            </div>
+        </md-toolbar>
+        <canvas id="line" class="chart chart-line" chart-data="chartData"
+            chart-labels="chartLabels" chart-colors="colors"
+            chart-dataset-override="datasetOverride">
+        </canvas>
+    </md-card>
+</md-dialog>

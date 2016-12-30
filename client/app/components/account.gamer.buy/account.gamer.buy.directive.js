@@ -13,14 +13,15 @@
       };
     });
 
-  GamerBuyController.$inject = ['accountService', 'marketService', 'gamerMarketService', '$http', '$scope', '$rootScope', '$mdDialog', '$mdToast', 'localStorageService'];
+  GamerBuyController.$inject = ['accountService', 'marketService', 'gamerMarketService', '$http', '$scope', '$rootScope', '$mdDialog', '$mdToast', 'localStorageService', '$filter', 'ChartJs'];
 
-  function GamerBuyController(accountService, marketService, gamerMarketService, $http, $scope, $rootScope, $mdDialog, $mdToast, localStorageService) {
+  function GamerBuyController(accountService, marketService, gamerMarketService, $http, $scope, $rootScope, $mdDialog, $mdToast, localStorageService, $filter) {
       var ctrl = this;
 
       ctrl.user = localStorageService.get("user");
       ctrl.createOfferDialog = $mdDialog;
       ctrl.buyDialog = $mdDialog;
+      ctrl.chartDialog = $mdDialog;
 
       $scope.offerPrice = 0;
       $scope.offerAmount = 0;
@@ -146,6 +147,44 @@
               , clickOutsideToClose: true
           });
       };
+
+      ctrl.showChartDialog = function (market, ev) {
+          $scope.currentMarket = market;
+
+          $scope.chartLabels = [];
+          $scope.chartData = [];
+          $scope.dataSample = [];
+
+          $scope.currentMarket.graphicBuy.forEach(function(item) {
+              var date = new Date(item.date);
+              $scope.chartLabels.push($filter('date')(date, 'hh:mm:ss - dd.MM.yyyy'));
+              $scope.dataSample.push(item.price);
+          });
+
+          $scope.chartData.push($scope.dataSample);
+
+          $scope.datasetOverride = [{
+              label: $scope.currentMarket.marketName,
+              borderWidth: 3,
+              hoverBackgroundColor: "rgba(255,99,132,0.4)",
+              hoverBorderColor: "rgba(255,99,132,1)",
+              type: 'line'
+          }];
+
+          console.log($scope.chartLabels);
+          console.log($scope.chartData);
+
+          ctrl.chartDialog.show({
+              controller: GamerBuyController
+              , templateUrl: 'app/components/controls/ShowChart.html'
+              , parent: angular.element(document.getElementById("theme-div"))
+              , targetEvent: ev
+              , scope: $scope
+              , preserveScope: true
+              , clickOutsideToClose: true
+          });
+      };
+
 
       $scope.initMarkets();
   }
