@@ -5,12 +5,18 @@
         </md-toolbar>
         <md-card-content>
             <md-card ng-repeat="offer in market.offers">
-             <md-card-title md-colors="::{backgroundColor: '{{theme}}-primary-200'}">
+             <md-card-title ng-hide="market.marketType == 'Simulated Market'" md-colors="::{backgroundColor: '{{theme}}-primary-200'}">
                 <md-card-title-text>
                   <span class="md-headline">{{offer.amount}} {{market.currencyTypeSell}}, {{offer.price}} {{market.currencyTypeAnother}} each</span>
                   <span class="md-subhead description">Total price is {{offer.amount * offer.price}} {{market.currencyTypeAnother}} </span>
                 </md-card-title-text>
               </md-card-title>
+              <md-card-title ng-hide="market.marketType == 'Real Market'" md-colors="::{backgroundColor: '{{theme}}-primary-200'}">
+                 <md-card-title-text>
+                   <span class="md-headline">Get needed amount of {{market.currencyTypeSell}} for {{offer.price}} {{market.currencyTypeAnother}} each</span>
+                   <span class="md-subhead description">Price is fixed and influenced by customer's transactions. </span>
+                 </md-card-title-text>
+               </md-card-title>
             </md-card>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">

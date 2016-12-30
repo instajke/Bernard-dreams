@@ -308,9 +308,9 @@ exports.updateUser = function(User, response) {
 exports.bullshit = function(UserId, response) {
     user.findById(UserId)
         .populate({ path : 'wallet.marketID', model : 'Market'})
-        .exec(function(err, result) {
+        .exec(function(err, user) {
             if (err)
                 response.status(500).send(err);
-            response.json({success: true, result : result});
+            response.json({user : user});
         });
 }

@@ -208,6 +208,28 @@
             });
 
             return deferred.promise;
+        },
+        getUserWithPopulatedMarkets : function(userID) {
+            var deferred = $q.defer();
+
+            $http.get('/api/usersshop/' + userID)
+            .success(function(data, status) {
+                if (status === 200) {
+                    console.log("getting user");
+                    console.log(data);
+                    deferred.resolve(data);
+                }
+                else {
+                    console.log("status != 200");
+                    deferred.reject();
+                }
+            })
+            .error (function (data) {
+                console.log("error");
+                deferred.reject();
+            });
+
+            return deferred.promise;
         }
       };
     }

@@ -42,10 +42,11 @@
                     <md-divider></md-divider>
                 </md-list-item>
                 <md-list-item ng-repeat="w in accHomeCtrl.processedWallets">
-                    <md-icon class="material-icons">payment</md-icon>
-                    <span>{{w.internalAmount}} {{w.internalCurrency}}</span><br>
-                    <md-icon class="material-icons">payment</md-icon>
-                    <span>{{w.externalAmount}} {{w.externalCurrency}}</span>
+                    <h4> Market: {{w.marketName}} </h3>
+                        <md-icon class="material-icons">payment</md-icon>
+                        <span>{{w.internalAmount}} {{w.internalCurrency}}</span><br>
+                        <md-icon class="material-icons">payment</md-icon>
+                        <span>{{w.externalAmount}} {{w.externalCurrency}}</span>
                     <md-divider></md-divider>
                 </md-list-item>
             </md-list>

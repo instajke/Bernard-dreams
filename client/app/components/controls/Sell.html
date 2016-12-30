@@ -8,7 +8,7 @@
             <label>Enter desired amount</label>
             <input ng-model="offerAmount" ng-required="true">
         </md-input-container>
-        <md-input-container name="price" class="md-icon-float md-block">
+        <md-input-container ng-hide="currentMarket.marketType == 'Simulated Market'" name="price" class="md-icon-float md-block">
             <md-icon class="md-default-theme" class="material-icons">&#xE227;</md-icon>
             <label>Define desired price</label>
             <input ng-model="offerPrice" ng-required="true">

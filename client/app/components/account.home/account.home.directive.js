@@ -21,13 +21,48 @@
       accountService.checkLoggedIn();
 
       ctrl.newUser = localStorageService.get("user");
+      accountService.getUserWithPopulatedMarkets(localStorageService.get("user")._id)
+                        .then( function(promise) {
+                            ctrl.tryUser = promise.user;
+                            console.log("PLEASE WORK");
+                            console.log(ctrl.tryUser);
+                            if (ctrl.tryUser.wallet.length > 0) {
+                                var wallets = historyService.groupBy(ctrl.tryUser.wallet, function(item)
+                                {
+                                  return [item.marketID];
+                                });
+
+                                console.log(wallets);
+
+                                ctrl.processedWallets = [];
+
+                                wallets.forEach(function(item) {
+                                    console.log("item #");
+                                    console.log(item);
+                                    var tmp = {};
+
+                                    tmp.internalCurrency = item[0].currencyType;
+                                    tmp.internalAmount = item[0].amount;
+                                    tmp.externalCurrency = item[1].currencyType;
+                                    tmp.externalAmount = item[1].amount;
+                                    tmp.marketName = item[0].marketID.name;
+                                    //tmp.marketName = item[0].marketName;
+
+                                    ctrl.processedWallets.push(tmp);
+                                })
+
+                                console.log("PROCESSED WALLETS");
+                                console.log(ctrl.processedWallets);
+                            }
+
+                        });
 
       if (ctrl.newUser.transactions.length > 0) {
           var transes = historyService.processTransactions(ctrl.newUser.transactions);
           console.log(transes);
           ctrl.lastTrans = transes[transes.length - 1];
       }
-
+      /*
       if (ctrl.newUser.wallet.length > 0) {
           var wallets = historyService.groupBy(ctrl.newUser.wallet, function(item)
           {
@@ -48,6 +83,7 @@
               tmp.externalCurrency = item[1].currencyType;
               tmp.externalAmount = item[1].amount;
               tmp.marketID = item[0].marketID;
+              //tmp.marketName = item[0].marketName;
 
               ctrl.processedWallets.push(tmp);
           })
@@ -55,7 +91,7 @@
           console.log("PROCESSED WALLETS");
           console.log(ctrl.processedWallets);
       }
-
+      */
       ctrl.showAlert = function(res) {
             alert = $mdDialog.alert({
                 title: 'Attention',

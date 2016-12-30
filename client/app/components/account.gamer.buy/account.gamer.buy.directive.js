@@ -89,15 +89,14 @@
 
       $scope.buyStuff = function() {
           console.log("buy stuff");
-          console.log(localStorageService.get("user")._id);
-          console.log($scope.offerPrice);
-          console.log($scope.offerAmount);
-          console.log($scope.currentMarket.marketID);
-          console.log($scope.currentMarket.currencyTypeBuy);
+
           if ($scope.offerAmount <= 0){
               $scope.showSimpleToast("Amount should be a positive number!");
               return;
           }
+          $scope.offerPrice = $scope.currentMarket.marketType == 'Simulated Market' ? $scope.currentMarket.bestPrice : $scope.offerPrice;
+          console.log("trans price");
+          console.log($scope.offerPrice);
           gamerMarketService.sellStuff(localStorageService.get("user")._id, $scope.offerPrice, $scope.offerAmount, $scope.currentMarket.marketID, $scope.currentMarket.currencyTypeAnother)
               .then( function(promise) {
                   if (promise == "not good") {
