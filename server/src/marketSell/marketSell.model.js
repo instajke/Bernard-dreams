@@ -257,17 +257,23 @@ exports.findAndRemoveUserOffer = function(Market, userId, price, response) {
     });
 };
 
-exports.UpdatePriceIllusive = function(marketId, percent, response) {
+exports.UpdatePriceIllusive = function(marketId, newPercent, response) {
     marketSell.findOne({marketID: marketId}).exec(function (err,res) {
         if(err){
             response.send(500, {error: err});
         } else {
+            var tempPercent = newPercent;
             var price = res.offers[0].price;
             if (res.offers[0].price  > myConst.CrucialPoint)
             {
-                price = parseFloat((res.offers[0].price * (1 - parseFloat(percent) / 100)).toFixed(myConst.MaxDigits));
-            } else if(res.offers[0].price > Math.random()) {
-                price = res.offers[0].price - myConst.MinPriceUp;
+                price = parseFloat((res.offers[0].price * (1 - parseFloat(newPercent) / 100)).toFixed(myConst.MaxDigits));
+            } else {
+                while(tempPercent > 0) {
+                    if (res.offers[0].price > Math.random()) {
+                        price -= myConst.MinPriceUp;
+                    }
+                    tempPercent--;
+                }
             }
             if(price < myConst.BottomPrice)
                 price = myConst.BottomPrice;
@@ -415,15 +421,20 @@ exports.UpdateMarket = function(MarketID, transaction, index, newAmount, respons
                     percent++;
                 }
                 if(percent != 0) {
-                    
                     if (percent > myConst.MaxPercent)
                         percent = myConst.MaxPercent;
                     var price = res.offers[0].price;
+                    var tempPercent = percent;
                     if (res.offers[0].price  >= myConst.CrucialPoint)
                     {
                         price = parseFloat((res.offers[0].price * (1 + parseFloat(percent) / 100)).toFixed(myConst.MaxDigits));
-                    } else if(res.offers[0].price > Math.random()) {
-                        price = res.offers[0].price + myConst.MinPriceUp;
+                    } else {
+                        while(tempPercent > 0) {
+                            if (res.offers[0].price > Math.random()) {
+                                price += myConst.MinPriceUp;
+                            }
+                            tempPercent--;
+                        }
                     }
                     res.offers[0].price = price;
                     res.bestPrice = price;
